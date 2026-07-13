@@ -2,11 +2,11 @@
 
 ## Version
 
-v1.0.0 (MVP)
+v0.1.0 (MVP)
 
 ## Status
 
-🚧 Under Development
+🚧 Sprint 0 - Day 1 Completed
 
 # AgriPredict AI
 
