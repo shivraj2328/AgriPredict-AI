@@ -1,0 +1,2 @@
+Vision
+ To empower farmers with an intelligent, accessible, and data-driven platform that recommends suitable crops, analyzes soil health, and provides actionable farming insights using artificial intelligence.
