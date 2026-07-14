@@ -1,12 +1,16 @@
 # Authentication
 POST /api/auth/register
+
 POST /api/auth/login
+
 GET /api/auth/profile
 
 
 # Prediction
 POST /api/predictions
+
 GET /api/predictions
+
 GET /api/predictions/:id
 
 
