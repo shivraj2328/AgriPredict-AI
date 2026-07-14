@@ -6,7 +6,7 @@ v0.1.0 (MVP)
 
 ## Status
 
-🚧 Sprint 0 - Day 1 Completed
+🚧 
 
 # AgriPredict AI
 
@@ -20,5 +20,23 @@ AI-powered smart farming assistant.
 - MongoDB
 - JavaScript
 - AI and Machine Learning
+
+## Project Modules
+
+- Authentication
+- Dashboard
+- AI Engine
+- Weather Service
+- Database
+
+## Development Roadmap
+
+Sprint 0 – Planning ✅
+
+Sprint 1 – Frontend
+
+Sprint 2 – Backend
+
+...
 
 Developed by Shivraj Jagtap
