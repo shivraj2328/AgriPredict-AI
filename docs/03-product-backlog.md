@@ -9,12 +9,19 @@
 - [x] Create README
 - [x] Configure Git
 - [x] Initial Commits
+- [x] UI Wireframes
+- [x] User Flow
+- [x] Database Design
+- [x] REST API Design
+- [x] AI Flow Design
+- [x] Sprint Planning
 
 ---
 
 ## Upcoming
 
-- Product Design
-- User Personas
-- User Stories
-- Wireframes
+- Design System
+- Color Palette
+- Typography
+- UI Components
+- Responsive Layout
