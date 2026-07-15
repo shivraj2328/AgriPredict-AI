@@ -129,4 +129,66 @@ History
 Logout
 
 
-# 
+# Wireframes
+Home
+
+↓
+
+Register/Login
+
+↓
+
+Dashboard
+
+↓
+
+Crop Prediction
+
+↓
+
+Prediction Result
+
+↓
+
+Save
+
+↓
+
+History
+
+↓
+
+Profile
+
+↓
+
+About
+
+↓
+
+Contact
+
+# Responsive Layout
+| Device  | Width      |
+| ------- | ---------- |
+| Mobile  | <576px     |
+| Tablet  | 576–768px  |
+| Laptop  | 768–1200px |
+| Desktop | >1200px    |
+
+# Navigation Planning
+Home
+│
+├── Login
+│
+├── Register
+│
+├── Dashboard
+│      │
+│      ├── Crop Prediction
+│      ├── Prediction History
+│      ├── Profile
+│      ├── Weather
+│      └── Feedback
+│
+└── Logout
