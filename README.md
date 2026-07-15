@@ -6,7 +6,7 @@ v0.2.0 (MVP)
 
 ## Status
 
-🚧 Sprint 0 – Day 2 Completed
+🚧 Sprint 0 – Day 3 Completed
 
 # AgriPredict AI
 
@@ -39,5 +39,35 @@ Sprint 0
 
 Sprint 1
 ├── ⏳ UI Design System
+
+## UI Design
+
+Design system created with a consistent color palette, typography, reusable components, and responsive layout strategy.
+
+## Pages
+
+- Home
+- Login
+- Register
+- Dashboard
+- Crop Prediction
+- Prediction History
+- Profile
+- About
+- Contact
+
+## Design System
+
+- Brand Colors
+- Typography
+- Border Radius
+- Shadows
+- Responsive Breakpoints
+
+## Screenshots
+
+Coming Soon
+
+## Folder Structure
 
 Developed by Shivraj Jagtap
