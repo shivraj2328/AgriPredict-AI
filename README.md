@@ -6,7 +6,7 @@ v0.2.0 (MVP)
 
 ## Status
 
-🚧 Sprint 0 – Day 3 Completed
+🚧 Sprint 1 – Day 4 Completed
 
 # AgriPredict AI
 
@@ -15,6 +15,7 @@ AI-powered smart farming assistant.
 ## Tech Stack
 
 - React
+- Vite 9.1.1
 - Node.js
 - Express
 - MongoDB
@@ -63,6 +64,25 @@ Design system created with a consistent color palette, typography, reusable comp
 - Border Radius
 - Shadows
 - Responsive Breakpoints
+
+## Frontend Stack
+
+- React
+- Vite
+- Bootstrap
+- React Router
+- Axios
+- Chart.js
+
+User
+   │
+React Frontend
+   │
+React Router
+   │
+Express Backend
+   │
+MongoDB + AI Service
 
 ## Screenshots
 
