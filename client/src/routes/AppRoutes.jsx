@@ -1,3 +1,4 @@
+import MainLayout from "../layouts/MainLayout";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Home from "../pages/Home";
@@ -15,7 +16,14 @@ function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
+
+    <Route element={<MainLayout />}>
+
         <Route path="/" element={<Home />} />
+
+        <Route path="/about" element={<About />} />
+
+        <Route path="/contact" element={<Contact />} />
 
         <Route path="/login" element={<Login />} />
 
@@ -29,12 +37,11 @@ function AppRoutes() {
 
         <Route path="/profile" element={<Profile />} />
 
-        <Route path="/about" element={<About />} />
+    </Route>
 
-        <Route path="/contact" element={<Contact />} />
+    <Route path="*" element={<NotFound />} />
 
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+</Routes>
     </BrowserRouter>
   );
 }
