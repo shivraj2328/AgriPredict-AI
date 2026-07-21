@@ -6,7 +6,7 @@ v0.2.0 (MVP)
 
 ## Status
 
-🚧 Sprint 1 – Day 4 Completed
+🚧 Sprint 1 – Day 5 Completed
 
 # AgriPredict AI
 
@@ -32,14 +32,12 @@ AI-powered smart farming assistant.
 - Database
 - Feedback System
 
-## Development Roadmap
+## Progress
 
-Sprint 0
-├── ✅ Day 1 – Product Foundation
-├── ✅ Day 2 – Product & System Design
-
-Sprint 1
-├── ⏳ UI Design System
+- ✅ Sprint 0 – Planning & System Design
+- ✅ Sprint 1 – UI/UX Design System
+- ✅ Sprint 1 – Day 4: React Project Setup
+- ✅ Sprint 1 – Day 5: Application Layout & Home Page
 
 ## UI Design
 
@@ -74,6 +72,7 @@ Design system created with a consistent color palette, typography, reusable comp
 - Axios
 - Chart.js
 
+## User Flow Diagram
 User
    │
 React Frontend
