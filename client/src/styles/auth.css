@@ -1,0 +1,18 @@
+.auth-container{
+  min-height:80vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.auth-card{
+  width:100%;
+  max-width:500px;
+  border-radius:16px;
+  padding:25px;
+}
+
+.auth-title{
+  font-weight:700;
+  color:#2E7D32;
+}
