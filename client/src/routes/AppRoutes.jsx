@@ -15,34 +15,27 @@ import NotFound from "../pages/NotFound";
 function AppRoutes() {
   return (
     <BrowserRouter>
-      <Routes>
+  <Routes>
 
-    <Route element={<MainLayout />}>
+    {/* Public Pages */}
+    <Route path="/" element={<Home />} />
+    <Route path="/about" element={<About />} />
+    <Route path="/contact" element={<Contact />} />
 
-        <Route path="/" element={<Home />} />
+    {/* Authentication */}
+    <Route path="/login" element={<Login />} />
+    <Route path="/register" element={<Register />} />
 
-        <Route path="/about" element={<About />} />
-
-        <Route path="/contact" element={<Contact />} />
-
-        <Route path="/login" element={<Login />} />
-
-        <Route path="/register" element={<Register />} />
-
-        <Route path="/dashboard" element={<Dashboard />} />
-
-        <Route path="/prediction" element={<Prediction />} />
-
-        <Route path="/history" element={<History />} />
-
-        <Route path="/profile" element={<Profile />} />
-
-    </Route>
+    {/* Dashboard */}
+    <Route path="/dashboard" element={<Dashboard />} />
+    <Route path="/prediction" element={<Prediction />} />
+    <Route path="/history" element={<History />} />
+    <Route path="/profile" element={<Profile />} />
 
     <Route path="*" element={<NotFound />} />
 
-</Routes>
-    </BrowserRouter>
+  </Routes>
+</BrowserRouter>
   );
 }
 
