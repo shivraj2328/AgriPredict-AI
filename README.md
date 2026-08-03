@@ -6,7 +6,7 @@ v0.2.0 (MVP)
 
 ## Status
 
-🚧 Sprint 1 – Day 5 Completed
+🚧 Sprint 1 – Day 6 Completed
 
 # AgriPredict AI
 
@@ -38,6 +38,8 @@ AI-powered smart farming assistant.
 - ✅ Sprint 1 – UI/UX Design System
 - ✅ Sprint 1 – Day 4: React Project Setup
 - ✅ Sprint 1 – Day 5: Application Layout & Home Page
+- ✅ Sprint 1 - Day 6: Authentication UI
+- ✅ Sprint 1 – Dashboard UI Foundation
 
 ## UI Design
 
@@ -88,5 +90,18 @@ MongoDB + AI Service
 Coming Soon
 
 ## Folder Structure
+
+## Completed Features
+
+- Responsive Home Page
+- Authentication UI
+- Dashboard Layout
+- Responsive Sidebar
+- Topbar
+- Welcome Card
+- Statistics Cards
+- Weather Widget (Mock Data)
+- Recent Predictions Table
+- Quick Prediction Card
 
 Developed by Shivraj Jagtap
