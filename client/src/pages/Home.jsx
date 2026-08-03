@@ -1,3 +1,4 @@
+import MainLayout from "../layouts/MainLayout";
 import Hero from "../components/Hero/Hero";
 import FeatureCard from "../components/FeatureCard/FeatureCard";
 
@@ -5,7 +6,7 @@ function Home() {
 
     return (
 
-        <>
+        <MainLayout>
 
             <Hero />
 
@@ -51,7 +52,7 @@ function Home() {
 
             </section>
 
-        </>
+        </MainLayout>
 
     );
 
