@@ -18,7 +18,7 @@ function PredictionForm({ formData, setFormData }) {
 
     return (
 
-        <div className="card shadow-sm p-4 mb-4">
+        <div className="card prediction-form shadow p-4">
 
             <h4 className="mb-4">
                 Soil Parameters

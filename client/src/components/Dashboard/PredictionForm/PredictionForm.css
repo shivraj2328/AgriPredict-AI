@@ -1,11 +1,27 @@
-.card {
-    border-radius: 12px;
+.prediction-form{
+
+border-radius:15px;
+
+background:#ffffff;
+
 }
 
-.form-label {
-    font-weight: 600;
+.prediction-form h4{
+
+color:#2E7D32;
+
+font-weight:700;
+
 }
 
-.btn {
-    min-width: 150px;
+.prediction-form .btn{
+
+min-width:150px;
+
+}
+
+.prediction-form input{
+
+height:48px;
+
 }
