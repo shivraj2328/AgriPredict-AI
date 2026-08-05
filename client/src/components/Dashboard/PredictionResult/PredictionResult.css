@@ -1,0 +1,23 @@
+.prediction-result{
+
+border-radius:15px;
+
+background:#ffffff;
+
+min-height:420px;
+
+}
+
+.prediction-result h2{
+
+font-weight:700;
+
+color:#2E7D32;
+
+}
+
+.prediction-result h3{
+
+font-weight:700;
+
+}
