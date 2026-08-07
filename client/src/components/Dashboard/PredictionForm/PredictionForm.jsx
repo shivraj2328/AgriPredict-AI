@@ -1,6 +1,7 @@
 import "./PredictionForm.css";
 
-function PredictionForm({ formData, setFormData }) {
+function PredictionForm({ formData, setFormData,handlePredict,
+    handleReset }) {
 
     const handleChange = (e) => {
 
@@ -37,7 +38,7 @@ function PredictionForm({ formData, setFormData }) {
                         name="nitrogen"
                         value={formData.nitrogen}
                         onChange={handleChange}
-                    />
+                    />c
                 </div>
 
                 <div className="col-md-6 mb-3">
@@ -132,6 +133,7 @@ function PredictionForm({ formData, setFormData }) {
                 <button
                     type="button"
                     className="btn btn-success"
+                    onClick={handlePredict}
                 >
                     Predict Crop
                 </button>
