@@ -21,7 +21,7 @@ function Footer() {
 
             <small>
 
-                © 2026 AgriPredict AI | v1.0.0
+                © 2026 AgriPredict AI | v1.8.0
 
             </small>
 
