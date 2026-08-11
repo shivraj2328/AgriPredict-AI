@@ -1,5 +1,12 @@
+import DashboardLayout from "../layouts/DashboardLayout";
+import PredictionHistory from "../components/Dashboard/PredictionHistory/PredictionHistory";
+
 function History() {
-  return <h1>History Page</h1>;
+    return (
+        <DashboardLayout>
+            <PredictionHistory />
+        </DashboardLayout>
+    );
 }
 
 export default History;
