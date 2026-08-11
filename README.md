@@ -6,7 +6,7 @@ v0.8.0 (MVP)
 
 ## Status
 
-🚧 Sprint 1 – Day 8 Completed
+🚧 Sprint 1 – Day 9 Completed
 
 # AgriPredict AI
 
@@ -32,15 +32,17 @@ AI-powered smart farming assistant.
 - Database
 - Feedback System
 
-## Progress
+## Project Progress
 
-- ✅ Sprint 0 – Planning & System Design
-- ✅ Sprint 1 – UI/UX Design System
-- ✅ Sprint 1 – Day 4: React Project Setup
-- ✅ Sprint 1 – Day 5: Application Layout & Home Page
-- ✅ Sprint 1 - Day 6: Authentication UI
-- ✅ Sprint 1 – Day 7: Dashboard UI Foundation
-- ✅ Sprint 1 – Day 8: PredictionForm, PredictionResult, ConfidenceMeter
+- ✅ Day 1 – Project Planning
+- ✅ Day 2 – Product & System Design
+- ✅ Day 3 – UI/UX Foundation & Design System
+- ✅ Day 4 – React Project Setup & Frontend Foundation
+- ✅ Day 5 – Application Layout & Home Page
+- ✅ Day 6 – Authentication UI
+- ✅ Day 7 – Dashboard UI Foundation
+- ✅ Day 8 – Crop Prediction UI
+- ✅ Day 9 – Prediction History & Profile UI
 
 
 ## UI Design
@@ -93,13 +95,16 @@ Coming Soon
 
 ## Folder Structure
 
-## Completed
+## Completed Features
 
 - Home Page
 - Authentication UI
 - Dashboard UI
 - Crop Prediction UI
-- Frontend Validation
-- Confidence Meter
+- Prediction History UI
+- Profile UI
+- Frontend Form Validation
+- Search and Filtering
+- Responsive Dashboard
 
 Developed by Shivraj Jagtap

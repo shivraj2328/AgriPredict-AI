@@ -15,6 +15,8 @@
 - [x] REST API Design
 - [x] AI Flow Design
 - [x] Sprint Planning
+- [x] Prediction History
+- [x] Profile
 
 ---
 
