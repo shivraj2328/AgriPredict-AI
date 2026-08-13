@@ -2,11 +2,11 @@
 
 ## Version
 
-v0.9.0 (MVP)
+v0.10.0 (MVP)
 
 ## Status
 
-🚧 Sprint 1 – Day 9 Completed
+🚧 Sprint 1 – Day 10 Completed
 
 # AgriPredict AI
 
@@ -51,15 +51,16 @@ Design system created with a consistent color palette, typography, reusable comp
 
 ## Pages
 
-- Home
-- Login
-- Register
+- Home Page
+- Login Page
+- Register Page
 - Dashboard
 - Crop Prediction
 - Prediction History
 - Profile
-- About
-- Contact
+- About Page
+- Contact Page
+- 404 Not Found Page
 
 ## Design System
 

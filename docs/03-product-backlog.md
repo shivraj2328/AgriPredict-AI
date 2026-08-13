@@ -17,6 +17,13 @@
 - [x] Sprint Planning
 - [x] Prediction History
 - [x] Profile
+- [x] About Page
+- [x] Contact Page
+- [x] 404 Not Found Page
+- [x] Prediction History
+- [x] Profile
+- [x] Frontend Navigation
+- [x] Responsive Frontend
 
 ---
 
