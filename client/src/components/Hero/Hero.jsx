@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 function Hero() {
     return (
 
@@ -18,17 +19,19 @@ function Hero() {
 
             <div className="mt-4">
 
-                <button className="btn btn-success me-3">
+               <Link
+    to="/login"
+    className="btn btn-success me-3"
+>
+    Get Started
+</Link>
 
-                    Get Started
-
-                </button>
-
-                <button className="btn btn-outline-success">
-
-                    Learn More
-
-                </button>
+<Link
+    to="/about"
+    className="btn btn-outline-success"
+>
+    Learn More
+</Link>
 
             </div>
 
