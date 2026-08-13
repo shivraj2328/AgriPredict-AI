@@ -1,0 +1,301 @@
+.about-hero {
+    padding: 80px 0;
+    background: linear-gradient(
+        135deg,
+        #f1f8f3 0%,
+        #ffffff 100%
+    );
+}
+
+.about-badge {
+    display: inline-block;
+    margin-bottom: 18px;
+    padding: 8px 14px;
+    border-radius: 20px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.about-hero-title {
+    max-width: 700px;
+    margin-bottom: 20px;
+    color: #1f2937;
+    font-size: 48px;
+    line-height: 1.15;
+    font-weight: 700;
+}
+
+.about-hero-text {
+    max-width: 680px;
+    margin: 0;
+    color: #6b7280;
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+.about-hero-card {
+    padding: 40px 30px;
+    background: #ffffff;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.about-hero-icon {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e8f5e9;
+    border-radius: 50%;
+    font-size: 45px;
+}
+
+.about-hero-card h3 {
+    margin-bottom: 12px;
+    color: #1f2937;
+    font-size: 24px;
+}
+
+.about-hero-card p {
+    margin: 0;
+    color: #6b7280;
+    line-height: 1.7;
+}
+
+.about-section {
+    padding: 80px 0;
+}
+
+.about-section-light {
+    background: #f8faf9;
+}
+
+.section-label {
+    display: inline-block;
+    margin-bottom: 10px;
+    color: #2e7d32;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.about-section-title {
+    margin-bottom: 18px;
+    color: #1f2937;
+    font-size: 34px;
+    font-weight: 700;
+}
+
+.about-section-subtitle {
+    max-width: 650px;
+    margin: 0 auto;
+    color: #6b7280;
+    line-height: 1.7;
+}
+
+.about-section p {
+    color: #6b7280;
+    line-height: 1.8;
+}
+
+.about-info-card {
+    padding: 40px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+}
+
+.info-card-icon {
+    width: 65px;
+    height: 65px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e8f5e9;
+    border-radius: 12px;
+    font-size: 30px;
+}
+
+.about-info-card h3 {
+    margin-bottom: 12px;
+    color: #1f2937;
+    font-size: 24px;
+}
+
+.about-highlight {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 25px;
+    padding: 14px 16px;
+    background: #f1f8f3;
+    border-radius: 10px;
+    color: #2e7d32;
+    font-weight: 600;
+}
+
+.workflow-card {
+    position: relative;
+    height: 100%;
+    padding: 30px 24px;
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 14px;
+    text-align: center;
+    transition: transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.workflow-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+}
+
+.workflow-number {
+    margin-bottom: 12px;
+    color: #2e7d32;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.workflow-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e8f5e9;
+    border-radius: 50%;
+    font-size: 28px;
+}
+
+.workflow-card h3 {
+    margin-bottom: 10px;
+    color: #1f2937;
+    font-size: 20px;
+}
+
+.workflow-card p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.feature-about-card {
+    height: 100%;
+    padding: 30px 25px;
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 14px;
+    transition: transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.feature-about-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+}
+
+.feature-about-icon {
+    width: 55px;
+    height: 55px;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e8f5e9;
+    border-radius: 12px;
+    font-size: 25px;
+}
+
+.feature-about-card h3 {
+    margin-bottom: 10px;
+    color: #1f2937;
+    font-size: 19px;
+}
+
+.feature-about-card p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.technology-card {
+    height: 100%;
+    padding: 28px 20px;
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 14px;
+    text-align: center;
+}
+
+.technology-card > span {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 35px;
+}
+
+.technology-card h3 {
+    margin-bottom: 8px;
+    color: #1f2937;
+    font-size: 18px;
+}
+
+.technology-card p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+/* Tablet */
+
+@media (max-width: 992px) {
+    .about-hero {
+        padding: 60px 0;
+    }
+
+    .about-hero-title {
+        font-size: 40px;
+    }
+
+    .about-section {
+        padding: 65px 0;
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 576px) {
+    .about-hero {
+        padding: 50px 0;
+    }
+
+    .about-hero-title {
+        font-size: 32px;
+    }
+
+    .about-hero-text {
+        font-size: 16px;
+    }
+
+    .about-hero-card {
+        padding: 30px 20px;
+    }
+
+    .about-section {
+        padding: 50px 0;
+    }
+
+    .about-section-title {
+        font-size: 28px;
+    }
+
+    .about-info-card {
+        padding: 28px 22px;
+    }
+}
