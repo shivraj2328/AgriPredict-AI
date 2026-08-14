@@ -2,11 +2,11 @@
 
 ## Version
 
-v0.10.0 (MVP)
+v0.11.0 (MVP)
 
 ## Status
 
-🚧 Sprint 1 – Day 10 Completed
+🚧 Sprint 1 – Day 11 Completed
 
 # AgriPredict AI
 
@@ -43,6 +43,9 @@ AI-powered smart farming assistant.
 - ✅ Day 7 – Dashboard UI Foundation
 - ✅ Day 8 – Crop Prediction UI
 - ✅ Day 9 – Prediction History & Profile UI
+- ✅ Day 10 – About, and Contact page Home buttons
+- ✅ Day 11 – Final frontend polish
+
 
 
 ## UI Design
