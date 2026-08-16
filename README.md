@@ -2,11 +2,13 @@
 
 ## Version
 
-v0.11.0 (MVP)
+v0.12.0 (MVP)
 
 ## Status
 
-🚧 Sprint 1 – Day 11 Completed
+### Frontend — Completed ✅
+
+### Backend — In Progress 🚧
 
 # AgriPredict AI
 
@@ -32,19 +34,23 @@ AI-powered smart farming assistant.
 - Database
 - Feedback System
 
-## Project Progress
+## Development Progress
 
-- ✅ Day 1 – Project Planning
-- ✅ Day 2 – Product & System Design
-- ✅ Day 3 – UI/UX Foundation & Design System
-- ✅ Day 4 – React Project Setup & Frontend Foundation
-- ✅ Day 5 – Application Layout & Home Page
-- ✅ Day 6 – Authentication UI
-- ✅ Day 7 – Dashboard UI Foundation
-- ✅ Day 8 – Crop Prediction UI
-- ✅ Day 9 – Prediction History & Profile UI
-- ✅ Day 10 – About, and Contact page Home buttons
-- ✅ Day 11 – Final frontend polish
+| Day | Work | Status |
+|---|---|---|
+| Day 1 | Project Planning | ✅ |
+| Day 2 | System Design | ✅ |
+| Day 3 | UI/UX Design System | ✅ |
+| Day 4 | React + Vite Setup | ✅ |
+| Day 5 | Home Page & Layout | ✅ |
+| Day 6 | Authentication UI | ✅ |
+| Day 7 | Dashboard UI | ✅ |
+| Day 8 | Crop Prediction UI | ✅ |
+| Day 9 | History & Profile UI | ✅ |
+| Day 10 | Remaining Pages & Navigation | ✅ |
+| Day 11 | Frontend Testing & Polish | ✅ |
+| Day 12 | Backend Foundation & MongoDB | ✅ |
+| Day 13 | Database Models & User Model | ⏳ |
 
 
 
