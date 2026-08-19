@@ -2,7 +2,7 @@
 
 ## Version
 
-v0.12.0 (MVP)
+v0.14.0 (MVP)
 
 ## Status
 
@@ -32,14 +32,13 @@ AI-powered smart farming assistant.
 - AI Engine
 - Weather Service
 - Database
-- Feedback System
 
 ## Development Progress
 
 | Day | Work | Status |
 |---|---|---|
 | Day 1 | Project Planning | ✅ |
-| Day 2 | System Design | ✅ |
+| Day 2 | Product & System Design | ✅ |
 | Day 3 | UI/UX Design System | ✅ |
 | Day 4 | React + Vite Setup | ✅ |
 | Day 5 | Home Page & Layout | ✅ |
@@ -50,9 +49,8 @@ AI-powered smart farming assistant.
 | Day 10 | Remaining Pages & Navigation | ✅ |
 | Day 11 | Frontend Testing & Polish | ✅ |
 | Day 12 | Backend Foundation & MongoDB | ✅ |
-| Day 13 | Database Models & User Model | ⏳ |
-
-
+| Day 13 | Database Design & User Model | ✅ |
+| Day 14 | Authentication — Registration API | ✅ |
 
 ## UI Design
 
