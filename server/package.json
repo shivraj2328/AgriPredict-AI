@@ -1,17 +1,17 @@
 {
   "name": "server",
   "version": "1.0.0",
-
   "main": "src/app.js",
   "scripts": {
     "dev": "nodemon src/app.js",
     "start": "node src/app.js"
-},
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
- "description":"AgriPredict AI backend server",
+  "description": "AgriPredict AI backend server",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
