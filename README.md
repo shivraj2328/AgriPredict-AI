@@ -2,7 +2,7 @@
 
 ## Version
 
-v0.14.0 (MVP)
+v0.15.0 (MVP)
 
 ## Status
 
@@ -51,6 +51,7 @@ AI-powered smart farming assistant.
 | Day 12 | Backend Foundation & MongoDB | ✅ |
 | Day 13 | Database Design & User Model | ✅ |
 | Day 14 | Authentication — Registration API | ✅ |
+| Day 15 | Login Authentication & JWT | ✅ |
 
 ## UI Design
 
@@ -114,5 +115,13 @@ Coming Soon
 - Frontend Form Validation
 - Search and Filtering
 - Responsive Dashboard
+
+Backend Foundation       ✅
+MongoDB                  ✅
+User Model               ✅
+Registration             ✅
+Password Hashing         ✅
+Login                    ✅
+JWT Generation           ✅
 
 Developed by Shivraj Jagtap
