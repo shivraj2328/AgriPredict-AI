@@ -10,118 +10,150 @@ v0.15.0 (MVP)
 
 ### Backend — In Progress 🚧
 
-# AgriPredict AI
+# 🌱 AgriPredict AI
 
-AI-powered smart farming assistant.
+> An AI-powered Smart Farming Assistant that helps farmers make data-driven farming decisions.
 
-## Tech Stack
+## 📌 Overview
 
-- React
-- Vite 9.1.1
-- Node.js
-- Express
-- MongoDB
-- JavaScript
-- AI and Machine Learning
+AgriPredict AI is a full-stack smart farming application designed to help farmers make better agricultural decisions using soil parameters, weather conditions, and AI-powered recommendations.
 
-## Project Modules
+The project combines a React frontend, Node.js/Express backend, MongoDB database, JWT authentication, and JavaScript-based AI technologies.
 
-- Authentication
-- Dashboard
-- Crop Prediction
-- AI Engine
-- Weather Service
-- Database
+---
 
-## Development Progress
+## 🎯 Project Goal
 
-| Day | Work | Status |
-|---|---|---|
-| Day 1 | Project Planning | ✅ |
-| Day 2 | Product & System Design | ✅ |
-| Day 3 | UI/UX Design System | ✅ |
-| Day 4 | React + Vite Setup | ✅ |
-| Day 5 | Home Page & Layout | ✅ |
-| Day 6 | Authentication UI | ✅ |
-| Day 7 | Dashboard UI | ✅ |
-| Day 8 | Crop Prediction UI | ✅ |
-| Day 9 | History & Profile UI | ✅ |
-| Day 10 | Remaining Pages & Navigation | ✅ |
-| Day 11 | Frontend Testing & Polish | ✅ |
-| Day 12 | Backend Foundation & MongoDB | ✅ |
-| Day 13 | Database Design & User Model | ✅ |
-| Day 14 | Authentication — Registration API | ✅ |
-| Day 15 | Login Authentication & JWT | ✅ |
+To provide farmers with an intelligent and accessible platform that can:
 
-## UI Design
+- Recommend suitable crops
+- Analyze soil health
+- Provide weather information
+- Suggest irrigation requirements
+- Maintain prediction history
+- Provide useful farming insights
 
-Design system created with a consistent color palette, typography, reusable components, and responsive layout strategy.
+---
 
-## Pages
+## ✨ Features
 
-- Home Page
-- Login Page
-- Register Page
-- Dashboard
-- Crop Prediction
-- Prediction History
-- Profile
-- About Page
-- Contact Page
-- 404 Not Found Page
+### Authentication
 
-## Design System
+- User Registration
+- User Login
+- Password Hashing
+- JWT Authentication
+- Protected API Routes
+- Authenticated User Identification
 
-- Brand Colors
-- Typography
-- Border Radius
-- Shadows
-- Responsive Breakpoints
+### Crop Prediction
 
-## Frontend Stack
+- Soil parameter input
+- Crop recommendation
+- Prediction confidence
+- Prediction explanation
+
+### Soil Health
+
+- NPK analysis
+- Soil health score
+- Soil improvement suggestions
+
+### Weather
+
+- Current weather information
+- Temperature
+- Humidity
+- Rainfall
+- Location-based weather
+
+### Irrigation
+
+- Water requirement suggestion
+- Irrigation frequency suggestion
+- Weather-based irrigation insights
+
+### Dashboard
+
+- Welcome section
+- Statistics
+- Weather widget
+- Recent predictions
+- Quick prediction
+
+### Prediction History
+
+- Previous predictions
+- Search
+- Filtering
+- Prediction confidence
+
+### Profile
+
+- User information
+- Profile statistics
+
+---
+
+## 🛠️ Technology Stack
+
+### Frontend
 
 - React
 - Vite
+- JavaScript
 - Bootstrap
 - React Router
 - Axios
 - Chart.js
 
-## User Flow Diagram
-User
-   │
-React Frontend
-   │
-React Router
-   │
-Express Backend
-   │
-MongoDB + AI Service
+### Backend
 
-## Screenshots
+- Node.js
+- Express.js
+- REST API
+- JWT
+- bcryptjs
 
-Coming Soon
+### Database
 
-## Folder Structure
+- MongoDB Atlas
+- Mongoose
 
-## Completed Features
+### AI / Data Processing
 
-- Home Page
-- Authentication UI
-- Dashboard UI
-- Crop Prediction UI
-- Prediction History UI
-- Profile UI
-- Frontend Form Validation
-- Search and Filtering
-- Responsive Dashboard
+- TensorFlow.js
+- Danfo.js
 
-Backend Foundation       ✅
-MongoDB                  ✅
-User Model               ✅
-Registration             ✅
-Password Hashing         ✅
-Login                    ✅
-JWT Generation           ✅
+### Development Tools
 
-Developed by Shivraj Jagtap
+- Git
+- GitHub
+- Postman
+- VS Code
+
+---
+
+## 🏗️ System Architecture
+
+```text
+                    User
+                     │
+                     ▼
+             React Frontend
+                     │
+                HTTP / Axios
+                     │
+                     ▼
+            Node.js + Express
+                     │
+        ┌────────────┼────────────┐
+        ▼            ▼            ▼
+   Authentication   APIs       AI Services
+        │            │            │
+        └────────────┼────────────┘
+                     ▼
+                Mongoose
+                     │
+                     ▼
+                MongoDB Atlas
