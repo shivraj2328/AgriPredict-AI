@@ -24,6 +24,8 @@
 - [x] Profile
 - [x] Frontend Navigation
 - [x] Responsive Frontend
+- [x] Design User database structure
+- [x] Create User Mongoose model
 
 ---
 
