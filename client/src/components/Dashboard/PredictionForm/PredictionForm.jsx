@@ -38,7 +38,7 @@ function PredictionForm({ formData, setFormData,handlePredict,
                         name="nitrogen"
                         value={formData.nitrogen}
                         onChange={handleChange}
-                    />c
+                    />
                 </div>
 
                 <div className="col-md-6 mb-3">
