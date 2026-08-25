@@ -2,7 +2,7 @@
 
 ## Date
 
-13 August 2026
+12 August 2026 to 13 August 2026
 
 ## Sprint
 
@@ -97,6 +97,10 @@ are now completed.
 
 Perform final frontend polish, bug fixing, UI consistency
 checks, and prepare the project for backend integration.
+
+## Time Spent
+
+1 day
 
 ## Status
 

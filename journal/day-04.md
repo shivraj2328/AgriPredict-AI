@@ -1,7 +1,7 @@
 # Day 4
 
 ## Date
-<Today's Date>
+16 July 2026
 
 ## Sprint
 Sprint 1 – Frontend Development

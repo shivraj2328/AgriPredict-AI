@@ -166,3 +166,11 @@ to full-stack development.
 
 Design the database structure and create the first Mongoose
 model for users.
+
+## Time Spent
+
+1 day
+
+## Status
+
+✅ Completed

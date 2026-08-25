@@ -1,5 +1,8 @@
 # Day 14 — Authentication Backend: User Registration
 
+## Date
+18 August 2026 to 19 August 2026
+
 ## Today's Goal
 
 Implement the backend registration flow for AgriPredict AI.
@@ -116,3 +119,11 @@ Email normalization
 Secure API error handling
 MongoDB user creation
 Postman API testing
+
+## Time Spent
+
+1 day
+
+## Status
+
+✅ Completed

@@ -31,7 +31,6 @@
 - Dashboard
 - Charts
 - Prediction history
-- Feedback system
 
 * Future Scope
 - Disease prediction from images

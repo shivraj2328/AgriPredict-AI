@@ -1,7 +1,7 @@
 # Day 13 — Database Design & User Model
 
 ## Date
-17 July 2026 to 18 July 2026
+17 August 2026 to 18 August 2026
 
 ## Today's Goal
 
@@ -114,6 +114,10 @@ been created successfully.
 
 The backend can now move from database structure into
 authentication development.
+
+## Time Spent
+
+1 day
 
 ## Status
 

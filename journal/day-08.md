@@ -1,5 +1,8 @@
 # Day 8
 
+## Date
+4 August 2026 to 7 August 2026
+
 ## Today's Goal
 
 Build Crop Prediction UI.
@@ -34,3 +37,7 @@ Build Crop Prediction UI.
 - Navigation from Dashboard
 - Responsive design
 - README + journal updated
+
+## Time Spent
+
+3 days
