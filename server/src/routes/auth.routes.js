@@ -2,7 +2,8 @@ const express = require("express");
 
 const {
     registerUser,
-    loginUser
+    loginUser,
+    getCurrentUser
 } = require("../controllers/auth.controller");
 
 const authMiddleware = require("../middleware/auth.middleware");
@@ -15,13 +16,8 @@ router.post("/register", registerUser);
 // Login
 router.post("/login", loginUser);
 
-// Protected test route
-router.get("/me", authMiddleware, (req, res) => {
-    return res.status(200).json({
-        success: true,
-        message: "Authenticated user",
-        user: req.user
-    });
-});
+// Get current authenticated user
+
+router.get("/me", authMiddleware, getCurrentUser);
 
 module.exports = router;
