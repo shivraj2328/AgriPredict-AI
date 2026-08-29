@@ -1,4 +1,6 @@
 import MainLayout from "../layouts/MainLayout";
+import ProtectedRoute from "./ProtectedRoute";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Home from "../pages/Home";
@@ -13,30 +15,35 @@ import Contact from "../pages/Contact";
 import NotFound from "../pages/NotFound";
 
 function AppRoutes() {
-  return (
-    <BrowserRouter>
-  <Routes>
+    return (
+        <BrowserRouter>
+            <Routes>
 
-    {/* Public Pages */}
-    <Route path="/" element={<Home />} />
-    <Route path="/about" element={<About />} />
-    <Route path="/contact" element={<Contact />} />
+                {/* Public pages using MainLayout */}
+                <Route element={<MainLayout />}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/contact" element={<Contact />} />
+                </Route>
 
-    {/* Authentication */}
-    <Route path="/login" element={<Login />} />
-    <Route path="/register" element={<Register />} />
+                {/* Authentication pages use AuthLayout themselves */}
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
 
-    {/* Dashboard */}
-    <Route path="/dashboard" element={<Dashboard />} />
-    <Route path="/prediction" element={<Prediction />} />
-    <Route path="/history" element={<History />} />
-    <Route path="/profile" element={<Profile />} />
+                {/* Protected pages */}
+                <Route element={<ProtectedRoute />}>
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/prediction" element={<Prediction />} />
+                    <Route path="/history" element={<History />} />
+                    <Route path="/profile" element={<Profile />} />
+                </Route>
 
-    <Route path="*" element={<NotFound />} />
+                {/* 404 */}
+                <Route path="*" element={<NotFound />} />
 
-  </Routes>
-</BrowserRouter>
-  );
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default AppRoutes;
