@@ -1,6 +1,14 @@
-import { NavLink } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
+import { logout } from "../../../utils/auth";
 
 function Sidebar() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
     <aside className="bg-success text-white p-3 vh-100">
 
@@ -30,9 +38,13 @@ function Sidebar() {
           Settings
         </NavLink>
 
-        <NavLink to="/" className="nav-link text-white">
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="nav-link text-white text-start border-0 bg-transparent"
+        >
           Logout
-        </NavLink>
+        </button>
 
       </nav>
 

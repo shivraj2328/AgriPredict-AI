@@ -3,3 +3,8 @@ export const isAuthenticated = () => {
 
     return !!token;
 };
+
+export const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+};
