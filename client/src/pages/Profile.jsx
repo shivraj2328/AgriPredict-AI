@@ -1,18 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DashboardLayout from "../layouts/DashboardLayout";
+import { getCurrentUser } from "../services/authService";
 import "./../styles/profile.css";
 
 function Profile() {
-    const [user, setUser] = useState({
-        name: "Shivraj Jagtap",
-        email: "shivraj@example.com",
-        memberSince: "August 2026",
-    });
+    const [user, setUser] = useState(null);
 
-    const [name, setName] = useState(user.name);
-    const [email, setEmail] = useState(user.email);
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
 
     const [isEditing, setIsEditing] = useState(false);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const response = await getCurrentUser();
+
+                if (response.success) {
+                    setUser(response.user);
+                    setName(response.user.name);
+                    setEmail(response.user.email);
+                }
+            } catch (error) {
+                console.error("Failed to fetch profile:", error);
+            }
+        };
+
+        fetchUser();
+    }, []);
 
     const handleEdit = () => {
         setName(user.name);
@@ -43,6 +58,16 @@ function Profile() {
         setIsEditing(false);
     };
 
+    if (!user) {
+        return (
+            <DashboardLayout>
+                <div className="profile-page">
+                    <p>Loading profile...</p>
+                </div>
+            </DashboardLayout>
+        );
+    }
+
     return (
         <DashboardLayout>
             <div className="profile-page">
@@ -71,7 +96,7 @@ function Profile() {
                         </p>
 
                         <p className="profile-member">
-                            Member since {user.memberSince}
+                            Member since August 2026
                         </p>
                     </div>
 
@@ -96,7 +121,6 @@ function Profile() {
                         <div className="col-12 col-sm-6 col-xl-3">
                             <div className="profile-stat-card">
                                 <span className="stat-icon">🌱</span>
-
                                 <div>
                                     <p>Total Predictions</p>
                                     <h4>12</h4>
@@ -107,7 +131,6 @@ function Profile() {
                         <div className="col-12 col-sm-6 col-xl-3">
                             <div className="profile-stat-card">
                                 <span className="stat-icon">✓</span>
-
                                 <div>
                                     <p>Successful Predictions</p>
                                     <h4>10</h4>
@@ -118,7 +141,6 @@ function Profile() {
                         <div className="col-12 col-sm-6 col-xl-3">
                             <div className="profile-stat-card">
                                 <span className="stat-icon">🌾</span>
-
                                 <div>
                                     <p>Favorite Crop</p>
                                     <h4>Rice</h4>
@@ -129,7 +151,6 @@ function Profile() {
                         <div className="col-12 col-sm-6 col-xl-3">
                             <div className="profile-stat-card">
                                 <span className="stat-icon">📊</span>
-
                                 <div>
                                     <p>Average Confidence</p>
                                     <h4>92%</h4>
