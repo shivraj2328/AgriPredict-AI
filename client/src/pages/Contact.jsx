@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-import MainLayout from "../layouts/MainLayout";
-
 import "../styles/contact.css";
 
 function Contact() {
@@ -62,7 +60,7 @@ function Contact() {
     };
 
     return (
-        <MainLayout>
+        <>
             {/* Contact Hero */}
             <section className="contact-hero">
                 <div className="container text-center">
@@ -270,7 +268,7 @@ function Contact() {
                     </div>
                 </div>
             </section>
-        </MainLayout>
+        </>
     );
 }
 

@@ -1,9 +1,8 @@
-import MainLayout from "../layouts/MainLayout";
 import "../styles/about.css";
 
 function About() {
     return (
-        <MainLayout>
+        <>
             {/* About Hero */}
             <section className="about-hero">
                 <div className="container">
@@ -365,7 +364,7 @@ function About() {
                     </div>
                 </div>
             </section>
-        </MainLayout>
+        </>
     );
 }
 
