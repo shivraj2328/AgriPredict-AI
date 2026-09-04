@@ -7,6 +7,7 @@ const express = require("express");
 const connectDB = require("./config/db");
 const healthRoutes = require("./routes/health.routes");
 const authRoutes = require("./routes/auth.routes");
+const predictionRoutes = require("./routes/prediction.routes");
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 
 app.use("/api/health", healthRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/predictions", predictionRoutes);
 
 app.get("/", (req, res) => {
     res.send("AgriPredict API is running");
