@@ -41,3 +41,11 @@ venv/
 
 # Miscellaneous
 .cache/
+
+# Machine Learning Artifacts
+server/src/ai/models/*/weights.bin
+server/src/ai/models/*/model.json
+
+# Large Datasets (If they exceed a few megabytes or are auto-generated)
+# Uncomment the line below if you want to ignore all data in the data folder
+# server/src/ai/data/
