@@ -1,0 +1,87 @@
+{
+  "featureNames": [
+    "N",
+    "P",
+    "K",
+    "temperature",
+    "humidity",
+    "ph",
+    "rainfall"
+  ],
+  "labels": [
+    "apple",
+    "banana",
+    "blackgram",
+    "chickpea",
+    "coconut",
+    "coffee",
+    "cotton",
+    "grapes",
+    "jute",
+    "kidneybeans",
+    "lentil",
+    "maize",
+    "mango",
+    "mothbeans",
+    "mungbean",
+    "muskmelon",
+    "orange",
+    "papaya",
+    "pigeonpeas",
+    "pomegranate",
+    "rice",
+    "watermelon"
+  ],
+  "labelMap": {
+    "apple": 0,
+    "banana": 1,
+    "blackgram": 2,
+    "chickpea": 3,
+    "coconut": 4,
+    "coffee": 5,
+    "cotton": 6,
+    "grapes": 7,
+    "jute": 8,
+    "kidneybeans": 9,
+    "lentil": 10,
+    "maize": 11,
+    "mango": 12,
+    "mothbeans": 13,
+    "mungbean": 14,
+    "muskmelon": 15,
+    "orange": 16,
+    "papaya": 17,
+    "pigeonpeas": 18,
+    "pomegranate": 19,
+    "rice": 20,
+    "watermelon": 21
+  },
+  "normalization": {
+    "method": "min-max",
+    "minValues": [
+      0,
+      5,
+      5,
+      8.825674745,
+      14.25803981,
+      3.504752314,
+      20.21126747
+    ],
+    "maxValues": [
+      140,
+      145,
+      205,
+      43.67549305,
+      99.98187601,
+      9.93509073,
+      298.5601175
+    ]
+  },
+  "dataset": {
+    "totalRows": 2200,
+    "featureCount": 7,
+    "classCount": 22,
+    "trainRows": 1760,
+    "testRows": 440
+  }
+}
