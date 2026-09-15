@@ -12,6 +12,7 @@
   "description": "AgriPredict AI backend server",
   "dependencies": {
     "@tensorflow/tfjs": "^4.22.0",
+    "axios": "^1.20.0",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "csv-parser": "^3.2.1",
