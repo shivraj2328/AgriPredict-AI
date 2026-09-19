@@ -1,38 +1,22 @@
 import { useState } from "react";
-import {
-    MapContainer,
-    TileLayer,
-    Marker,
-    useMapEvents
-} from "react-leaflet";
-
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import L from "leaflet";
-
 import "leaflet/dist/leaflet.css";
-import "./FarmLocationPicker.css";
 
-// Fix default Leaflet marker icons
+// Fix default Leaflet marker icons using secure unpkg CDNs
 delete L.Icon.Default.prototype._getIconUrl;
-
 L.Icon.Default.mergeOptions({
-    iconRetinaUrl:
-        "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-    iconUrl:
-        "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-    shadowUrl:
-        "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png"
+    iconRetinaUrl: "https://unpkg.com",
+    iconUrl: "https://unpkg.com",
+    shadowUrl: "https://unpkg.com"
 });
 
 function LocationMarker({ position, setPosition }) {
     useMapEvents({
         click(event) {
-            setPosition([
-                event.latlng.lat,
-                event.latlng.lng
-            ]);
+            setPosition([event.latlng.lat, event.latlng.lng]);
         }
     });
-
     return position ? <Marker position={position} /> : null;
 }
 
@@ -41,56 +25,45 @@ function FarmLocationPicker({ onLocationSelect }) {
 
     const handleLocationChange = (newPosition) => {
         setPosition(newPosition);
-
-        onLocationSelect({
-            latitude: newPosition[0],
-            longitude: newPosition[1]
-        });
+        if (onLocationSelect) {
+            onLocationSelect({
+                latitude: newPosition[0],
+                longitude: newPosition[1]
+            });
+        }
     };
 
     return (
-        <div className="farm-location-picker">
-
-            <h3>Farm Location</h3>
-
-            <p className="location-description">
+        <div className="farm-location-picker w-100 mb-4">
+            <h5 className="mb-2">Farm Location</h5>
+            <p className="text-muted small mb-3">
                 Click on the map to select your farm location.
             </p>
 
-            <MapContainer
-                center={[20.5937, 78.9629]}
-                zoom={5}
-                className="farm-map"
-            >
-
-                <TileLayer
-                    attribution='&copy; OpenStreetMap contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-
-                <LocationMarker
-                    position={position}
-                    setPosition={handleLocationChange}
-                />
-
-            </MapContainer>
+            <div style={{ height: "300px", width: "100%", borderRadius: "8px", overflow: "hidden", border: "1px solid #dee2e6" }}>
+                <MapContainer
+                    center={[20.5937, 78.9629]}
+                    zoom={5}
+                    style={{ height: "100%", width: "100%" }}
+                >
+                    <TileLayer
+                        attribution='&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <LocationMarker
+                        position={position}
+                        setPosition={handleLocationChange}
+                    />
+                </MapContainer>
+            </div>
 
             {position && (
-                <div className="selected-location">
-
-                    <strong>Selected Location</strong>
-
-                    <p>
-                        Latitude: {position[0].toFixed(6)}
-                    </p>
-
-                    <p>
-                        Longitude: {position[1].toFixed(6)}
-                    </p>
-
+                <div className="mt-3 p-2 bg-light rounded small border">
+                    <strong>Selected Location:</strong>
+                    <span className="ms-2">Latitude: {position[0].toFixed(6)}</span>
+                    <span className="ms-3">Longitude: {position[1].toFixed(6)}</span>
                 </div>
             )}
-
         </div>
     );
 }
