@@ -3,6 +3,7 @@ import { useState } from "react";
 import DashboardLayout from "../layouts/DashboardLayout";
 import PredictionForm from "../components/Dashboard/PredictionForm/PredictionForm";
 import PredictionResult from "../components/Dashboard/PredictionResult/PredictionResult";
+import api from "../services/api";
 
 function Prediction() {
 
@@ -17,78 +18,79 @@ function Prediction() {
     });
 
     const [prediction, setPrediction] = useState(null);
-
     const [error, setError] = useState("");
 
-    const handlePredict = () => {
+    const handlePredict = async () => {
 
         setError("");
+        setPrediction(null);
 
         for (const key in formData) {
 
             if (formData[key] === "") {
-
                 setError("Please fill all fields.");
-
                 return;
-
             }
-
         }
 
         for (const key in formData) {
 
             if (isNaN(formData[key])) {
-
                 setError(`${key} must be numeric.`);
-
                 return;
-
             }
-
         }
 
         if (formData.ph < 0 || formData.ph > 14) {
-
             setError("Soil pH must be between 0 and 14.");
-
             return;
-
         }
 
         if (formData.humidity < 0 || formData.humidity > 100) {
-
             setError("Humidity must be between 0 and 100.");
-
             return;
-
         }
 
         if (formData.rainfall < 0) {
-
             setError("Rainfall cannot be negative.");
-
             return;
-
         }
 
-        setPrediction({
+        try {
 
-            crop: "Rice",
+            const response = await api.post("/predictions", {
+                nitrogen: Number(formData.nitrogen),
+                phosphorus: Number(formData.phosphorus),
+                potassium: Number(formData.potassium),
+                temperature: Number(formData.temperature),
+                humidity: Number(formData.humidity),
+                rainfall: Number(formData.rainfall),
+                ph: Number(formData.ph)
+            });
 
-            confidence: 96,
+            const result = response.data.prediction;
 
-            reason:
-                "Based on soil nutrients and weather conditions, Rice is the most suitable crop."
+            setPrediction({
+                crop: result.recommendedCrop,
+                confidence: result.confidence,
+                reason:
+                    "Based on soil nutrients and weather conditions, this crop was recommended by the AI model."
+            });
 
-        });
+        } catch (error) {
 
+            console.error("Prediction error:", error);
+
+            setError(
+                error.response?.data?.message ||
+                "Failed to generate crop prediction."
+            );
+        }
     };
 
     const handleReset = () => {
 
         setFormData({
-
             nitrogen: "",
             phosphorus: "",
             potassium: "",
@@ -96,13 +98,10 @@ function Prediction() {
             humidity: "",
             rainfall: "",
             ph: ""
-
         });
 
         setPrediction(null);
-
         setError("");
-
     };
 
     return (
@@ -116,13 +115,9 @@ function Prediction() {
                 </h2>
 
                 {error && (
-
                     <div className="alert alert-danger">
-
                         {error}
-
                     </div>
-
                 )}
 
                 <div className="row">
@@ -151,9 +146,7 @@ function Prediction() {
             </div>
 
         </DashboardLayout>
-
     );
-
 }
 
 export default Prediction;
