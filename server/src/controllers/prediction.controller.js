@@ -1,4 +1,4 @@
-const Prediction = require("../models/prediction.model");
+const Prediction = require("../models/Prediction.model");
 const {
     getCropPrediction
 } = require("../services/cropPrediction.service");
@@ -15,7 +15,7 @@ const createPrediction = async (req, res) => {
             ph
         } = req.body;
 
-        const aiResult = await getCropPrediction({
+        const values = {
             nitrogen,
             phosphorus,
             potassium,
@@ -23,17 +23,42 @@ const createPrediction = async (req, res) => {
             humidity,
             rainfall,
             ph
+        };
+
+        const hasMissingValue = Object.values(values).some(
+            (value) =>
+                value === undefined ||
+                value === null ||
+                value === "" ||
+                !Number.isFinite(Number(value))
+        );
+
+        if (hasMissingValue) {
+            return res.status(400).json({
+                success: false,
+                message: "All 7 prediction features are required"
+            });
+        }
+
+        const aiResult = await getCropPrediction({
+            nitrogen: Number(nitrogen),
+            phosphorus: Number(phosphorus),
+            potassium: Number(potassium),
+            temperature: Number(temperature),
+            humidity: Number(humidity),
+            rainfall: Number(rainfall),
+            ph: Number(ph)
         });
 
         const prediction = await Prediction.create({
             user: req.user.userId,
-            nitrogen,
-            phosphorus,
-            potassium,
-            temperature,
-            humidity,
-            rainfall,
-            ph,
+            nitrogen: Number(nitrogen),
+            phosphorus: Number(phosphorus),
+            potassium: Number(potassium),
+            temperature: Number(temperature),
+            humidity: Number(humidity),
+            rainfall: Number(rainfall),
+            ph: Number(ph),
             recommendedCrop: aiResult.crop,
             confidence: aiResult.confidence
         });
