@@ -78,6 +78,29 @@ const createPrediction = async (req, res) => {
     }
 };
 
+const getPredictionHistory = async (req, res) => {
+    try {
+        const predictions = await Prediction.find({
+            user: req.user.userId
+        }).sort({
+            createdAt: -1
+        });
+
+        return res.status(200).json({
+            success: true,
+            predictions
+        });
+    } catch (error) {
+        console.error("Prediction history error:", error.message);
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch prediction history"
+        });
+    }
+};
+
 module.exports = {
-    createPrediction
+    createPrediction,
+    getPredictionHistory
 };

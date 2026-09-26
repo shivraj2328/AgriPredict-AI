@@ -1,7 +1,8 @@
 const express = require("express");
 
 const {
-    createPrediction
+    createPrediction,
+    getPredictionHistory
 } = require("../controllers/prediction.controller");
 
 const authMiddleware = require("../middleware/auth.middleware");
@@ -9,5 +10,7 @@ const authMiddleware = require("../middleware/auth.middleware");
 const router = express.Router();
 
 router.post("/", authMiddleware, createPrediction);
+
+router.get("/", authMiddleware, getPredictionHistory);
 
 module.exports = router;
