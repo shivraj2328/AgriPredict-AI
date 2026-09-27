@@ -19,10 +19,12 @@ function Prediction() {
 
     const [prediction, setPrediction] = useState(null);
     const [error, setError] = useState("");
+    const [validationErrors, setValidationErrors] = useState([]);
 
     const handlePredict = async () => {
 
         setError("");
+        setValidationErrors([]);
         setPrediction(null);
 
         for (const key in formData) {
@@ -39,21 +41,6 @@ function Prediction() {
                 setError(`${key} must be numeric.`);
                 return;
             }
-        }
-
-        if (formData.ph < 0 || formData.ph > 14) {
-            setError("Soil pH must be between 0 and 14.");
-            return;
-        }
-
-        if (formData.humidity < 0 || formData.humidity > 100) {
-            setError("Humidity must be between 0 and 100.");
-            return;
-        }
-
-        if (formData.rainfall < 0) {
-            setError("Rainfall cannot be negative.");
-            return;
         }
 
         try {
@@ -81,10 +68,21 @@ function Prediction() {
 
             console.error("Prediction error:", error);
 
-            setError(
-                error.response?.data?.message ||
-                "Failed to generate crop prediction."
-            );
+            const backendErrors = error.response?.data?.errors;
+
+            if (Array.isArray(backendErrors) && backendErrors.length > 0) {
+                setError(
+                    error.response?.data?.message ||
+                    "Please correct the invalid prediction values."
+                );
+
+                setValidationErrors(backendErrors);
+            } else {
+                setError(
+                    error.response?.data?.message ||
+                    "Failed to generate crop prediction."
+                );
+            }
         }
     };
 
@@ -102,6 +100,7 @@ function Prediction() {
 
         setPrediction(null);
         setError("");
+        setValidationErrors([]);
     };
 
     return (
@@ -116,7 +115,21 @@ function Prediction() {
 
                 {error && (
                     <div className="alert alert-danger">
-                        {error}
+
+                        <div>
+                            <strong>{error}</strong>
+                        </div>
+
+                        {validationErrors.length > 0 && (
+                            <ul className="mb-0 mt-2">
+                                {validationErrors.map((validationError, index) => (
+                                    <li key={index}>
+                                        {validationError}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+
                     </div>
                 )}
 
