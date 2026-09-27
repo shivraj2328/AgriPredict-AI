@@ -36,11 +36,11 @@ const createPrediction = async (req, res) => {
         if (hasMissingValue) {
             return res.status(400).json({
                 success: false,
-                message: "All 7 prediction features are required"
+                message: "All 7 prediction features are required and must be numeric"
             });
         }
 
-        const aiResult = await getCropPrediction({
+        const inputValues = {
             nitrogen: Number(nitrogen),
             phosphorus: Number(phosphorus),
             potassium: Number(potassium),
@@ -48,17 +48,80 @@ const createPrediction = async (req, res) => {
             humidity: Number(humidity),
             rainfall: Number(rainfall),
             ph: Number(ph)
-        });
+        };
+
+        const validationErrors = [];
+
+        if (inputValues.nitrogen < 0 || inputValues.nitrogen > 200) {
+            validationErrors.push(
+                `Nitrogen value ${inputValues.nitrogen} is invalid. It must be between 0 and 200.`
+            );
+        }
+
+        if (inputValues.phosphorus < 0 || inputValues.phosphorus > 200) {
+            validationErrors.push(
+                `Phosphorus value ${inputValues.phosphorus} is invalid. It must be between 0 and 200.`
+            );
+        }
+
+        if (inputValues.potassium < 0 || inputValues.potassium > 250) {
+            validationErrors.push(
+                `Potassium value ${inputValues.potassium} is invalid. It must be between 0 and 250.`
+            );
+        }
+
+        if (
+            inputValues.temperature < -50 ||
+            inputValues.temperature > 70
+        ) {
+            validationErrors.push(
+                `Temperature value ${inputValues.temperature} is invalid. It must be between -50 and 70°C.`
+            );
+        }
+
+        if (
+            inputValues.humidity < 0 ||
+            inputValues.humidity > 100
+        ) {
+            validationErrors.push(
+                `Humidity value ${inputValues.humidity} is invalid. It must be between 0 and 100%.`
+            );
+        }
+
+        if (
+            inputValues.rainfall < 0 ||
+            inputValues.rainfall > 1000
+        ) {
+            validationErrors.push(
+                `Rainfall value ${inputValues.rainfall} is invalid. It must be between 0 and 1000 mm.`
+            );
+        }
+
+        if (inputValues.ph < 0 || inputValues.ph > 14) {
+            validationErrors.push(
+                `Soil pH value ${inputValues.ph} is invalid. It must be between 0 and 14.`
+            );
+        }
+
+        if (validationErrors.length > 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Please correct the invalid prediction values",
+                errors: validationErrors
+            });
+        }
+
+        const aiResult = await getCropPrediction(inputValues);
 
         const prediction = await Prediction.create({
             user: req.user.userId,
-            nitrogen: Number(nitrogen),
-            phosphorus: Number(phosphorus),
-            potassium: Number(potassium),
-            temperature: Number(temperature),
-            humidity: Number(humidity),
-            rainfall: Number(rainfall),
-            ph: Number(ph),
+            nitrogen: inputValues.nitrogen,
+            phosphorus: inputValues.phosphorus,
+            potassium: inputValues.potassium,
+            temperature: inputValues.temperature,
+            humidity: inputValues.humidity,
+            rainfall: inputValues.rainfall,
+            ph: inputValues.ph,
             recommendedCrop: aiResult.crop,
             confidence: aiResult.confidence
         });
