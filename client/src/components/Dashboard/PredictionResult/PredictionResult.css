@@ -21,3 +21,39 @@ color:#2E7D32;
 font-weight:700;
 
 }
+
+
+.prediction-result {
+    border: none;
+    border-radius: 16px;
+}
+
+.result-icon {
+    font-size: 42px;
+    margin-bottom: 8px;
+}
+
+.recommended-crop {
+    padding: 20px;
+    background: #f0f8f2;
+    border-radius: 12px;
+}
+
+.prediction-result h3 {
+    font-weight: 700;
+}
+
+.prediction-result h5 {
+    font-weight: 600;
+}
+
+.prediction-reason {
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.prediction-reason p {
+    color: #6c757d;
+    line-height: 1.6;
+}
