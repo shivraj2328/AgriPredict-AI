@@ -1,118 +1,60 @@
-// import MainLayout from "../layouts/MainLayout";
-// import Hero from "../components/Hero/Hero";
-// import FeatureCard from "../components/FeatureCard/FeatureCard";
-
-// function Home() {
-
-//     return (
-
-//         <MainLayout>
-
-//             <Hero />
-
-//             <section className="container my-5">
-
-//                 <h2 className="text-center mb-5">
-//                     Our Features
-//                 </h2>
-
-//                 <div className="row">
-
-//                     <FeatureCard
-//                         title="Crop Recommendation"
-//                         description="AI recommends the best crop."
-//                     />
-
-//                     <FeatureCard
-//                         title="Weather Information"
-//                         description="Live weather updates."
-//                     />
-
-//                     <FeatureCard
-//                         title="Soil Health"
-//                         description="Analyze soil quality."
-//                     />
-
-//                     <FeatureCard
-//                         title="Irrigation"
-//                         description="Smart irrigation advice."
-//                     />
-
-//                     <FeatureCard
-//                         title="Dashboard"
-//                         description="View all analytics."
-//                     />
-
-//                     <FeatureCard
-//                         title="Prediction History"
-//                         description="Access previous predictions."
-//                     />
-
-//                 </div>
-
-//             </section>
-
-//         </MainLayout>
-
-//     );
-
-// }
-
-// export default Home;
-
-
-
-
 import Hero from "../components/Hero/Hero";
 import FeatureCard from "../components/FeatureCard/FeatureCard";
+import "../styles/home.css";
 
 function Home() {
     return (
-        <>
-            <Hero />
+        <div className="home-page">
 
-            <section className="container my-5">
+            <section className="home-main-section">
 
-                <h2 className="text-center mb-5">
-                    Our Features
-                </h2>
+                <Hero />
 
-                <div className="row">
+                <section className="container home-features">
 
-                    <FeatureCard
-                        title="Crop Recommendation"
-                        description="AI recommends the best crop."
-                    />
+                    <h2 className="text-center">
+                        Our Features
+                    </h2>
 
-                    <FeatureCard
-                        title="Weather Information"
-                        description="Live weather updates."
-                    />
+                    <div className="row g-3">
 
-                    <FeatureCard
-                        title="Soil Health"
-                        description="Analyze soil quality."
-                    />
+                        <FeatureCard
+                            title="Crop Recommendation"
+                            description="AI recommends the best crop."
+                        />
 
-                    <FeatureCard
-                        title="Irrigation"
-                        description="Smart irrigation advice."
-                    />
+                        <FeatureCard
+                            title="Weather Information"
+                            description="Live weather updates."
+                        />
 
-                    <FeatureCard
-                        title="Dashboard"
-                        description="View all analytics."
-                    />
+                        <FeatureCard
+                            title="Soil Health"
+                            description="Analyze soil quality."
+                        />
 
-                    <FeatureCard
-                        title="Prediction History"
-                        description="Access previous predictions."
-                    />
+                        <FeatureCard
+                            title="Irrigation"
+                            description="Smart irrigation advice."
+                        />
 
-                </div>
+                        <FeatureCard
+                            title="Dashboard"
+                            description="View all analytics."
+                        />
+
+                        <FeatureCard
+                            title="Prediction History"
+                            description="Access previous predictions."
+                        />
+
+                    </div>
+
+                </section>
 
             </section>
-        </>
+
+        </div>
     );
 }
 
