@@ -1,3 +1,28 @@
 footer {
-    margin-top: auto;
+    margin-top: 0;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.footer-links a,
+footer a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+.footer-links a:hover,
+footer a:hover {
+    opacity: 0.75;
+}
+
+@media (max-width: 576px) {
+    .footer-links {
+        gap: 12px;
+        flex-wrap: wrap;
+    }
 }

@@ -1,7 +1,9 @@
+import { Link } from "react-router-dom";
+import "./Footer.css";
+
 function Footer() {
     return (
-
-        <footer className="bg-dark text-white text-center py-4 mt-5">
+        <footer className="bg-dark text-white text-center py-4">
 
             <h5>AgriPredict AI</h5>
 
@@ -9,24 +11,27 @@ function Footer() {
                 Helping farmers make smarter decisions.
             </p>
 
-            <p>
+            <div className="footer-links">
+                <Link to="/">Home</Link>
+                <Link to="/about">About</Link>
+                <Link to="/contact">Contact</Link>
+            </div>
 
-                Home | About | Contact
-
-            </p>
-
-            <p>
-                GitHub
+            <p className="mt-3">
+                <a
+                    href="https://github.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    GitHub
+                </a>
             </p>
 
             <small>
-
                 © 2026 AgriPredict AI | v1.8.0
-
             </small>
 
         </footer>
-
     );
 }
 
