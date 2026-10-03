@@ -1,57 +1,78 @@
+import { Link, NavLink } from "react-router-dom";
+import "./Navbar.css";
+
 function Navbar() {
-  return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-      <div className="container">
+    return (
+        <nav className="navbar navbar-expand-lg bg-white shadow-sm agri-navbar">
+            <div className="container">
 
-        <a className="navbar-brand fw-bold" href="/">
-          🌱 AgriPredict AI
-        </a>
+                <Link to="/" className="navbar-brand agri-brand">
+                    <span className="agri-logo">
+                        🌱
+                    </span>
 
+                    <span className="agri-brand-text">
+                        AgriPredict <span>AI</span>
+                    </span>
+                </Link>
 
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav">
+                <button
+                    className="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav"
+                    aria-controls="navbarNav"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span className="navbar-toggler-icon"></span>
+                </button>
 
-          <span className="navbar-toggler-icon"></span>
+                <div
+                    className="collapse navbar-collapse"
+                    id="navbarNav"
+                >
+                    <ul className="navbar-nav ms-auto align-items-lg-center">
 
-        </button>
+                        <li className="nav-item">
+                            <NavLink to="/" className="nav-link">
+                                Home
+                            </NavLink>
+                        </li>
 
+                        <li className="nav-item">
+                            <NavLink to="/about" className="nav-link">
+                                About
+                            </NavLink>
+                        </li>
 
-        <div
-          className="collapse navbar-collapse"
-          id="navbarNav">
+                        <li className="nav-item">
+                            <NavLink to="/contact" className="nav-link">
+                                Contact
+                            </NavLink>
+                        </li>
 
-          <ul className="navbar-nav ms-auto">
+                        <li className="nav-item">
+                            <NavLink to="/login" className="nav-link">
+                                Login
+                            </NavLink>
+                        </li>
 
-            <li className="nav-item">
-              <a className="nav-link" href="/">Home</a>
-            </li>
+                        <li className="nav-item">
+                            <NavLink
+                                to="/register"
+                                className="nav-link register-link"
+                            >
+                                Register
+                            </NavLink>
+                        </li>
 
-            <li className="nav-item">
-              <a className="nav-link" href="/about">About</a>
-            </li>
+                    </ul>
+                </div>
 
-            <li className="nav-item">
-              <a className="nav-link" href="/login">Login</a>
-            </li>
-
-            <li className="nav-item">
-              <a className="nav-link" href="/register">Register</a>
-            </li>
-
-            <li className="nav-item">
-              <a className="nav-link" href="/contact">Contact</a>
-            </li>
-
-          </ul>
-
-        </div>
-
-      </div>
-    </nav>
-  );
+            </div>
+        </nav>
+    );
 }
 
 export default Navbar;

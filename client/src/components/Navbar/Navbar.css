@@ -1,0 +1,139 @@
+.agri-navbar {
+    min-height: 72px;
+    position: relative;
+    z-index: 1000;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.agri-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.agri-logo {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e8f5e9;
+    border: 1px solid #c8e6c9;
+    border-radius: 50%;
+    font-size: 23px;
+    box-shadow: 0 3px 10px rgba(46, 125, 50, 0.12);
+    transition: all 0.3s ease;
+}
+
+.agri-brand:hover .agri-logo {
+    transform: rotate(-5deg) scale(1.05);
+    box-shadow: 0 5px 14px rgba(46, 125, 50, 0.2);
+}
+
+.agri-brand-text {
+    color: #2e7d32;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+}
+
+.agri-brand-text span {
+    color: #43a047;
+    font-weight: 800;
+}
+
+.agri-navbar .nav-link {
+    position: relative;
+    margin-left: 8px;
+    padding: 9px 14px !important;
+    color: #222 !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.agri-navbar .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 2px;
+    height: 2px;
+    background-color: #2e7d32;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.agri-navbar .nav-link:hover {
+    color: #2e7d32 !important;
+}
+
+.agri-navbar .nav-link:hover::after,
+.agri-navbar .nav-link.active::after {
+    transform: scaleX(1);
+}
+
+.agri-navbar .nav-link.active {
+    color: #2e7d32 !important;
+    font-weight: 600;
+}
+
+.agri-navbar .register-link {
+    margin-left: 12px;
+    padding: 10px 18px !important;
+    background: #2e7d32;
+    color: white !important;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.agri-navbar .register-link::after {
+    display: none;
+}
+
+.agri-navbar .register-link:hover {
+    background: #256b29;
+    color: white !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(46, 125, 50, 0.2);
+}
+
+@media (max-width: 991px) {
+
+    .agri-navbar .navbar-nav {
+        align-items: stretch !important;
+        padding: 12px 0;
+    }
+
+    .agri-navbar .nav-link {
+        margin-left: 0;
+        padding: 10px 0 !important;
+    }
+
+    .agri-navbar .nav-link::after {
+        left: 0;
+        right: auto;
+        width: 35px;
+    }
+
+    .agri-navbar .register-link {
+        margin-left: 0;
+        margin-top: 6px;
+        width: fit-content;
+        padding: 8px 16px !important;
+    }
+}
+
+@media (max-width: 576px) {
+
+    .agri-logo {
+        width: 38px;
+        height: 38px;
+        font-size: 20px;
+    }
+
+    .agri-brand-text {
+        font-size: 1.15rem;
+    }
+}
