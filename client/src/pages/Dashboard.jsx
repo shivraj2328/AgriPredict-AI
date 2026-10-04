@@ -8,97 +8,130 @@ import RecentPredictions from "../components/Dashboard/RecentPredictions/RecentP
 import QuickPrediction from "../components/Dashboard/QuickPrediction/QuickPrediction";
 
 import { getCurrentUser } from "../services/authService";
+import api from "../services/api";
 
 function Dashboard() {
-  const [user, setUser] = useState(null);
+    const [user, setUser] = useState(null);
+    const [predictions, setPredictions] = useState([]);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await getCurrentUser();
+    useEffect(() => {
+        const fetchDashboardData = async () => {
+            try {
+                const [userResponse, predictionsResponse] =
+                    await Promise.all([
+                        getCurrentUser(),
+                        api.get("/predictions")
+                    ]);
 
-        if (response.success) {
-          setUser(response.user);
-        }
-      } catch (error) {
-        console.error("Failed to fetch user:", error);
-      }
-    };
+                if (userResponse.success) {
+                    setUser(userResponse.user);
+                }
 
-    fetchUser();
-  }, []);
+                setPredictions(
+                    predictionsResponse.data.predictions || []
+                );
+            } catch (error) {
+                console.error(
+                    "Failed to fetch dashboard data:",
+                    error
+                );
+            }
+        };
 
-  return (
-    <DashboardLayout>
-      
-      <div className="mb-4">
-        <h2>
-          Welcome, {user?.name || "Farmer"}!
-        </h2>
+        fetchDashboardData();
+    }, []);
 
-        <p>
-          Here's an overview of your farming dashboard.
-        </p>
-      </div>
+    const totalPredictions = predictions.length;
 
-      <div className="row g-3 mb-4">
+    const uniqueCrops = new Set(
+        predictions
+            .map((prediction) => prediction.recommendedCrop)
+            .filter(Boolean)
+    );
 
-        <div className="col-md-3">
-          <StatCard
-            title="Total Predictions"
-            value="156"
-            icon="🌱"
-            color="success"
-          />
-        </div>
+    const recommendedCrops = uniqueCrops.size;
 
-        <div className="col-md-3">
-          <StatCard
-            title="Soil Health"
-            value="87%"
-            icon="🧪"
-            color="primary"
-          />
-        </div>
+    const latestPrediction = predictions[0];
 
-        <div className="col-md-3">
-          <StatCard
-            title="Recommended Crops"
-            value="22"
-            icon="🌾"
-            color="warning"
-          />
-        </div>
+    return (
+        <DashboardLayout>
 
-        <div className="col-md-3">
-          <StatCard
-            title="Weather Status"
-            value="Sunny"
-            icon="☀️"
-            color="info"
-          />
-        </div>
+            <div className="mb-4">
+                <h2>
+                    Welcome, {user?.name || "Farmer"}!
+                </h2>
 
-      </div>
+                <p>
+                    Here's an overview of your farming dashboard.
+                </p>
+            </div>
 
-      <div className="row g-4">
+            <div className="row g-3 mb-4">
 
-        <div className="col-lg-4">
-          <WeatherWidget />
-        </div>
+                <div className="col-md-3">
+                    <StatCard
+                        title="Total Predictions"
+                        value={totalPredictions}
+                        icon="🌱"
+                        color="success"
+                    />
+                </div>
 
-        <div className="col-lg-8">
-          <RecentPredictions />
-        </div>
+                <div className="col-md-3">
+                    <StatCard
+                        title="Soil pH"
+                        value={
+                            latestPrediction?.ph
+                                ? latestPrediction.ph
+                                : "—"
+                        }
+                        icon="🧪"
+                        color="primary"
+                    />
+                </div>
 
-      </div>
+                <div className="col-md-3">
+                    <StatCard
+                        title="Recommended Crops"
+                        value={recommendedCrops}
+                        icon="🌾"
+                        color="warning"
+                    />
+                </div>
 
-      <div className="mt-4">
-        <QuickPrediction />
-      </div>
+                <div className="col-md-3">
+                    <StatCard
+                        title="Latest Crop"
+                        value={
+                            latestPrediction?.recommendedCrop
+                                ? latestPrediction.recommendedCrop
+                                : "—"
+                        }
+                        icon="🌱"
+                        color="info"
+                    />
+                </div>
 
-    </DashboardLayout>
-  );
+            </div>
+
+            <div className="row g-4">
+
+                <div className="col-lg-4">
+                    <WeatherWidget />
+                </div>
+
+                <div className="col-lg-8">
+                    <RecentPredictions />
+                </div>
+
+            </div>
+
+            <div className="mt-4">
+                <QuickPrediction />
+            </div>
+
+        </DashboardLayout>
+    );
 }
 
 export default Dashboard;
