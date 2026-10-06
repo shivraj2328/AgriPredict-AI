@@ -16,7 +16,9 @@ const createPrediction = async (req, res) => {
             temperature,
             humidity,
             rainfall,
-            ph
+            ph,
+            latitude,
+            longitude
         } = req.body;
 
 
@@ -31,17 +33,20 @@ const createPrediction = async (req, res) => {
             temperature,
             humidity,
             rainfall,
-            ph
+            ph,
+            latitude,
+            longitude
         };
 
 
-        const hasMissingValue = Object.values(values).some(
-            (value) =>
-                value === undefined ||
-                value === null ||
-                value === "" ||
-                !Number.isFinite(Number(value))
-        );
+        const hasMissingValue =
+            Object.values(values).some(
+                (value) =>
+                    value === undefined ||
+                    value === null ||
+                    value === "" ||
+                    !Number.isFinite(Number(value))
+            );
 
 
         if (hasMissingValue) {
@@ -49,7 +54,7 @@ const createPrediction = async (req, res) => {
             return res.status(400).json({
                 success: false,
                 message:
-                    "All 7 prediction features are required and must be numeric"
+                    "All prediction features and farm location are required and must be numeric"
             });
 
         }
@@ -61,19 +66,32 @@ const createPrediction = async (req, res) => {
 
         const inputValues = {
 
-            nitrogen: Number(nitrogen),
+            nitrogen:
+                Number(nitrogen),
 
-            phosphorus: Number(phosphorus),
+            phosphorus:
+                Number(phosphorus),
 
-            potassium: Number(potassium),
+            potassium:
+                Number(potassium),
 
-            temperature: Number(temperature),
+            temperature:
+                Number(temperature),
 
-            humidity: Number(humidity),
+            humidity:
+                Number(humidity),
 
-            rainfall: Number(rainfall),
+            rainfall:
+                Number(rainfall),
 
-            ph: Number(ph)
+            ph:
+                Number(ph),
+
+            latitude:
+                Number(latitude),
+
+            longitude:
+                Number(longitude)
 
         };
 
@@ -169,6 +187,30 @@ const createPrediction = async (req, res) => {
         }
 
 
+        if (
+            inputValues.latitude < -90 ||
+            inputValues.latitude > 90
+        ) {
+
+            validationErrors.push(
+                `Latitude value ${inputValues.latitude} is invalid. It must be between -90 and 90.`
+            );
+
+        }
+
+
+        if (
+            inputValues.longitude < -180 ||
+            inputValues.longitude > 180
+        ) {
+
+            validationErrors.push(
+                `Longitude value ${inputValues.longitude} is invalid. It must be between -180 and 180.`
+            );
+
+        }
+
+
         if (validationErrors.length > 0) {
 
             return res.status(400).json({
@@ -186,7 +228,9 @@ const createPrediction = async (req, res) => {
         // ------------------------------------------
 
         const aiResult =
-            await getCropPrediction(inputValues);
+            await getCropPrediction(
+                inputValues
+            );
 
 
         // ------------------------------------------
@@ -220,7 +264,8 @@ const createPrediction = async (req, res) => {
         const prediction =
             await Prediction.create({
 
-                user: req.user.userId,
+                user:
+                    req.user.userId,
 
                 nitrogen:
                     inputValues.nitrogen,
@@ -242,6 +287,12 @@ const createPrediction = async (req, res) => {
 
                 ph:
                     inputValues.ph,
+
+                latitude:
+                    inputValues.latitude,
+
+                longitude:
+                    inputValues.longitude,
 
                 recommendedCrop:
                     aiResult.crop,
