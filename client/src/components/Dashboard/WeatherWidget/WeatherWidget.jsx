@@ -1,27 +1,100 @@
-function WeatherWidget(){
+import { useEffect, useState } from "react";
+import api from "../../../services/api";
 
-return(
+function WeatherWidget({ latitude, longitude }) {
+    const [weather, setWeather] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
-<div className="card shadow-sm">
+    useEffect(() => {
+        const fetchWeather = async () => {
+            if (
+                latitude === undefined ||
+                latitude === null ||
+                longitude === undefined ||
+                longitude === null
+            ) {
+                setWeather(null);
+                return;
+            }
 
-<div className="card-body">
+            try {
+                setLoading(true);
+                setError("");
 
-<h4>Pune</h4>
+                const response = await api.post("/weather", {
+                    latitude,
+                    longitude
+                });
 
-<h1>28°C</h1>
+                setWeather({
+                    temperature: response.data.temperature,
+                    humidity: response.data.humidity,
+                    rainfall: response.data.rainfall
+                });
+            } catch (error) {
+                console.error(
+                    "Dashboard weather error:",
+                    error
+                );
 
-<p>Humidity : 72%</p>
+                setError(
+                    error.response?.data?.message ||
+                    "Failed to load weather data."
+                );
+            } finally {
+                setLoading(false);
+            }
+        };
 
-<p>Rainfall : 180 mm</p>
+        fetchWeather();
+    }, [latitude, longitude]);
 
-<p>☀ Sunny</p>
+    return (
+        <div className="card shadow-sm h-100">
+            <div className="card-body">
 
-</div>
+                <h4>Current Weather</h4>
 
-</div>
+                {loading && (
+                    <p className="text-muted mt-3">
+                        Loading weather...
+                    </p>
+                )}
 
-);
+                {!loading && error && (
+                    <div className="alert alert-danger mt-3 mb-0">
+                        {error}
+                    </div>
+                )}
 
+                {!loading && !error && weather && (
+                    <div className="mt-3">
+                        <h1>{weather.temperature}°C</h1>
+
+                        <p>
+                            Humidity: {weather.humidity}%
+                        </p>
+
+                        <p>
+                            Rainfall: {weather.rainfall} mm
+                        </p>
+
+                        <p className="mb-0">
+                            🌤️ Current conditions
+                        </p>
+                    </div>
+                )}
+
+                {!loading && !error && !weather && (
+                    <p className="text-muted mt-3 mb-0">
+                        No farm location available.
+                    </p>
+                )}
+
+            </div>
+        </div>
+    );
 }
 
 export default WeatherWidget;

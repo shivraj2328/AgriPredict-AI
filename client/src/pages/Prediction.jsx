@@ -14,7 +14,9 @@ function Prediction() {
         temperature: "",
         humidity: "",
         rainfall: "",
-        ph: ""
+        ph: "",
+        latitude: "",
+        longitude: ""
     });
 
     const [prediction, setPrediction] = useState(null);
@@ -52,7 +54,9 @@ function Prediction() {
                 temperature: Number(formData.temperature),
                 humidity: Number(formData.humidity),
                 rainfall: Number(formData.rainfall),
-                ph: Number(formData.ph)
+                ph: Number(formData.ph),
+                latitude: Number(formData.latitude),
+                longitude: Number(formData.longitude)
             });
 
             const result = response.data.prediction;
@@ -71,13 +75,16 @@ function Prediction() {
             const backendErrors = error.response?.data?.errors;
 
             if (Array.isArray(backendErrors) && backendErrors.length > 0) {
+
                 setError(
                     error.response?.data?.message ||
                     "Please correct the invalid prediction values."
                 );
 
                 setValidationErrors(backendErrors);
+
             } else {
+
                 setError(
                     error.response?.data?.message ||
                     "Failed to generate crop prediction."
@@ -95,7 +102,9 @@ function Prediction() {
             temperature: "",
             humidity: "",
             rainfall: "",
-            ph: ""
+            ph: "",
+            latitude: "",
+            longitude: ""
         });
 
         setPrediction(null);

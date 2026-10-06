@@ -1,55 +1,124 @@
+
 import { useNavigate, NavLink } from "react-router-dom";
 import { logout } from "../../../utils/auth";
+import "./Sidebar.css";
 
 function Sidebar() {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+    const handleLogout = () => {
+        logout();
+        navigate("/login");
+    };
 
-  return (
-    <aside className="bg-success text-white p-3 vh-100">
+    return (
+        <aside className="dashboard-sidebar">
 
-      <h3 className="mb-4">
-        AgriPredict
-      </h3>
+            {/* Logo */}
+            <div className="sidebar-brand">
+                <div className="sidebar-logo">
+                    🌱
+                </div>
 
-      <nav className="nav flex-column">
+                <div>
+                    <h4>AgriPredict</h4>
+                    <span>Smart Farming</span>
+                </div>
+            </div>
 
-        <NavLink to="/dashboard" className="nav-link text-white">
-          Dashboard
-        </NavLink>
+            {/* Navigation */}
+            <nav className="sidebar-nav">
 
-        <NavLink to="/prediction" className="nav-link text-white">
-          Crop Prediction
-        </NavLink>
+                <p className="sidebar-section-title">
+                    MAIN MENU
+                </p>
 
-        <NavLink to="/history" className="nav-link text-white">
-          Prediction History
-        </NavLink>
+                <NavLink
+                    to="/dashboard"
+                    className={({ isActive }) =>
+                        `sidebar-link ${isActive ? "active" : ""}`
+                    }
+                >
+                    <span className="sidebar-icon">🏠</span>
+                    <span>Dashboard</span>
+                </NavLink>
 
-        <NavLink to="/profile" className="nav-link text-white">
-          Profile
-        </NavLink>
+                <NavLink
+                    to="/prediction"
+                    className={({ isActive }) =>
+                        `sidebar-link ${isActive ? "active" : ""}`
+                    }
+                >
+                    <span className="sidebar-icon">🌾</span>
+                    <span>Crop Prediction</span>
+                </NavLink>
 
-        <NavLink to="#" className="nav-link text-white">
-          Settings
-        </NavLink>
+                <NavLink
+                    to="/history"
+                    className={({ isActive }) =>
+                        `sidebar-link ${isActive ? "active" : ""}`
+                    }
+                >
+                    <span className="sidebar-icon">📊</span>
+                    <span>Prediction History</span>
+                </NavLink>
 
-        <button
-          type="button"
-          onClick={handleLogout}
-          className="nav-link text-white text-start border-0 bg-transparent"
-        >
-          Logout
-        </button>
+                <p className="sidebar-section-title sidebar-section-spaced">
+                    ACCOUNT
+                </p>
 
-      </nav>
+                <NavLink
+                    to="/profile"
+                    className={({ isActive }) =>
+                        `sidebar-link ${isActive ? "active" : ""}`
+                    }
+                >
+                    <span className="sidebar-icon">👤</span>
+                    <span>Profile</span>
+                </NavLink>
 
-    </aside>
-  );
+                <NavLink
+                    to="/settings"
+                    className={({ isActive }) =>
+                        `sidebar-link ${isActive ? "active" : ""}`
+                    }
+                >
+                    <span className="sidebar-icon">⚙️</span>
+                    <span>Settings</span>
+                </NavLink>
+
+            </nav>
+
+            {/* Bottom Section */}
+            <div className="sidebar-bottom">
+
+                <div className="sidebar-tip">
+                    <span className="sidebar-tip-icon">
+                        💡
+                    </span>
+
+                    <div>
+                        <strong>Smart Farming</strong>
+                        <p>
+                            Make better decisions with AgriPredict.
+                        </p>
+                    </div>
+                </div>
+
+                <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="sidebar-logout"
+                >
+                    <span>🚪</span>
+                    <span>Logout</span>
+                </button>
+
+            </div>
+
+        </aside>
+    );
 }
 
 export default Sidebar;
+
