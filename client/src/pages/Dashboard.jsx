@@ -58,6 +58,9 @@ function Dashboard() {
     const totalPredictions = predictions.length;
     const latestPrediction = predictions[0];
 
+    const latestLatitude = latestPrediction?.latitude;
+    const latestLongitude = latestPrediction?.longitude;
+
     const parameters = soilHealth?.parameters;
 
     return (
@@ -149,7 +152,7 @@ function Dashboard() {
                 <div className="col-md-3">
                     <StatCard
                         title="Current Weather"
-                        value="—"
+                        value="Live"
                         icon="🌤️"
                         color="info"
                     />
@@ -161,7 +164,10 @@ function Dashboard() {
             <div className="row g-4">
 
                 <div className="col-lg-4">
-                    <WeatherWidget />
+                    <WeatherWidget
+                        latitude={latestLatitude}
+                        longitude={latestLongitude}
+                    />
                 </div>
 
                 <div className="col-lg-8">
@@ -188,7 +194,6 @@ function Dashboard() {
 
                         <div className="modal-content">
 
-                            {/* Modal Header */}
                             <div className="modal-header">
 
                                 <div>
@@ -214,10 +219,8 @@ function Dashboard() {
 
                             </div>
 
-                            {/* Modal Body */}
                             <div className="modal-body">
 
-                                {/* Overall Score */}
                                 <div className="text-center mb-4">
 
                                     <h2 className="text-success mb-1">
@@ -230,7 +233,6 @@ function Dashboard() {
 
                                 </div>
 
-                                {/* Parameter Details */}
                                 <div className="table-responsive">
 
                                     <table className="table align-middle">
@@ -248,15 +250,12 @@ function Dashboard() {
 
                                             <tr>
                                                 <td>Nitrogen</td>
-
                                                 <td>
                                                     {parameters.nitrogen.value}
                                                 </td>
-
                                                 <td>
                                                     {parameters.nitrogen.score}%
                                                 </td>
-
                                                 <td>
                                                     {parameters.nitrogen.status}
                                                 </td>
@@ -264,15 +263,12 @@ function Dashboard() {
 
                                             <tr>
                                                 <td>Phosphorus</td>
-
                                                 <td>
                                                     {parameters.phosphorus.value}
                                                 </td>
-
                                                 <td>
                                                     {parameters.phosphorus.score}%
                                                 </td>
-
                                                 <td>
                                                     {parameters.phosphorus.status}
                                                 </td>
@@ -280,15 +276,12 @@ function Dashboard() {
 
                                             <tr>
                                                 <td>Potassium</td>
-
                                                 <td>
                                                     {parameters.potassium.value}
                                                 </td>
-
                                                 <td>
                                                     {parameters.potassium.score}%
                                                 </td>
-
                                                 <td>
                                                     {parameters.potassium.status}
                                                 </td>
@@ -296,15 +289,12 @@ function Dashboard() {
 
                                             <tr>
                                                 <td>Soil pH</td>
-
                                                 <td>
                                                     {parameters.ph.value}
                                                 </td>
-
                                                 <td>
                                                     {parameters.ph.score}%
                                                 </td>
-
                                                 <td>
                                                     {parameters.ph.status}
                                                 </td>
@@ -316,7 +306,6 @@ function Dashboard() {
 
                                 </div>
 
-                                {/* Disclaimer */}
                                 <div className="alert alert-light border mt-4 mb-0">
 
                                     <strong>Note:</strong>{" "}
@@ -329,7 +318,6 @@ function Dashboard() {
 
                             </div>
 
-                            {/* Modal Footer */}
                             <div className="modal-footer">
 
                                 <button

@@ -9,6 +9,8 @@ const healthRoutes = require("./routes/health.routes");
 const authRoutes = require("./routes/auth.routes");
 const predictionRoutes = require("./routes/prediction.routes");
 const weatherRoutes = require("./routes/weather.routes");
+const soilHealthRoutes =
+    require("./routes/soilHealth.routes");
 
 
 const app = express();
@@ -22,6 +24,10 @@ app.use("/api/health", healthRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/predictions", predictionRoutes);
 app.use("/api/weather", weatherRoutes);
+app.use(
+    "/api/soil-health",
+    soilHealthRoutes
+);
 
 app.get("/", (req, res) => {
     res.send("AgriPredict API is running");
