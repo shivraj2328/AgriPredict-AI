@@ -51,6 +51,20 @@ const predictionSchema = new mongoose.Schema(
             max: 14
         },
 
+        latitude: {
+            type: Number,
+            required: true,
+            min: -90,
+            max: 90
+        },
+
+        longitude: {
+            type: Number,
+            required: true,
+            min: -180,
+            max: 180
+        },
+
         recommendedCrop: {
             type: String,
             required: true,
@@ -69,6 +83,9 @@ const predictionSchema = new mongoose.Schema(
     }
 );
 
-const Prediction = mongoose.model("Prediction", predictionSchema);
+const Prediction = mongoose.model(
+    "Prediction",
+    predictionSchema
+);
 
 module.exports = Prediction;
