@@ -11,6 +11,9 @@ const predictionRoutes = require("./routes/prediction.routes");
 const weatherRoutes = require("./routes/weather.routes");
 const soilHealthRoutes =
     require("./routes/soilHealth.routes");
+const profileRoutes =
+    require("./routes/profile.routes");
+
 
 
 const app = express();
@@ -28,6 +31,11 @@ app.use(
     "/api/soil-health",
     soilHealthRoutes
 );
+app.use(
+    "/api/profile",
+    profileRoutes
+);
+
 
 app.get("/", (req, res) => {
     res.send("AgriPredict API is running");
