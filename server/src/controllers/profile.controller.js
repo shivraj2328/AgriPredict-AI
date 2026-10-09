@@ -4,14 +4,14 @@ const {
 
 const getProfileStatistics = async (req, res) => {
     try {
-        const predictions =
+        const statistics =
             await getUserPredictionStatistics(
                 req.user.userId
             );
 
         return res.status(200).json({
             success: true,
-            predictions
+            statistics
         });
     } catch (error) {
         console.error(
