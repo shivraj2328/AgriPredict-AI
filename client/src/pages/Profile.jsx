@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "../layouts/DashboardLayout";
 import { getCurrentUser } from "../services/authService";
+import api from "../services/api";
 import "./../styles/profile.css";
 
 function Profile() {
     const [user, setUser] = useState(null);
+    const [statistics, setStatistics] = useState(null);
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -12,21 +14,34 @@ function Profile() {
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
-        const fetchUser = async () => {
+        const fetchProfileData = async () => {
             try {
-                const response = await getCurrentUser();
+                const [userResponse, statisticsResponse] =
+                    await Promise.all([
+                        getCurrentUser(),
+                        api.get("/profile/statistics")
+                    ]);
 
-                if (response.success) {
-                    setUser(response.user);
-                    setName(response.user.name);
-                    setEmail(response.user.email);
+                if (userResponse.success) {
+                    setUser(userResponse.user);
+                    setName(userResponse.user.name);
+                    setEmail(userResponse.user.email);
+                }
+
+                if (statisticsResponse.data.success) {
+                    setStatistics(
+                        statisticsResponse.data.statistics
+                    );
                 }
             } catch (error) {
-                console.error("Failed to fetch profile:", error);
+                console.error(
+                    "Failed to fetch profile data:",
+                    error
+                );
             }
         };
 
-        fetchUser();
+        fetchProfileData();
     }, []);
 
     const handleEdit = () => {
@@ -96,7 +111,11 @@ function Profile() {
                         </p>
 
                         <p className="profile-member">
-                            Member since August 2026
+                            Member since{" "}
+                            {new Date(user.createdAt).toLocaleDateString("en-IN", {
+                                month: "long",
+                                year: "numeric"
+                            })}
                         </p>
                     </div>
 
@@ -118,42 +137,60 @@ function Profile() {
 
                     <div className="row g-4">
 
+                        {/* Total Predictions */}
                         <div className="col-12 col-sm-6 col-xl-3">
                             <div className="profile-stat-card">
                                 <span className="stat-icon">🌱</span>
+
                                 <div>
                                     <p>Total Predictions</p>
-                                    <h4>12</h4>
+                                    <h4>
+                                        {statistics?.totalPredictions ?? 0}
+                                    </h4>
                                 </div>
                             </div>
                         </div>
 
+                        {/* Successful Predictions */}
                         <div className="col-12 col-sm-6 col-xl-3">
                             <div className="profile-stat-card">
                                 <span className="stat-icon">✓</span>
+
                                 <div>
                                     <p>Successful Predictions</p>
-                                    <h4>10</h4>
+                                    <h4>
+                                        {statistics?.successfulPredictions ?? 0}
+                                    </h4>
                                 </div>
                             </div>
                         </div>
 
+                        {/* Most Recommended Crop */}
                         <div className="col-12 col-sm-6 col-xl-3">
                             <div className="profile-stat-card">
                                 <span className="stat-icon">🌾</span>
+
                                 <div>
-                                    <p>Favorite Crop</p>
-                                    <h4>Rice</h4>
+                                    <p>Most Recommended Crop</p>
+                                    <h4>
+                                        {statistics?.mostRecommendedCrop || "—"}
+                                    </h4>
                                 </div>
                             </div>
                         </div>
 
+                        {/* Average Confidence */}
                         <div className="col-12 col-sm-6 col-xl-3">
                             <div className="profile-stat-card">
                                 <span className="stat-icon">📊</span>
+
                                 <div>
                                     <p>Average Confidence</p>
-                                    <h4>92%</h4>
+                                    <h4>
+                                        {statistics
+                                            ? `${statistics.averageConfidence}%`
+                                            : "—"}
+                                    </h4>
                                 </div>
                             </div>
                         </div>
