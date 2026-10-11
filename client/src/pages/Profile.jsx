@@ -3,10 +3,12 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import { getCurrentUser } from "../services/authService";
 import api from "../services/api";
 import "./../styles/profile.css";
+import CropDistribution from "../components/Profile/CropDistribution/CropDistribution";
 
 function Profile() {
     const [user, setUser] = useState(null);
     const [statistics, setStatistics] = useState(null);
+    const [predictions, setPredictions] = useState([]);
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -16,11 +18,15 @@ function Profile() {
     useEffect(() => {
         const fetchProfileData = async () => {
             try {
-                const [userResponse, statisticsResponse] =
-                    await Promise.all([
-                        getCurrentUser(),
-                        api.get("/profile/statistics")
-                    ]);
+                const [
+                    userResponse,
+                    statisticsResponse,
+                    predictionsResponse
+                ] = await Promise.all([
+                    getCurrentUser(),
+                    api.get("/profile/statistics"),
+                    api.get("/predictions")
+                ]);
 
                 if (userResponse.success) {
                     setUser(userResponse.user);
@@ -33,6 +39,10 @@ function Profile() {
                         statisticsResponse.data.statistics
                     );
                 }
+
+                setPredictions(
+                    predictionsResponse.data.predictions || []
+                );
             } catch (error) {
                 console.error(
                     "Failed to fetch profile data:",
@@ -112,10 +122,15 @@ function Profile() {
 
                         <p className="profile-member">
                             Member since{" "}
-                            {new Date(user.createdAt).toLocaleDateString("en-IN", {
-                                month: "long",
-                                year: "numeric"
-                            })}
+                            {user.createdAt
+                                ? new Date(user.createdAt).toLocaleDateString(
+                                    "en-IN",
+                                    {
+                                        month: "long",
+                                        year: "numeric"
+                                    }
+                                )
+                                : "—"}
                         </p>
                     </div>
 
@@ -196,6 +211,17 @@ function Profile() {
                         </div>
 
                     </div>
+                </div>
+
+                {/* Crop Distribution */}
+                <div className="profile-section mt-4">
+                    <h3 className="section-title">
+                        Crop Distribution
+                    </h3>
+
+                    <CropDistribution
+                        predictions={predictions}
+                    />
                 </div>
 
                 {/* Edit Profile */}
