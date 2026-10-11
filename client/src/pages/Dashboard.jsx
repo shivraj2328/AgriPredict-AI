@@ -6,6 +6,7 @@ import StatCard from "../components/Dashboard/StatCard/StatCard";
 import WeatherWidget from "../components/Dashboard/WeatherWidget/WeatherWidget";
 import RecentPredictions from "../components/Dashboard/RecentPredictions/RecentPredictions";
 import QuickPrediction from "../components/Dashboard/QuickPrediction/QuickPrediction";
+import PredictionActivity from "../components/Dashboard/PredictionActivity/PredictionActivity";
 
 import { getCurrentUser } from "../services/authService";
 import api from "../services/api";
@@ -174,6 +175,13 @@ function Dashboard() {
                     <RecentPredictions />
                 </div>
 
+            </div>
+
+            {/* Prediction Activity */}
+            <div className="mt-4">
+                <PredictionActivity
+                    predictions={predictions}
+                />
             </div>
 
             {/* Quick Prediction */}
