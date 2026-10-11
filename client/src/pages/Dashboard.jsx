@@ -7,6 +7,8 @@ import WeatherWidget from "../components/Dashboard/WeatherWidget/WeatherWidget";
 import RecentPredictions from "../components/Dashboard/RecentPredictions/RecentPredictions";
 import QuickPrediction from "../components/Dashboard/QuickPrediction/QuickPrediction";
 import PredictionActivity from "../components/Dashboard/PredictionActivity/PredictionActivity";
+import ConfidenceTrend from "../components/Dashboard/ConfidenceTrend/ConfidenceTrend";
+
 
 import { getCurrentUser } from "../services/authService";
 import api from "../services/api";
@@ -183,6 +185,13 @@ function Dashboard() {
                     predictions={predictions}
                 />
             </div>
+
+            {/* Confidence Trend */}
+<div className="mt-4">
+    <ConfidenceTrend
+        predictions={predictions}
+    />
+</div>
 
             {/* Quick Prediction */}
             <div className="mt-4">

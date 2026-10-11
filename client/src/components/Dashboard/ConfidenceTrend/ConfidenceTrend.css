@@ -1,0 +1,68 @@
+.confidence-trend-card {
+    background: #ffffff;
+    border: 1px solid #edf1ee;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 6px 24px rgba(18, 60, 42, 0.06);
+}
+
+.confidence-chart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.confidence-chart-header h4 {
+    margin: 0;
+    color: #123c2a;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.confidence-chart-header p {
+    margin: 5px 0 0;
+    color: #718096;
+    font-size: 13px;
+}
+
+.confidence-chart-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #edf5ff;
+    border-radius: 12px;
+
+    font-size: 19px;
+}
+
+.confidence-chart-container {
+    width: 100%;
+    height: 300px;
+}
+
+.confidence-chart-empty {
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #718096;
+    font-size: 14px;
+}
+
+@media (max-width: 767px) {
+    .confidence-trend-card {
+        padding: 18px;
+        border-radius: 14px;
+    }
+
+    .confidence-chart-container {
+        height: 260px;
+    }
+}

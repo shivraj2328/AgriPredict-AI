@@ -1,23 +1,24 @@
 import { Line } from "react-chartjs-2";
+
 import {
     Chart as ChartJS,
     CategoryScale,
     LinearScale,
     PointElement,
     LineElement,
-    Title,
     Tooltip,
-    Legend
+    Filler
 } from "chart.js";
+
+import "./PredictionActivity.css";
 
 ChartJS.register(
     CategoryScale,
     LinearScale,
     PointElement,
     LineElement,
-    Title,
     Tooltip,
-    Legend
+    Filler
 );
 
 function PredictionActivity({ predictions = [] }) {
@@ -28,28 +29,49 @@ function PredictionActivity({ predictions = [] }) {
             return;
         }
 
-        const date = new Date(
-            prediction.createdAt
-        ).toLocaleDateString("en-IN", {
-            day: "2-digit",
-            month: "short"
-        });
+        const date = new Date(prediction.createdAt);
 
-        activity[date] = (activity[date] || 0) + 1;
+        const key = date.toISOString().split("T")[0];
+
+        activity[key] = (activity[key] || 0) + 1;
     });
 
-    const labels = Object.keys(activity);
+    const sortedDates = Object.keys(activity).sort(
+        (a, b) => new Date(a) - new Date(b)
+    );
+
+    const labels = sortedDates.map((date) =>
+        new Date(date).toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "short"
+        })
+    );
+
+    const values = sortedDates.map(
+        (date) => activity[date]
+    );
 
     const data = {
         labels,
+
         datasets: [
             {
                 label: "Predictions",
-                data: labels.map(
-                    (label) => activity[label]
-                ),
-                tension: 0.3,
-                fill: false
+                data: values,
+
+                borderColor: "#2f8f5b",
+                backgroundColor: "rgba(47, 143, 91, 0.12)",
+
+                borderWidth: 3,
+
+                pointBackgroundColor: "#ffffff",
+                pointBorderColor: "#2f8f5b",
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+
+                tension: 0.35,
+                fill: true
             }
         ]
     };
@@ -58,48 +80,101 @@ function PredictionActivity({ predictions = [] }) {
         responsive: true,
         maintainAspectRatio: false,
 
+        interaction: {
+            intersect: false,
+            mode: "index"
+        },
+
         plugins: {
             legend: {
                 display: false
             },
-            title: {
-                display: true,
-                text: "Prediction Activity"
+
+            tooltip: {
+                backgroundColor: "#123c2a",
+                titleColor: "#ffffff",
+                bodyColor: "#ffffff",
+                padding: 12,
+                displayColors: false,
+
+                callbacks: {
+                    label: (context) =>
+                        `${context.raw} prediction${
+                            context.raw !== 1 ? "s" : ""
+                        }`
+                }
             }
         },
 
         scales: {
+            x: {
+                grid: {
+                    display: false
+                },
+
+                ticks: {
+                    color: "#718096",
+                    font: {
+                        size: 11
+                    }
+                },
+
+                border: {
+                    display: false
+                }
+            },
+
             y: {
                 beginAtZero: true,
+
                 ticks: {
-                    stepSize: 1
+                    stepSize: 1,
+                    color: "#718096",
+                    font: {
+                        size: 11
+                    }
+                },
+
+                grid: {
+                    color: "rgba(0, 0, 0, 0.06)"
+                },
+
+                border: {
+                    display: false
                 }
             }
         }
     };
 
     return (
-        <div className="card shadow-sm">
-            <div className="card-body">
+        <div className="prediction-activity-card">
 
-                <div
-                    style={{
-                        height: "300px"
-                    }}
-                >
-                    {labels.length > 0 ? (
-                        <Line
-                            data={data}
-                            options={options}
-                        />
-                    ) : (
-                        <div className="d-flex align-items-center justify-content-center h-100 text-muted">
-                            No prediction activity available.
-                        </div>
-                    )}
+            <div className="prediction-chart-header">
+                <div>
+                    <h4>Prediction Activity</h4>
+                    <p>
+                        Your prediction activity over time
+                    </p>
                 </div>
 
+                <div className="prediction-chart-icon">
+                    📈
+                </div>
             </div>
+
+            <div className="prediction-chart-container">
+                {labels.length > 0 ? (
+                    <Line
+                        data={data}
+                        options={options}
+                    />
+                ) : (
+                    <div className="prediction-chart-empty">
+                        No prediction activity available.
+                    </div>
+                )}
+            </div>
+
         </div>
     );
 }
