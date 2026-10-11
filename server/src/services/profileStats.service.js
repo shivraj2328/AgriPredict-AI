@@ -3,6 +3,8 @@ const Prediction = require("../models/Prediction.model");
 const getUserPredictionStatistics = async (userId) => {
     const predictions = await Prediction.find({
         user: userId
+    }).sort({
+        createdAt: -1
     });
 
     const totalPredictions = predictions.length;
@@ -48,13 +50,20 @@ const getUserPredictionStatistics = async (userId) => {
         }
     );
 
+    const history = predictions.map((prediction) => ({
+        createdAt: prediction.createdAt,
+        recommendedCrop: prediction.recommendedCrop,
+        confidence: Number(prediction.confidence)
+    }));
+
     return {
         totalPredictions,
         successfulPredictions,
         averageConfidence: Number(
             averageConfidence.toFixed(2)
         ),
-        mostRecommendedCrop
+        mostRecommendedCrop,
+        history
     };
 };
 
