@@ -2,7 +2,7 @@
 
 ## Version
 
-v0.28.0 (MVP)
+v0.31.0 (MVP)
 
 ## Status
 
