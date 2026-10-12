@@ -12,7 +12,8 @@ import History from "../pages/History";
 import Profile from "../pages/Profile";
 import About from "../pages/About";
 import Contact from "../pages/Contact";
-import NotFound from "../pages/NotFound";
+import Settings from "../pages/Settings";
+// import NotFound from "../pages/NotFound";
 
 function AppRoutes() {
     return (
