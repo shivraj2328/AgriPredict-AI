@@ -13,7 +13,7 @@ import Profile from "../pages/Profile";
 import About from "../pages/About";
 import Contact from "../pages/Contact";
 import Settings from "../pages/Settings";
-// import NotFound from "../pages/NotFound";
+import NotFound from "../pages/NotFound";
 
 function AppRoutes() {
     return (
@@ -33,14 +33,37 @@ function AppRoutes() {
 
                 {/* Protected pages */}
                 <Route element={<ProtectedRoute />}>
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/prediction" element={<Prediction />} />
-                    <Route path="/history" element={<History />} />
-                    <Route path="/profile" element={<Profile />} />
+                    <Route
+                        path="/dashboard"
+                        element={<Dashboard />}
+                    />
+
+                    <Route
+                        path="/prediction"
+                        element={<Prediction />}
+                    />
+
+                    <Route
+                        path="/history"
+                        element={<History />}
+                    />
+
+                    <Route
+                        path="/profile"
+                        element={<Profile />}
+                    />
+
+                    <Route
+                        path="/settings"
+                        element={<Settings />}
+                    />
                 </Route>
 
                 {/* 404 */}
-                <Route path="*" element={<NotFound />} />
+                <Route
+                    path="*"
+                    element={<NotFound />}
+                />
 
             </Routes>
         </BrowserRouter>

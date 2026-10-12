@@ -1,0 +1,233 @@
+.settings-page {
+    padding: 28px;
+    max-width: 1000px;
+}
+
+.settings-page-header {
+    margin-bottom: 30px;
+}
+
+.settings-page-header h2 {
+    margin: 0;
+    color: #123c2a;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.settings-page-header p {
+    margin: 6px 0 0;
+    color: #718096;
+    font-size: 14px;
+}
+
+.settings-section {
+    margin-bottom: 28px;
+}
+
+.settings-section > h3 {
+    margin: 0 0 12px;
+    color: #123c2a;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.settings-card {
+    background: #ffffff;
+    border: 1px solid #edf1ee;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(18, 60, 42, 0.05);
+}
+
+.setting-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px 22px;
+}
+
+.setting-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.setting-icon {
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eaf6ee;
+    border-radius: 10px;
+    font-size: 18px;
+}
+
+.setting-info h4 {
+    margin: 0;
+    color: #123c2a;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.setting-info p {
+    margin: 4px 0 0;
+    color: #718096;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.setting-divider {
+    height: 1px;
+    margin: 0 22px;
+    background: #edf1ee;
+}
+
+/* Toggle */
+
+.settings-switch {
+    position: relative;
+    width: 48px;
+    min-width: 48px;
+    height: 26px;
+    cursor: pointer;
+}
+
+.settings-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.settings-slider {
+    position: absolute;
+    inset: 0;
+    background: #cbd5e0;
+    border-radius: 20px;
+    transition: 0.2s ease;
+}
+
+.settings-slider::before {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 3px;
+    top: 3px;
+    background: #ffffff;
+    border-radius: 50%;
+    transition: 0.2s ease;
+}
+
+.settings-switch input:checked + .settings-slider {
+    background: #2f8f5b;
+}
+
+.settings-switch input:checked + .settings-slider::before {
+    transform: translateX(22px);
+}
+
+/* Select */
+
+.settings-select {
+    min-width: 90px;
+    padding: 8px 12px;
+    border: 1px solid #dce5df;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #123c2a;
+    font-size: 13px;
+    cursor: pointer;
+    outline: none;
+}
+
+.settings-select:focus {
+    border-color: #2f8f5b;
+}
+
+/* Reset */
+
+.danger-zone > h3 {
+    color: #b42318;
+}
+
+.settings-reset-btn {
+    padding: 8px 18px;
+    border: 1px solid #dc3545;
+    border-radius: 8px;
+    background: transparent;
+    color: #dc3545;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.settings-reset-btn:hover {
+    background: #dc3545;
+    color: #ffffff;
+}
+
+/* Dark Mode */
+
+body.dark-mode {
+    background: #101b16;
+    color: #ffffff;
+}
+
+body.dark-mode .settings-page-header h2,
+body.dark-mode .settings-section > h3,
+body.dark-mode .setting-info h4 {
+    color: #ffffff;
+}
+
+body.dark-mode .settings-page-header p,
+body.dark-mode .setting-info p {
+    color: #a0aec0;
+}
+
+body.dark-mode .settings-card {
+    background: #182820;
+    border-color: #294236;
+    box-shadow: none;
+}
+
+body.dark-mode .setting-divider {
+    background: #294236;
+}
+
+body.dark-mode .settings-select {
+    background: #182820;
+    border-color: #365342;
+    color: #ffffff;
+}
+
+@media (max-width: 767px) {
+    .settings-page {
+        padding: 20px 16px;
+    }
+
+    .settings-page-header h2 {
+        font-size: 24px;
+    }
+
+    .setting-item {
+        align-items: flex-start;
+        padding: 18px;
+    }
+
+    .setting-info {
+        align-items: flex-start;
+    }
+
+    .setting-icon {
+        width: 38px;
+        min-width: 38px;
+        height: 38px;
+    }
+
+    .settings-select {
+        min-width: 75px;
+    }
+}
