@@ -5,6 +5,21 @@ function RecentPredictions() {
     const [predictions, setPredictions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [showConfidenceScore, setShowConfidenceScore] =
+        useState(true);
+
+    useEffect(() => {
+        const savedSettings =
+            localStorage.getItem("agripredict_settings");
+
+        if (savedSettings) {
+            const settings = JSON.parse(savedSettings);
+
+            setShowConfidenceScore(
+                settings.showConfidenceScore ?? true
+            );
+        }
+    }, []);
 
     useEffect(() => {
         const fetchRecentPredictions = async () => {
@@ -47,9 +62,12 @@ function RecentPredictions() {
         });
     };
 
+    const columnCount = showConfidenceScore ? 3 : 2;
+
     return (
         <div className="card shadow-sm">
             <div className="card-body">
+
                 <h4>Recent Predictions</h4>
 
                 {error && (
@@ -60,19 +78,24 @@ function RecentPredictions() {
 
                 <div className="table-responsive">
                     <table className="table">
+
                         <thead>
                             <tr>
                                 <th>Date</th>
                                 <th>Crop</th>
-                                <th>Confidence</th>
+
+                                {showConfidenceScore && (
+                                    <th>Confidence</th>
+                                )}
                             </tr>
                         </thead>
 
                         <tbody>
+
                             {loading ? (
                                 <tr>
                                     <td
-                                        colSpan="3"
+                                        colSpan={columnCount}
                                         className="text-center"
                                     >
                                         Loading predictions...
@@ -81,6 +104,7 @@ function RecentPredictions() {
                             ) : predictions.length > 0 ? (
                                 predictions.map((prediction) => (
                                     <tr key={prediction._id}>
+
                                         <td>
                                             {formatDate(
                                                 prediction.createdAt
@@ -92,27 +116,32 @@ function RecentPredictions() {
                                                 "N/A"}
                                         </td>
 
-                                        <td>
-                                            {Number(
-                                                prediction.confidence
-                                            ) || 0}
-                                            %
-                                        </td>
+                                        {showConfidenceScore && (
+                                            <td>
+                                                {Number(
+                                                    prediction.confidence
+                                                ) || 0}
+                                                %
+                                            </td>
+                                        )}
+
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
                                     <td
-                                        colSpan="3"
+                                        colSpan={columnCount}
                                         className="text-center"
                                     >
                                         No predictions found.
                                     </td>
                                 </tr>
                             )}
+
                         </tbody>
                     </table>
                 </div>
+
             </div>
         </div>
     );

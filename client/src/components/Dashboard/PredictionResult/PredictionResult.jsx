@@ -1,8 +1,24 @@
+import { useEffect, useState } from "react";
 import ConfidenceMeter from "../ConfidenceMeter/ConfidenceMeter";
 
 import "./PredictionResult.css";
 
 function PredictionResult({ prediction }) {
+    const [showConfidenceScore, setShowConfidenceScore] =
+        useState(true);
+
+    useEffect(() => {
+        const savedSettings =
+            localStorage.getItem("agripredict_settings");
+
+        if (savedSettings) {
+            const settings = JSON.parse(savedSettings);
+
+            setShowConfidenceScore(
+                settings.showConfidenceScore ?? true
+            );
+        }
+    }, []);
 
     if (!prediction) {
         return null;
@@ -42,17 +58,19 @@ function PredictionResult({ prediction }) {
             </div>
 
             {/* Confidence */}
-            <div className="mb-4">
+            {showConfidenceScore && (
+                <div className="mb-4">
 
-                <h5>
-                    Confidence
-                </h5>
+                    <h5>
+                        Confidence
+                    </h5>
 
-                <ConfidenceMeter
-                    value={prediction.confidence}
-                />
+                    <ConfidenceMeter
+                        value={prediction.confidence}
+                    />
 
-            </div>
+                </div>
+            )}
 
             {/* Reason */}
             <div className="prediction-reason">
