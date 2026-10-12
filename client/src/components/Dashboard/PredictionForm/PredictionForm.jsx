@@ -2,6 +2,10 @@ import { useState } from "react";
 import "./PredictionForm.css";
 import api from "../../../services/api";
 import FarmLocation from "../FarmLocationPicker/FarmLocationPicker";
+import {
+    formatTemperature,
+    formatRainfall
+} from "../../../utils/unitConversion";
 
 function PredictionForm({
     formData,
@@ -11,6 +15,19 @@ function PredictionForm({
     predictionLoading = false
 }) {
     const [weatherLoading, setWeatherLoading] = useState(false);
+
+    const [settings] = useState(() => {
+        const savedSettings = localStorage.getItem(
+            "agripredict_settings"
+        );
+
+        return savedSettings
+            ? JSON.parse(savedSettings)
+            : {
+                temperatureUnit: "C",
+                rainfallUnit: "mm"
+            };
+    });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -68,6 +85,24 @@ function PredictionForm({
         formData.humidity !== null &&
         formData.rainfall !== "" &&
         formData.rainfall !== null;
+
+    const displayedTemperature =
+        formData.temperature !== "" &&
+        formData.temperature !== null
+            ? formatTemperature(
+                formData.temperature,
+                settings.temperatureUnit
+            )
+            : "";
+
+    const displayedRainfall =
+        formData.rainfall !== "" &&
+        formData.rainfall !== null
+            ? formatRainfall(
+                formData.rainfall,
+                settings.rainfallUnit
+            )
+            : "";
 
     return (
         <div className="card prediction-form shadow p-4">
@@ -169,14 +204,15 @@ function PredictionForm({
                     {/* Temperature */}
                     <div className="col-md-4 mb-3">
                         <label className="form-label">
-                            🌡️ Temperature (°C)
+                            🌡️ Temperature (
+                            °{settings.temperatureUnit}
+                            )
                         </label>
 
                         <input
-                            type="number"
+                            type="text"
                             className="form-control"
-                            name="temperature"
-                            value={formData.temperature || ""}
+                            value={displayedTemperature}
                             readOnly
                         />
                     </div>
@@ -190,7 +226,6 @@ function PredictionForm({
                         <input
                             type="number"
                             className="form-control"
-                            name="humidity"
                             value={formData.humidity || ""}
                             readOnly
                         />
@@ -199,14 +234,15 @@ function PredictionForm({
                     {/* Rainfall */}
                     <div className="col-md-4 mb-3">
                         <label className="form-label">
-                            🌧️ Rainfall (mm)
+                            🌧️ Rainfall (
+                            {settings.rainfallUnit}
+                            )
                         </label>
 
                         <input
-                            type="number"
+                            type="text"
                             className="form-control"
-                            name="rainfall"
-                            value={formData.rainfall || ""}
+                            value={displayedRainfall}
                             readOnly
                         />
                     </div>
