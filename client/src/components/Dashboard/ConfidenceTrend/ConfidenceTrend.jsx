@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 
 import {
@@ -22,6 +23,26 @@ ChartJS.register(
 );
 
 function ConfidenceTrend({ predictions = [] }) {
+    const [showConfidenceScore, setShowConfidenceScore] =
+        useState(true);
+
+    useEffect(() => {
+        const savedSettings =
+            localStorage.getItem("agripredict_settings");
+
+        if (savedSettings) {
+            const settings = JSON.parse(savedSettings);
+
+            setShowConfidenceScore(
+                settings.showConfidenceScore ?? true
+            );
+        }
+    }, []);
+
+    if (!showConfidenceScore) {
+        return null;
+    }
+
     const sortedPredictions = [...predictions]
         .filter(
             (prediction) =>
@@ -164,6 +185,7 @@ function ConfidenceTrend({ predictions = [] }) {
             </div>
 
             <div className="confidence-chart-container">
+
                 {labels.length > 0 ? (
                     <Line
                         data={data}
@@ -174,6 +196,7 @@ function ConfidenceTrend({ predictions = [] }) {
                         No confidence trend data available.
                     </div>
                 )}
+
             </div>
 
         </div>
