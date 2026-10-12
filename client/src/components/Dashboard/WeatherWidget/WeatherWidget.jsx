@@ -1,10 +1,27 @@
 import { useEffect, useState } from "react";
 import api from "../../../services/api";
+import {
+    formatTemperature,
+    formatRainfall
+} from "../../../utils/unitConversion";
 
 function WeatherWidget({ latitude, longitude }) {
     const [weather, setWeather] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+
+    const [settings] = useState(() => {
+        const savedSettings = localStorage.getItem(
+            "agripredict_settings"
+        );
+
+        return savedSettings
+            ? JSON.parse(savedSettings)
+            : {
+                temperatureUnit: "C",
+                rainfallUnit: "mm"
+            };
+    });
 
     useEffect(() => {
         const fetchWeather = async () => {
@@ -53,7 +70,6 @@ function WeatherWidget({ latitude, longitude }) {
     return (
         <div className="card shadow-sm h-100">
             <div className="card-body">
-
                 <h4>Current Weather</h4>
 
                 {loading && (
@@ -70,14 +86,23 @@ function WeatherWidget({ latitude, longitude }) {
 
                 {!loading && !error && weather && (
                     <div className="mt-3">
-                        <h1>{weather.temperature}°C</h1>
+                        <h1>
+                            {formatTemperature(
+                                weather.temperature,
+                                settings.temperatureUnit
+                            )}
+                        </h1>
 
                         <p>
                             Humidity: {weather.humidity}%
                         </p>
 
                         <p>
-                            Rainfall: {weather.rainfall} mm
+                            Rainfall:{" "}
+                            {formatRainfall(
+                                weather.rainfall,
+                                settings.rainfallUnit
+                            )}
                         </p>
 
                         <p className="mb-0">
@@ -91,7 +116,6 @@ function WeatherWidget({ latitude, longitude }) {
                         No farm location available.
                     </p>
                 )}
-
             </div>
         </div>
     );

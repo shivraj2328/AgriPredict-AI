@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import "./PredictionHistory.css";
 import api from "../../../services/api";
+import {
+    formatTemperature,
+    formatRainfall
+} from "../../../utils/unitConversion";
 
 function PredictionHistory() {
     const [predictions, setPredictions] = useState([]);
@@ -9,6 +13,20 @@ function PredictionHistory() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [selectedPrediction, setSelectedPrediction] = useState(null);
+
+    const [settings] = useState(() => {
+        const savedSettings = localStorage.getItem(
+            "agripredict_settings"
+        );
+
+        return savedSettings
+            ? JSON.parse(savedSettings)
+            : {
+                temperatureUnit: "C",
+                rainfallUnit: "mm",
+                showConfidenceScore: true
+            };
+    });
 
     useEffect(() => {
         const fetchPredictionHistory = async () => {
@@ -328,16 +346,18 @@ function PredictionHistory() {
                                 </strong>
                             </div>
 
-                            <div className="detail-item">
-                                <span>Confidence</span>
+                            {settings.showConfidenceScore && (
+                                <div className="detail-item">
+                                    <span>Confidence</span>
 
-                                <strong>
-                                    {Number(
-                                        selectedPrediction.confidence
-                                    ).toFixed(2)}
-                                    %
-                                </strong>
-                            </div>
+                                    <strong>
+                                        {Number(
+                                            selectedPrediction.confidence
+                                        ).toFixed(2)}
+                                        %
+                                    </strong>
+                                </div>
+                            )}
 
                         </div>
 
@@ -397,10 +417,12 @@ function PredictionHistory() {
                                 <span>Temperature</span>
 
                                 <strong>
-                                    {selectedPrediction.temperature ?? "N/A"}
                                     {selectedPrediction.temperature != null
-                                        ? " °C"
-                                        : ""}
+                                        ? formatTemperature(
+                                            selectedPrediction.temperature,
+                                            settings.temperatureUnit
+                                        )
+                                        : "N/A"}
                                 </strong>
                             </div>
 
@@ -419,10 +441,12 @@ function PredictionHistory() {
                                 <span>Rainfall</span>
 
                                 <strong>
-                                    {selectedPrediction.rainfall ?? "N/A"}
                                     {selectedPrediction.rainfall != null
-                                        ? " mm"
-                                        : ""}
+                                        ? formatRainfall(
+                                            selectedPrediction.rainfall,
+                                            settings.rainfallUnit
+                                        )
+                                        : "N/A"}
                                 </strong>
                             </div>
 
