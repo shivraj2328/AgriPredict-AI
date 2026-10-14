@@ -1,7 +1,10 @@
 import { useState } from "react";
+
 import "./PredictionForm.css";
+
 import api from "../../../services/api";
 import FarmLocation from "../FarmLocationPicker/FarmLocationPicker";
+
 import {
     formatTemperature,
     formatRainfall
@@ -17,30 +20,37 @@ function PredictionForm({
     const [weatherLoading, setWeatherLoading] = useState(false);
 
     const [settings] = useState(() => {
-        const savedSettings = localStorage.getItem(
-            "agripredict_settings"
-        );
+        try {
+            const savedSettings = localStorage.getItem(
+                "agripredict_settings"
+            );
 
-        return savedSettings
-            ? JSON.parse(savedSettings)
-            : {
+            return savedSettings
+                ? JSON.parse(savedSettings)
+                : {
+                    temperatureUnit: "C",
+                    rainfallUnit: "mm"
+                };
+        } catch {
+            return {
                 temperatureUnit: "C",
                 rainfallUnit: "mm"
             };
+        }
     });
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+    const handleChange = (event) => {
+        const { name, value } = event.target;
 
-        setFormData({
-            ...formData,
+        setFormData((previous) => ({
+            ...previous,
             [name]: value
-        });
+        }));
     };
 
     const handleLocationSelect = async (location) => {
-        setFormData((prev) => ({
-            ...prev,
+        setFormData((previous) => ({
+            ...previous,
             latitude: location.latitude,
             longitude: location.longitude,
             temperature: "",
@@ -56,23 +66,21 @@ function PredictionForm({
                 longitude: location.longitude
             });
 
-            setFormData((prev) => ({
-                ...prev,
+            setFormData((previous) => ({
+                ...previous,
                 latitude: location.latitude,
                 longitude: location.longitude,
                 temperature: response.data.temperature,
                 humidity: response.data.humidity,
                 rainfall: response.data.rainfall
             }));
-
         } catch (error) {
             console.error("Weather fetch error:", error);
 
             alert(
                 error.response?.data?.message ||
-                "Failed to fetch weather data"
+                "Failed to fetch weather data."
             );
-
         } finally {
             setWeatherLoading(false);
         }
@@ -105,179 +113,162 @@ function PredictionForm({
             : "";
 
     return (
-        <div className="card prediction-form shadow p-4">
+        <div className="card prediction-form shadow-sm">
+            <div className="prediction-form-layout">
 
-            <h4 className="mb-4">
-                Soil Parameters
-            </h4>
+                {/* Left Column: Soil and Weather */}
+                <div className="prediction-input-column">
+                    <h4 className="prediction-section-title">
+                        🧪 Soil Parameters
+                    </h4>
 
-            <div className="row">
+                    <div className="row">
+                        <div className="col-sm-6 mb-3">
+                            <label className="form-label">
+                                Nitrogen (N)
+                            </label>
 
-                {/* Nitrogen */}
-                <div className="col-md-6 mb-3">
-                    <label className="form-label">
-                        Nitrogen (N)
-                    </label>
+                            <input
+                                type="number"
+                                className="form-control"
+                                name="nitrogen"
+                                value={formData.nitrogen}
+                                onChange={handleChange}
+                                disabled={predictionLoading}
+                            />
+                        </div>
 
-                    <input
-                        type="number"
-                        className="form-control"
-                        name="nitrogen"
-                        value={formData.nitrogen || ""}
-                        onChange={handleChange}
-                        disabled={predictionLoading}
-                    />
+                        <div className="col-sm-6 mb-3">
+                            <label className="form-label">
+                                Phosphorus (P)
+                            </label>
+
+                            <input
+                                type="number"
+                                className="form-control"
+                                name="phosphorus"
+                                value={formData.phosphorus}
+                                onChange={handleChange}
+                                disabled={predictionLoading}
+                            />
+                        </div>
+
+                        <div className="col-sm-6 mb-3">
+                            <label className="form-label">
+                                Potassium (K)
+                            </label>
+
+                            <input
+                                type="number"
+                                className="form-control"
+                                name="potassium"
+                                value={formData.potassium}
+                                onChange={handleChange}
+                                disabled={predictionLoading}
+                            />
+                        </div>
+
+                        <div className="col-sm-6 mb-3">
+                            <label className="form-label">
+                                Soil pH
+                            </label>
+
+                            <input
+                                type="number"
+                                step="0.1"
+                                className="form-control"
+                                name="ph"
+                                value={formData.ph}
+                                onChange={handleChange}
+                                disabled={predictionLoading}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="prediction-weather-section">
+                        <h5 className="prediction-section-title">
+                            🌦️ Weather Information
+                        </h5>
+
+                        {weatherLoading && (
+                            <div className="alert alert-info py-2">
+                                Fetching weather for your farm...
+                            </div>
+                        )}
+
+                        {weatherLoaded && !weatherLoading && (
+                            <div className="alert alert-success py-2">
+                                ✓ Weather data fetched successfully.
+                            </div>
+                        )}
+
+                        <div className="row">
+                            <div className="col-sm-6 mb-3">
+                                <label className="form-label">
+                                    🌡️ Temperature (°{settings.temperatureUnit})
+                                </label>
+
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={displayedTemperature}
+                                    readOnly
+                                />
+                            </div>
+
+                            <div className="col-sm-6 mb-3">
+                                <label className="form-label">
+                                    💧 Humidity (%)
+                                </label>
+
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={formData.humidity ?? ""}
+                                    readOnly
+                                />
+                            </div>
+
+                            <div className="col-12 mb-3">
+                                <label className="form-label">
+                                    🌧️ Rainfall ({settings.rainfallUnit})
+                                </label>
+
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={displayedRainfall}
+                                    readOnly
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                {/* Phosphorus */}
-                <div className="col-md-6 mb-3">
-                    <label className="form-label">
-                        Phosphorus (P)
-                    </label>
+                {/* Right Column: Farm Map */}
+                <div className="prediction-map-column">
+                    <h4 className="prediction-section-title">
+                        📍 Farm Location
+                    </h4>
 
-                    <input
-                        type="number"
-                        className="form-control"
-                        name="phosphorus"
-                        value={formData.phosphorus || ""}
-                        onChange={handleChange}
-                        disabled={predictionLoading}
+                    <p className="text-muted small">
+                        Search your village or city, then select your farm
+                        on the map to fetch its weather information.
+                    </p>
+
+                    <FarmLocation
+                        onLocationSelect={handleLocationSelect}
                     />
                 </div>
-
-                {/* Potassium */}
-                <div className="col-md-6 mb-3">
-                    <label className="form-label">
-                        Potassium (K)
-                    </label>
-
-                    <input
-                        type="number"
-                        className="form-control"
-                        name="potassium"
-                        value={formData.potassium || ""}
-                        onChange={handleChange}
-                        disabled={predictionLoading}
-                    />
-                </div>
-
-                {/* Soil pH */}
-                <div className="col-md-6 mb-4">
-                    <label className="form-label">
-                        Soil pH
-                    </label>
-
-                    <input
-                        type="number"
-                        step="0.1"
-                        className="form-control"
-                        name="ph"
-                        value={formData.ph || ""}
-                        onChange={handleChange}
-                        disabled={predictionLoading}
-                    />
-                </div>
-
             </div>
 
-            {/* Weather Information */}
-            <div className="weather-section mb-4">
-
-                <h5 className="mb-3">
-                    🌦️ Weather Information
-                </h5>
-
-                {weatherLoading && (
-                    <div className="alert alert-info">
-                        🌦️ Fetching weather for your farm...
-                    </div>
-                )}
-
-                {weatherLoaded && !weatherLoading && (
-                    <div className="alert alert-success">
-                        ✓ Weather data fetched for your selected farm.
-                    </div>
-                )}
-
-                <div className="row">
-
-                    {/* Temperature */}
-                    <div className="col-md-4 mb-3">
-                        <label className="form-label">
-                            🌡️ Temperature (
-                            °{settings.temperatureUnit}
-                            )
-                        </label>
-
-                        <input
-                            type="text"
-                            className="form-control"
-                            value={displayedTemperature}
-                            readOnly
-                        />
-                    </div>
-
-                    {/* Humidity */}
-                    <div className="col-md-4 mb-3">
-                        <label className="form-label">
-                            💧 Humidity (%)
-                        </label>
-
-                        <input
-                            type="number"
-                            className="form-control"
-                            value={formData.humidity || ""}
-                            readOnly
-                        />
-                    </div>
-
-                    {/* Rainfall */}
-                    <div className="col-md-4 mb-3">
-                        <label className="form-label">
-                            🌧️ Rainfall (
-                            {settings.rainfallUnit}
-                            )
-                        </label>
-
-                        <input
-                            type="text"
-                            className="form-control"
-                            value={displayedRainfall}
-                            readOnly
-                        />
-                    </div>
-
-                </div>
-
-            </div>
-
-            {/* Farm Location */}
-            <div className="row px-2">
-
-                <FarmLocation
-                    onLocationSelect={handleLocationSelect}
-                />
-
-            </div>
-
-            {/* Prediction Loading */}
-            {predictionLoading && (
-                <div className="alert alert-success mt-2">
-                    🤖 Analyzing your farm data...
-                </div>
-            )}
-
-            {/* Action Buttons */}
-            <div className="d-flex gap-3 mt-2">
-
+            {/* Actions */}
+            <div className="prediction-form-actions">
                 <button
                     type="button"
                     className="btn btn-success"
                     onClick={handlePredict}
-                    disabled={
-                        weatherLoading ||
-                        predictionLoading
-                    }
+                    disabled={weatherLoading || predictionLoading}
                 >
                     {predictionLoading ? (
                         <>
@@ -285,12 +276,11 @@ function PredictionForm({
                                 className="spinner-border spinner-border-sm me-2"
                                 role="status"
                                 aria-hidden="true"
-                            ></span>
-
+                            />
                             Analyzing...
                         </>
                     ) : (
-                        "Predict Crop"
+                        "🌱 Predict Crop"
                     )}
                 </button>
 
@@ -298,16 +288,11 @@ function PredictionForm({
                     type="button"
                     className="btn btn-outline-secondary"
                     onClick={handleReset}
-                    disabled={
-                        weatherLoading ||
-                        predictionLoading
-                    }
+                    disabled={weatherLoading || predictionLoading}
                 >
                     Reset
                 </button>
-
             </div>
-
         </div>
     );
 }
