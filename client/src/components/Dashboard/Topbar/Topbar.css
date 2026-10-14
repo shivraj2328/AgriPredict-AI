@@ -1,0 +1,75 @@
+.topbar {
+    min-height: 68px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+    background: linear-gradient(110deg, #ffffff, #f0f8f1);
+    box-shadow: 0 2px 10px #174c2912;
+    position: relative;
+    z-index: 1000;
+}
+
+.topbar-title {
+    margin: 0;
+    color: #205c35;
+    font-size: 23px;
+    font-weight: 700;
+}
+
+.user-menu {
+    position: relative;
+}
+
+.user-avatar {
+    width: 44px;
+    height: 44px;
+    border: 3px solid #d7efdc;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #43a86b, #17653b);
+    color: white;
+    font-size: 19px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.user-dropdown {
+    position: absolute;
+    right: 0;
+    top: 54px;
+    width: 190px;
+    padding: 12px;
+    background: white;
+    border: 1px solid #e1ebe3;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px #0002;
+}
+
+.user-dropdown strong,
+.user-dropdown a,
+.user-dropdown button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+}
+
+.user-dropdown strong {
+    color: #205c35;
+}
+
+.user-dropdown a,
+.user-dropdown button {
+    border: none;
+    border-radius: 7px;
+    background: white;
+    color: #374151;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.user-dropdown a:hover,
+.user-dropdown button:hover {
+    background: #edf7ef;
+    color: #17653b;
+}
