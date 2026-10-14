@@ -1,39 +1,154 @@
-.prediction-form{
-
-border-radius:15px;
-
-background:#ffffff;
-
-}
-
-.prediction-form h4{
-
-color:#2E7D32;
-
-font-weight:700;
-
-}
-
-.prediction-form .btn{
-
-min-width:150px;
-
-}
-
-.prediction-form input{
-
-height:48px;
-
-}
-
-.weather-section {
+.prediction-form {
+    border: 1px solid #e3ebe5;
+    border-radius: 14px;
+    background: #ffffff;
     padding: 18px;
-    background: #f8f9fa;
-    border-radius: 10px;
-    border: 1px solid #dee2e6;
 }
 
-.weather-section h5 {
-    color: #198754;
+.prediction-form-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: 18px;
+    align-items: start;
+}
+
+.prediction-input-column,
+.prediction-map-column {
+    min-width: 0;
+}
+
+.prediction-section-title {
+    color: #2e7d32;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.prediction-form .form-label {
+    font-size: 0.84rem;
     font-weight: 600;
+    color: #374151;
+    margin-bottom: 5px;
+}
+
+.prediction-form input {
+    height: 40px;
+    min-height: 40px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.prediction-form .btn {
+    min-height: 38px;
+    border-radius: 8px;
+}
+
+.prediction-weather-section {
+    padding: 12px;
+    background: #f7faf7;
+    border: 1px solid #e1ebe2;
+    border-radius: 12px;
+    margin-top: 4px;
+}
+
+.prediction-weather-section .prediction-section-title {
+    font-size: 1.05rem;
+    margin-bottom: 10px;
+}
+
+.prediction-weather-section .alert {
+    padding: 7px 10px;
+    margin-bottom: 10px;
+    font-size: 0.8rem;
+}
+
+.prediction-map-column {
+    padding: 12px;
+    background: #f8faf8;
+    border: 1px solid #e1ebe2;
+    border-radius: 12px;
+}
+
+.prediction-map-column .farm-location-picker {
+    margin-bottom: 0 !important;
+}
+
+.prediction-map-column .farm-location-picker > h5,
+.prediction-map-column .farm-location-picker > p {
+    display: none;
+}
+
+/* Compact map so the full form fits better */
+.prediction-map-column .farm-location-picker > div[style] {
+    height: 220px !important;
+}
+
+.prediction-map-column .farm-location-picker .mb-3 {
+    margin-bottom: 8px !important;
+}
+
+.prediction-map-column .farm-location-picker .form-text {
+    font-size: 0.75rem;
+}
+
+.prediction-map-column .farm-location-picker .alert {
+    overflow-wrap: anywhere;
+    font-size: 0.78rem;
+}
+
+.prediction-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 14px;
+    padding-top: 12px;
+}
+
+@media (min-width: 992px) {
+    .prediction-page-container {
+        padding-top: 14px !important;
+        padding-bottom: 16px !important;
+    }
+
+    .prediction-page-header {
+        margin-bottom: 12px !important;
+    }
+
+    .prediction-page-header h2 {
+        font-size: 1.8rem;
+        margin-bottom: 4px;
+    }
+
+    .prediction-page-header p {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 991px) {
+    .prediction-form-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .prediction-map-column .farm-location-picker > div[style] {
+        height: 300px !important;
+    }
+}
+
+@media (max-width: 575px) {
+    .prediction-form {
+        padding: 12px;
+    }
+
+    .prediction-map-column {
+        padding: 10px;
+    }
+
+    .prediction-form-actions {
+        flex-direction: column;
+    }
+
+    .prediction-form-actions .btn {
+        width: 100%;
+    }
 }
