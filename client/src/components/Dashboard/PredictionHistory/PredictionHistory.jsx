@@ -100,7 +100,7 @@ function PredictionHistory() {
         <div className="prediction-history">
 
             {/* Header */}
-            <div className="prediction-history-header">
+            {/* <div className="prediction-history-header">
                 <div>
                     <h2>Prediction History</h2>
 
@@ -108,7 +108,7 @@ function PredictionHistory() {
                         View and search your previous crop predictions.
                     </p>
                 </div>
-            </div>
+            </div> */}
 
             {/* Filters */}
             <div className="history-filters">
