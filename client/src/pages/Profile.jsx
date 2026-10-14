@@ -99,7 +99,7 @@ function Profile() {
 
                 {/* Page Header */}
                 <div className="profile-page-header">
-                    <h2>My Profile</h2>
+                    {/* <h2>My Profile</h2> */}
                     <p>
                         Manage your account information and view your
                         farming activity.
