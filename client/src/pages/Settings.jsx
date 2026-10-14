@@ -56,7 +56,7 @@ function Settings() {
             <div className="settings-page">
 
                 <div className="settings-page-header">
-                    <h2>Settings</h2>
+                    {/* <h2>Settings</h2> */}
                     <p>
                         Manage your AgriPredict application preferences.
                     </p>
