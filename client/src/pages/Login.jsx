@@ -76,7 +76,7 @@ function Login() {
                             onChange={(e) => setPassword(e.target.value)}
                         />
 
-                        <div className="d-flex justify-content-between mb-3">
+                        <div className="d-flex justify-content-start mb-3">
                             <div className="form-check">
                                 <input
                                     className="form-check-input"
@@ -91,7 +91,7 @@ function Login() {
                                 </label>
                             </div>
 
-                            <Link to="#">Forgot Password?</Link>
+                            {/* <Link to="#">Forgot Password?</Link> */}
                         </div>
 
                         <AuthButton text="Login" />
