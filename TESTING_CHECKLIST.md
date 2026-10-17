@@ -1,12 +1,18 @@
 # AgriPredict AI — Testing Checklist
 
 ## 1. Authentication
-- [X] User registration
-- [ ] User login
-- [ ] Invalid login credentials
-- [ ] Logout
-- [ ] Protected routes
-- [ ] Session persistence
+| # | Test case                         | Status   |
+| - | --------------------------------- | -------- |
+| 1 | User registration                 | ✅ Passed |
+| 2 | Duplicate email registration      | ✅ Passed |
+| 3 | Password length validation        | ✅ Passed |
+| 4 | Password mismatch validation      | ✅ Passed |
+| 5 | Login with valid credentials      | ✅ Passed |
+| 6 | Login with invalid credentials    | ✅ Passed |
+| 7 | Protected routes after logout     | ✅ Passed |
+| 8 | Session persistence after refresh | ✅ Passed |
+| 9 | Logout functionality              | ✅ Passed |
+
 
 ## 2. Dashboard
 - [ ] Dashboard statistics
