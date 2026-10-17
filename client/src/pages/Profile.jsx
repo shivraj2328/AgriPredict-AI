@@ -60,22 +60,35 @@ function Profile() {
         setIsEditing(true);
     };
 
-    const handleSave = () => {
-        if (!name.trim() || !email.trim()) {
-            alert("Please fill all fields.");
-            return;
-        }
+    const handleSave = async () => {
+    if (!name.trim() || !email.trim()) {
+        alert("Please fill all fields.");
+        return;
+    }
 
-        setUser({
-            ...user,
-            name: name,
-            email: email,
+    try {
+        const response = await api.put("/auth/me", {
+            name: name.trim(),
+            email: email.trim()
         });
 
-        setIsEditing(false);
+        if (response.data.success) {
+            setUser(response.data.user);
+            setName(response.data.user.name);
+            setEmail(response.data.user.email);
+            setIsEditing(false);
 
-        alert("Profile updated successfully.");
-    };
+            alert("Profile updated successfully.");
+        }
+    } catch (error) {
+        console.error("Profile update error:", error);
+
+        alert(
+            error.response?.data?.message ||
+            "Failed to update profile. Please try again."
+        );
+    }
+};
 
     const handleCancel = () => {
         setName(user.name);
