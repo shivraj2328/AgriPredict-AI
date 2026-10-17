@@ -1,7 +1,7 @@
 # AgriPredict AI — Testing Checklist
 
 ## 1. Authentication
-- [ ] User registration
+- [X] User registration
 - [ ] User login
 - [ ] Invalid login credentials
 - [ ] Logout
