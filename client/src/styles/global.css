@@ -1,0 +1,86 @@
+/* =========================
+   GLOBAL RESPONSIVE LAYOUT
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    width: 100%;
+    min-height: 100vh;
+}
+
+#root {
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* Dashboard */
+
+.dashboard-layout {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.dashboard-main {
+    flex: 1;
+    min-width: 0;
+    width: 0;
+}
+
+.dashboard-content {
+    width: 100%;
+    min-width: 0;
+    padding: 24px !important;
+}
+
+/* Prevent images and form elements overflowing */
+
+.dashboard-content img,
+.dashboard-content canvas,
+.dashboard-content iframe {
+    max-width: 100%;
+}
+
+.dashboard-content input,
+.dashboard-content select,
+.dashboard-content textarea {
+    max-width: 100%;
+}
+
+/* Tablet and mobile */
+
+@media (max-width: 768px) {
+    .dashboard-layout {
+        display: flex;
+        width: 100%;
+    }
+
+    .dashboard-main {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .dashboard-content {
+        padding: 12px !important;
+        padding-top: 68px !important;
+    }
+}
+
+/* Small phones */
+
+@media (max-width: 360px) {
+    .dashboard-content {
+        padding: 8px !important;
+        padding-top: 64px !important;
+    }
+}
