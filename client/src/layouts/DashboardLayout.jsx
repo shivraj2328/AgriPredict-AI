@@ -15,19 +15,19 @@ function DashboardLayout({ children }) {
 
     const title = pageTitles[pathname] || "AgriPredict";
 
-    return (
-        <div className="d-flex">
-            <Sidebar />
+   return (
+    <div className="dashboard-layout">
+        <Sidebar />
 
-            <div className="flex-grow-1">
-                <Topbar title={title} />
+        <div className="dashboard-main">
+            <Topbar title={title} />
 
-                <main className="container-fluid p-4">
-                    {children}
-                </main>
-            </div>
+            <main className="container-fluid dashboard-content">
+                {children}
+            </main>
         </div>
-    );
+    </div>
+);
 }
 
 export default DashboardLayout;

@@ -1,3 +1,4 @@
+import "./styles/global.css";
 import AppRoutes from "./routes/AppRoutes";
 
 function App() {
