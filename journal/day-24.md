@@ -2,7 +2,7 @@
 
 ## Date
 
-8 September 2026 to 15 September 2026
+10 September 2026 to 15 September 2026
 
 ## Phase
 
@@ -95,4 +95,4 @@ Move toward weather API integration and automatically obtain environmental param
 
 
 ## Time Spent 
-8 Days
+5 Days
