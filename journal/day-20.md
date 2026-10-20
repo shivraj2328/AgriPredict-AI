@@ -2,7 +2,7 @@
 
 ## Date
 
-3 September 2026
+31 August 2026 - 3 September 2026
 
 ## Objective
 
@@ -88,4 +88,4 @@ Build the Prediction Controller and API endpoints to receive prediction inputs a
 
 ## Time Spent
 
-1 day
+4 days
