@@ -2,7 +2,7 @@
 
 ## Date
 
-8 September 2026
+8 September 2026 to 15 September 2026
 
 ## Phase
 
@@ -92,3 +92,7 @@ This completes the frontend integration of the AI-powered prediction workflow.
 ## Next Goal
 
 Move toward weather API integration and automatically obtain environmental parameters such as temperature, humidity, and rainfall based on the farmer's selected farm location.
+
+
+## Time Spent 
+8 Days
