@@ -2,7 +2,7 @@
 
 ## Date 
 
-6 September 2026
+5 September 2026 - 6 September 2026
 
 ## Today's Goal
 
@@ -118,3 +118,6 @@ AgriPredict AI can now load the trained TensorFlow.js model, normalize the requi
 ## Next Goal
 
 Connect the verified AI prediction model with the backend Prediction API so that real prediction requests can use the ML model and store the final prediction result in MongoDB.
+
+## Time Spent
+2 Days
