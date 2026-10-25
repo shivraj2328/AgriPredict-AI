@@ -1,6 +1,6 @@
 # Day 34 — Farm Database & Backend
 
-**Date:** 15 October 2026
+**Date:** 20 October 2026 to 23 October 2026
 **Phase:** Multi-Farm Management
 
 ## Objective
