@@ -25,6 +25,11 @@ const initialFormData = {
 function Prediction() {
     const [formData, setFormData] = useState(initialFormData);
 
+    const [farms, setFarms] = useState([]);
+    const [selectedFarmId, setSelectedFarmId] = useState("");
+    const [farmsLoading, setFarmsLoading] = useState(true);
+    const [farmsError, setFarmsError] = useState("");
+
     const [prediction, setPrediction] = useState(null);
     const [lastPrediction, setLastPrediction] = useState(() => {
         try {
@@ -40,6 +45,32 @@ function Prediction() {
     const [error, setError] = useState("");
     const [validationErrors, setValidationErrors] = useState([]);
 
+    // Fetch registered farms belonging to the logged-in user
+    useEffect(() => {
+        const fetchFarms = async () => {
+            try {
+                setFarmsLoading(true);
+                setFarmsError("");
+
+                const response = await api.get("/farms");
+                const registeredFarms = response.data.farms || [];
+
+                setFarms(registeredFarms);
+            } catch (err) {
+                console.error("Fetch farms error:", err);
+
+                setFarmsError(
+                    err.response?.data?.message ||
+                    "Failed to load your registered farms."
+                );
+            } finally {
+                setFarmsLoading(false);
+            }
+        };
+
+        fetchFarms();
+    }, []);
+
     useEffect(() => {
         if (prediction) {
             setShowResultModal(true);
@@ -49,6 +80,11 @@ function Prediction() {
     const handlePredict = async () => {
         setError("");
         setValidationErrors([]);
+
+        if (!selectedFarmId) {
+            setError("Please select a registered farm before predicting.");
+            return;
+        }
 
         for (const key in formData) {
             if (
@@ -69,17 +105,20 @@ function Prediction() {
         try {
             setPredictionLoading(true);
 
+            // Step 5 will send selectedFarmId to the prediction API.
+            // For Step 4, the existing prediction request remains unchanged.
             const response = await api.post("/predictions", {
-                nitrogen: Number(formData.nitrogen),
-                phosphorus: Number(formData.phosphorus),
-                potassium: Number(formData.potassium),
-                temperature: Number(formData.temperature),
-                humidity: Number(formData.humidity),
-                rainfall: Number(formData.rainfall),
-                ph: Number(formData.ph),
-                latitude: Number(formData.latitude),
-                longitude: Number(formData.longitude)
-            });
+    farm: selectedFarmId,
+    nitrogen: Number(formData.nitrogen),
+    phosphorus: Number(formData.phosphorus),
+    potassium: Number(formData.potassium),
+    temperature: Number(formData.temperature),
+    humidity: Number(formData.humidity),
+    rainfall: Number(formData.rainfall),
+    ph: Number(formData.ph),
+    latitude: Number(formData.latitude),
+    longitude: Number(formData.longitude)
+});
 
             const result = response.data.prediction;
 
@@ -134,15 +173,64 @@ function Prediction() {
     return (
         <DashboardLayout>
             <div className="container-fluid prediction-page-container">
-                {/* <div className="prediction-page-header">
-                    <div>
-                        <h2>🌱 Crop Prediction</h2>
-                        <p>
-                            Enter your soil parameters and select your farm location
-                            to get an AI-powered crop recommendation.
+                {/* Registered farm selection */}
+                <div className="card shadow-sm mb-3 p-3">
+                    <label
+                        htmlFor="prediction-farm"
+                        className="form-label fw-bold"
+                    >
+                        🌾 Select Registered Farm
+                    </label>
+
+                    {farmsLoading ? (
+                        <p className="text-muted mb-0">
+                            Loading your registered farms...
                         </p>
-                    </div>
-                </div> */}
+                    ) : farmsError ? (
+                        <div className="alert alert-danger mb-0">
+                            {farmsError}
+                        </div>
+                    ) : farms.length === 0 ? (
+                        <div className="alert alert-warning mb-0">
+                            You haven't registered any farms yet. Register
+                            a farm in My Farms before making a prediction.
+                        </div>
+                    ) : (
+                        <>
+                            <select
+                                id="prediction-farm"
+                                className="form-select"
+                                value={selectedFarmId}
+                                onChange={(event) =>
+                                    setSelectedFarmId(event.target.value)
+                                }
+                                disabled={predictionLoading}
+                            >
+                                <option value="">
+                                    -- Select a farm --
+                                </option>
+
+                                {farms.map((farm) => (
+                                    <option
+                                        key={farm._id}
+                                        value={farm._id}
+                                    >
+                                        {farm.name}
+                                    </option>
+                                ))}
+                            </select>
+
+                            {selectedFarmId && (
+                                <small className="text-muted mt-2">
+                                    Selected farm:{" "}
+                                    {farms.find(
+                                        (farm) => farm._id === selectedFarmId
+                                    )?.name}
+                                </small>
+                            )}
+                        </>
+                    )}
+                </div>
 
                 {error && (
                     <div className="alert alert-danger prediction-error">
@@ -164,6 +252,8 @@ function Prediction() {
                     handlePredict={handlePredict}
                     handleReset={handleReset}
                     predictionLoading={predictionLoading}
+                    farmsLoading={farmsLoading}
+                    hasRegisteredFarms={farms.length > 0}
                 />
 
                 {/* Prediction Result Popup */}
@@ -218,6 +308,7 @@ function Prediction() {
 
                         <span className="last-prediction-content">
                             <strong>Last Prediction</strong>
+
                             <span className="last-prediction-crop">
                                 {lastPrediction.crop}
                             </span>

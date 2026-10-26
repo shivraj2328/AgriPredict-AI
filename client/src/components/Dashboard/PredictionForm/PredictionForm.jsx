@@ -15,7 +15,9 @@ function PredictionForm({
     setFormData,
     handlePredict,
     handleReset,
-    predictionLoading = false
+    predictionLoading = false,
+    farmsLoading = false,
+    hasRegisteredFarms = false
 }) {
     const [weatherLoading, setWeatherLoading] = useState(false);
 
@@ -268,7 +270,12 @@ function PredictionForm({
                     type="button"
                     className="btn btn-success"
                     onClick={handlePredict}
-                    disabled={weatherLoading || predictionLoading}
+                    disabled={
+    weatherLoading ||
+    predictionLoading ||
+    farmsLoading ||
+    !hasRegisteredFarms
+}
                 >
                     {predictionLoading ? (
                         <>
