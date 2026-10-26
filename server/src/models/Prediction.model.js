@@ -8,6 +8,13 @@ const predictionSchema = new mongoose.Schema(
             required: true
         },
 
+        farm: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Farm",
+    required: false,
+    default: null
+},
+
         nitrogen: {
             type: Number,
             required: true,
