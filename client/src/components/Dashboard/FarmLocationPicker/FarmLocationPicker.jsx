@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import {
     MapContainer,
     TileLayer,
@@ -6,10 +7,11 @@ import {
     useMap,
     useMapEvents
 } from "react-leaflet";
+
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-// Fix the default Leaflet marker icon.
+// Fix default Leaflet marker icons.
 delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
@@ -23,13 +25,13 @@ L.Icon.Default.mergeOptions({
 
 const DEFAULT_POSITION = [18.5204, 73.8567];
 
-// Updates the map when the selected location changes.
+// Move the map when the selected location changes.
 const MapController = ({ position }) => {
     const map = useMap();
 
     useEffect(() => {
         if (position) {
-            map.flyTo(position, 13, {
+            map.flyTo(position, 15, {
                 animate: true,
                 duration: 1
             });
@@ -39,10 +41,12 @@ const MapController = ({ position }) => {
     return null;
 };
 
-// Handles clicks on the map.
-const MapClickHandler = ({ onLocationChange }) => {
+// Handle map clicks when location selection is enabled.
+const MapClickHandler = ({ onLocationChange, enabled }) => {
     useMapEvents({
         click(event) {
+            if (!enabled) return;
+
             onLocationChange([
                 event.latlng.lat,
                 event.latlng.lng
@@ -55,14 +59,16 @@ const MapClickHandler = ({ onLocationChange }) => {
 
 const FarmLocation = ({
     onLocationSelect,
-    selectedLocation
+    selectedLocation,
+    readOnly = false
 }) => {
     const [position, setPosition] = useState(DEFAULT_POSITION);
     const [searchQuery, setSearchQuery] = useState("");
     const [searchLoading, setSearchLoading] = useState(false);
     const [searchError, setSearchError] = useState("");
+    const [mapType, setMapType] = useState("map");
 
-    // Synchronize the map with the selected registered farm.
+    // Sync the map with the selected farm's saved coordinates.
     useEffect(() => {
         if (
             !selectedLocation ||
@@ -92,22 +98,31 @@ const FarmLocation = ({
         selectedLocation?.longitude
     ]);
 
-    // Update the marker and notify PredictionForm.
     const handleLocationChange = (newPosition) => {
+        if (readOnly) return;
+
         const [latitude, longitude] = newPosition;
+
+        if (
+            !Number.isFinite(latitude) ||
+            !Number.isFinite(longitude)
+        ) {
+            return;
+        }
 
         setPosition(newPosition);
         setSearchError("");
 
-        onLocationSelect({
+        onLocationSelect?.({
             latitude,
             longitude
         });
     };
 
-    // Search for a location using OpenStreetMap's Nominatim service.
     const handleSearch = async (event) => {
         event.preventDefault();
+
+        if (readOnly) return;
 
         const query = searchQuery.trim();
 
@@ -140,7 +155,11 @@ const FarmLocation = ({
 
             if (
                 !Number.isFinite(latitude) ||
-                !Number.isFinite(longitude)
+                !Number.isFinite(longitude) ||
+                latitude < -90 ||
+                latitude > 90 ||
+                longitude < -180 ||
+                longitude > 180
             ) {
                 setSearchError("The returned location is invalid.");
                 return;
@@ -160,45 +179,84 @@ const FarmLocation = ({
 
     return (
         <div className="farm-location-picker">
-            <h3>Select Farm Location</h3>
 
-            <p>
-                Select your farm by clicking the map, dragging the marker,
-                or searching for a location.
-            </p>
+            {!readOnly && (
+                <>
+                    <p className="text-secondary small mb-3">
+                        Search your village or city, then select your
+                        farm on the map.
+                    </p>
 
-            <form
-                onSubmit={handleSearch}
-                className="farm-location-search"
-            >
-                <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(event) =>
-                        setSearchQuery(event.target.value)
-                    }
-                    placeholder="Search village, city, or address"
-                    aria-label="Search farm location"
-                />
+                    <form
+                        onSubmit={handleSearch}
+                        className="d-flex gap-2 mb-2"
+                    >
+                        <input
+                            type="text"
+                            value={searchQuery}
+                            onChange={(event) =>
+                                setSearchQuery(event.target.value)
+                            }
+                            placeholder="e.g. Baramati, Pune, Maharashtra"
+                            aria-label="Search farm location"
+                            className="form-control"
+                        />
 
-                <button
-                    type="submit"
-                    disabled={searchLoading}
-                >
-                    {searchLoading ? "Searching..." : "Search"}
-                </button>
-            </form>
+                        <button
+                            type="submit"
+                            disabled={searchLoading}
+                            className="btn btn-primary"
+                        >
+                            {searchLoading
+                                ? "Searching..."
+                                : "Search"}
+                        </button>
+                    </form>
 
-            {searchError && (
-                <p role="alert" className="location-error">
-                    {searchError}
-                </p>
+                    <small className="text-secondary d-block mb-2">
+                        For better results, enter village, district and state.
+                    </small>
+
+                    {searchError && (
+                        <div className="alert alert-danger py-2 small">
+                            {searchError}
+                        </div>
+                    )}
+                </>
             )}
 
+            {/* Map view controls */}
+            <div className="d-flex gap-2 mb-2">
+                <button
+                    type="button"
+                    className={`btn btn-sm ${
+                        mapType === "map"
+                            ? "btn-primary"
+                            : "btn-outline-primary"
+                    }`}
+                    onClick={() => setMapType("map")}
+                >
+                    🗺️ Map
+                </button>
+
+                <button
+                    type="button"
+                    className={`btn btn-sm ${
+                        mapType === "satellite"
+                            ? "btn-primary"
+                            : "btn-outline-primary"
+                    }`}
+                    onClick={() => setMapType("satellite")}
+                >
+                    🛰️ Satellite
+                </button>
+            </div>
+
+            {/* Actual farm location */}
             <div
                 className="farm-map-container"
                 style={{
-                    height: "350px",
+                    height: readOnly ? "320px" : "350px",
                     width: "100%",
                     borderRadius: "10px",
                     overflow: "hidden"
@@ -206,35 +264,49 @@ const FarmLocation = ({
             >
                 <MapContainer
                     center={position}
-                    zoom={13}
-                    scrollWheelZoom
+                    zoom={15}
+                    scrollWheelZoom={!readOnly}
+                    dragging={!readOnly}
+                    doubleClickZoom={!readOnly}
+                    touchZoom={!readOnly}
+                    keyboard={!readOnly}
                     style={{
                         height: "100%",
                         width: "100%"
                     }}
                 >
-                    <TileLayer
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
+                    {mapType === "map" ? (
+                        <TileLayer
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        />
+                    ) : (
+                        <TileLayer
+                            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                            attribution="Tiles &copy; Esri"
+                        />
+                    )}
 
                     <MapController position={position} />
 
                     <MapClickHandler
+                        enabled={!readOnly}
                         onLocationChange={handleLocationChange}
                     />
 
                     <Marker
                         position={position}
-                        draggable
+                        draggable={!readOnly}
                         eventHandlers={{
                             dragend(event) {
+                                if (readOnly) return;
+
                                 const marker = event.target;
-                                const newPosition = marker.getLatLng();
+                                const coordinates = marker.getLatLng();
 
                                 handleLocationChange([
-                                    newPosition.lat,
-                                    newPosition.lng
+                                    coordinates.lat,
+                                    coordinates.lng
                                 ]);
                             }
                         }}
@@ -242,19 +314,25 @@ const FarmLocation = ({
                 </MapContainer>
             </div>
 
-            <div className="selected-coordinates">
-                <p>
-                    <strong>Latitude:</strong>{" "}
-                    {position[0].toFixed(6)}
-                </p>
+            {/* Coordinates */}
+            <div className="border rounded-3 bg-white p-3 mt-3 small">
+                <strong>
+                    {readOnly
+                        ? "Registered Farm Location"
+                        : "Selected Farm Location"}
+                </strong>
 
-                <p>
-                    <strong>Longitude:</strong>{" "}
-                    {position[1].toFixed(6)}
-                </p>
+                <div className="mt-2">
+                    Latitude: {position[0].toFixed(6)}
+                </div>
+
+                <div>
+                    Longitude: {position[1].toFixed(6)}
+                </div>
             </div>
         </div>
     );
 };
 
 export default FarmLocation;
+

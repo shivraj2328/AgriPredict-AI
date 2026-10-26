@@ -688,3 +688,428 @@
         padding: 9px;
     }
 }
+
+/* ========================================
+   Compact Crop Prediction Layout
+   ======================================== */
+
+.prediction-form-compact {
+    width: 100%;
+    min-width: 0;
+}
+
+.prediction-form-compact > .card {
+    margin-bottom: 0;
+}
+
+.prediction-form-compact > .card > .card-body {
+    padding: 0.75rem !important;
+}
+
+.prediction-form-compact .prediction-section {
+    min-width: 0;
+}
+
+.prediction-form-compact .section-heading {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+}
+
+.prediction-form-compact .form-label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+}
+
+.prediction-form-compact .form-control,
+.prediction-form-compact .form-select {
+    min-height: 35px;
+    padding: 0.35rem 0.55rem;
+    font-size: 0.9rem;
+}
+
+.prediction-form-compact .compact-alert {
+    padding: 0.4rem 0.6rem;
+    margin-bottom: 0.6rem;
+    font-size: 0.8rem;
+}
+
+.prediction-form-compact .farm-location-picker > p {
+    margin-bottom: 0.5rem;
+}
+
+.prediction-form-compact .farm-location-picker .farm-map-container {
+    height: 250px !important;
+    min-height: 200px;
+}
+
+.prediction-form-compact .farm-location-picker > .border {
+    margin-top: 0.5rem !important;
+    padding: 0.5rem !important;
+}
+
+.prediction-form-compact .farm-location-picker .btn {
+    padding: 0.3rem 0.55rem;
+    font-size: 0.8rem;
+}
+
+.prediction-form-compact .prediction-actions {
+    padding-bottom: 0;
+}
+
+.prediction-form-compact .prediction-actions .btn {
+    min-height: 36px;
+    padding: 0.4rem 0.8rem;
+}
+
+/* Compact desktop and laptop screens */
+@media (min-width: 992px) {
+    .prediction-page-container {
+        padding-top: 0.35rem;
+        padding-bottom: 0.35rem;
+    }
+
+    .prediction-form-compact .row {
+        --bs-gutter-x: 0.85rem;
+        --bs-gutter-y: 0.65rem;
+    }
+}
+
+/* Short desktop/laptop screens */
+@media (min-width: 992px) and (max-height: 850px) {
+    .prediction-form-compact > .card > .card-body {
+        padding: 0.5rem !important;
+    }
+
+    .prediction-form-compact .prediction-section {
+        padding: 0.65rem !important;
+    }
+
+    .prediction-form-compact .section-heading {
+        font-size: 0.98rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .prediction-form-compact .farm-location-picker .farm-map-container {
+        height: 190px !important;
+        min-height: 170px;
+    }
+
+    .prediction-form-compact .form-control {
+        min-height: 32px;
+        font-size: 0.85rem;
+    }
+
+    .prediction-form-compact .prediction-actions {
+        margin-top: 0.5rem !important;
+    }
+}
+
+/* Tablet and mobile: retain a readable stacked layout */
+@media (max-width: 991.98px) {
+    .prediction-form-compact .farm-location-picker .farm-map-container {
+        height: 280px !important;
+    }
+}
+
+/* ==========================================
+   AGRIPREDICT — PREDICTION PAGE FIT TO SCREEN
+   ========================================== */
+
+@media (min-width: 992px) {
+    /* Reduce space around the prediction page */
+    .prediction-page-container {
+        padding: 4px 10px !important;
+        margin: 0 !important;
+    }
+
+    /* Compact farm selector */
+    .prediction-farm-selector {
+        margin-bottom: 6px !important;
+    }
+
+    .prediction-farm-selector .card-body {
+        padding: 6px 10px !important;
+    }
+
+    .prediction-farm-selector .form-label {
+        font-size: 12px !important;
+    }
+
+    .prediction-farm-selector .form-select {
+        min-height: 30px !important;
+        padding: 3px 9px !important;
+        font-size: 12px !important;
+    }
+
+    /* Reduce prediction card spacing */
+    .prediction-form-compact > .card {
+        margin-bottom: 0 !important;
+    }
+
+    .prediction-form-compact > .card > .card-body {
+        padding: 6px !important;
+    }
+
+    .prediction-form-compact .row {
+        --bs-gutter-x: 10px;
+        --bs-gutter-y: 6px;
+    }
+
+    /* Compact soil and weather sections */
+    .prediction-form-compact .prediction-section {
+        padding: 8px !important;
+        margin-bottom: 6px !important;
+        border-radius: 8px !important;
+    }
+
+    .prediction-form-compact .section-heading {
+        font-size: 14px !important;
+        margin-bottom: 6px !important;
+    }
+
+    .prediction-form-compact .form-label {
+        font-size: 11px !important;
+        margin-bottom: 2px !important;
+    }
+
+    .prediction-form-compact .form-control {
+        min-height: 29px !important;
+        height: 29px !important;
+        padding: 3px 6px !important;
+        font-size: 12px !important;
+    }
+
+    /* Reduce weather status message height */
+    .prediction-form-compact .compact-alert {
+        padding: 4px 7px !important;
+        margin-bottom: 5px !important;
+        font-size: 11px !important;
+    }
+
+    /* Compact map controls and location details */
+    .prediction-form-compact .farm-location-picker > p {
+        font-size: 11px !important;
+        margin-bottom: 4px !important;
+    }
+
+    .prediction-form-compact .farm-location-picker .farm-map-container {
+        height: 190px !important;
+        min-height: 150px !important;
+    }
+
+    .prediction-form-compact .farm-location-picker .btn {
+        font-size: 11px !important;
+        padding: 3px 6px !important;
+    }
+
+    .prediction-form-compact .farm-location-picker > .border {
+        margin-top: 5px !important;
+        padding: 5px !important;
+        font-size: 11px !important;
+    }
+
+    .prediction-form-compact .prediction-actions {
+        margin-top: 5px !important;
+        gap: 6px !important;
+    }
+
+    .prediction-form-compact .prediction-actions .btn {
+        min-height: 30px !important;
+        padding: 4px 10px !important;
+        font-size: 12px !important;
+    }
+
+    /* Keep the Last Prediction card from covering the form */
+    .last-prediction-card {
+        max-width: 260px;
+        transform: scale(0.85);
+        transform-origin: bottom right;
+    }
+}
+
+/* Short laptop screens */
+@media (min-width: 992px) and (max-height: 800px) {
+    .prediction-form-compact .farm-location-picker .farm-map-container {
+        height: 150px !important;
+        min-height: 130px !important;
+    }
+
+    .prediction-form-compact .prediction-section {
+        padding: 6px !important;
+    }
+
+    .prediction-form-compact .section-heading {
+        margin-bottom: 4px !important;
+    }
+
+    .prediction-form-compact .row {
+        --bs-gutter-y: 4px;
+    }
+
+    .prediction-form-compact .prediction-actions {
+        margin-top: 3px !important;
+    }
+}
+
+/* Very short laptop screens */
+@media (min-width: 992px) and (max-height: 650px) {
+    .prediction-form-compact .farm-location-picker .farm-map-container {
+        height: 110px !important;
+        min-height: 100px !important;
+    }
+
+    .prediction-form-compact .form-control {
+        min-height: 26px !important;
+        height: 26px !important;
+    }
+}
+
+/* Keep mobile and tablet layouts readable */
+@media (max-width: 991.98px) {
+    .prediction-form-compact .farm-location-picker .farm-map-container {
+        height: 250px !important;
+    }
+
+    .prediction-farm-selector .card-body {
+        padding: 10px !important;
+    }
+}
+
+/* ==========================================
+   AGRIPREDICT — BALANCED PREDICTION FORM
+   Slightly larger and easier to read
+   ========================================== */
+
+@media (min-width: 992px) {
+    /* Use more available horizontal space */
+    .prediction-page {
+        max-width: 1500px;
+        padding: 16px 20px 24px;
+    }
+
+    .prediction-page-container {
+        padding: 8px 12px !important;
+    }
+
+    /* Slightly increase the farm selector */
+    .prediction-farm-selector {
+        margin-bottom: 10px !important;
+    }
+
+    .prediction-farm-selector .card-body {
+        padding: 10px 12px !important;
+    }
+
+    .prediction-farm-selector .form-label {
+        font-size: 13px !important;
+    }
+
+    .prediction-farm-selector .form-select {
+        min-height: 36px !important;
+        height: auto !important;
+        padding: 6px 10px !important;
+        font-size: 13px !important;
+    }
+
+    /* Increase form container spacing */
+    .prediction-form-compact > .card > .card-body {
+        padding: 10px !important;
+    }
+
+    .prediction-form-compact .row {
+        --bs-gutter-x: 12px;
+        --bs-gutter-y: 8px;
+    }
+
+    /* Make soil and weather sections more comfortable */
+    .prediction-form-compact .prediction-section {
+        padding: 12px !important;
+        margin-bottom: 8px !important;
+    }
+
+    .prediction-form-compact .section-heading {
+        font-size: 16px !important;
+        margin-bottom: 9px !important;
+    }
+
+    /* Improve label readability */
+    .prediction-form-compact .form-label {
+        font-size: 12px !important;
+        margin-bottom: 4px !important;
+    }
+
+    /* Increase input height */
+    .prediction-form-compact .form-control,
+    .prediction-form-compact .form-select {
+        min-height: 36px !important;
+        height: 36px !important;
+        padding: 6px 9px !important;
+        font-size: 13px !important;
+    }
+
+    /* Slightly increase information messages */
+    .prediction-form-compact .compact-alert {
+        padding: 6px 9px !important;
+        margin-bottom: 8px !important;
+        font-size: 12px !important;
+    }
+
+    /* Increase map height for better visibility */
+    .prediction-form-compact .farm-location-picker .farm-map-container {
+        height: 220px !important;
+        min-height: 190px !important;
+    }
+
+    /* Make action buttons easier to click */
+    .prediction-form-compact .prediction-actions {
+        margin-top: 8px !important;
+        gap: 8px !important;
+    }
+
+    .prediction-form-compact .prediction-actions .btn {
+        min-height: 36px !important;
+        padding: 6px 12px !important;
+        font-size: 13px !important;
+    }
+
+    /* Keep the floating card compact */
+    .last-prediction-card {
+        max-width: 300px;
+        transform: scale(0.9);
+        transform-origin: bottom right;
+    }
+}
+
+/* Avoid excessive height on shorter laptop screens */
+@media (min-width: 992px) and (max-height: 800px) {
+    .prediction-form-compact .farm-location-picker .farm-map-container {
+        height: 175px !important;
+        min-height: 150px !important;
+    }
+
+    .prediction-form-compact .prediction-section {
+        padding: 9px !important;
+    }
+
+    .prediction-form-compact .form-control,
+    .prediction-form-compact .form-select {
+        min-height: 33px !important;
+        height: 33px !important;
+    }
+}
+
+/* Keep the form comfortable on tablets and phones */
+@media (max-width: 991.98px) {
+    .prediction-form-compact .form-control,
+    .prediction-form-compact .form-select {
+        min-height: 40px;
+        font-size: 14px;
+    }
+
+    .prediction-form-compact .farm-location-picker .farm-map-container {
+        height: 260px !important;
+    }
+}
+
