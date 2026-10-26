@@ -85,6 +85,17 @@ function Sidebar() {
                         <span>Prediction History</span>
                     </NavLink>
 
+<NavLink
+    to="/farms"
+    onClick={closeSidebar}
+    className={({ isActive }) =>
+        `sidebar-link ${isActive ? "active" : ""}`
+    }
+>
+    <span className="sidebar-icon">🚜</span>
+    <span>My Farms</span>
+</NavLink>
+
                     <p className="sidebar-section-title sidebar-section-spaced">
                         ACCOUNT
                     </p>

@@ -1,0 +1,165 @@
+.farm-form {
+    width: 100%;
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 28px;
+    background: #ffffff;
+    border: 1px solid #e0ebe2;
+    border-radius: 16px;
+    box-shadow: 0 8px 28px rgba(18, 60, 42, 0.08);
+    box-sizing: border-box;
+}
+
+.farm-form-heading {
+    margin-bottom: 24px;
+}
+
+.farm-form-heading h3 {
+    margin: 0 0 8px;
+    color: #205c35;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.farm-form-heading p {
+    margin: 0;
+    color: #68766b;
+    font-size: 14px;
+}
+
+.farm-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+    margin-bottom: 20px;
+}
+
+.farm-form-group label {
+    color: #234b30;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.farm-form-group label span:not(.farm-optional) {
+    color: #dc3545;
+}
+
+.farm-optional {
+    color: #7b857d;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.farm-form-group input,
+.farm-form-group textarea {
+    width: 100%;
+    min-width: 0;
+    padding: 12px 14px;
+    border: 1px solid #d8e3da;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #26372b;
+    font: inherit;
+    font-size: 14px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.farm-form-group input:focus,
+.farm-form-group textarea:focus {
+    border-color: #2f8f5b;
+    box-shadow: 0 0 0 3px rgba(47, 143, 91, 0.12);
+}
+
+.farm-form-group input:disabled,
+.farm-form-group textarea:disabled {
+    background: #f3f5f3;
+    cursor: not-allowed;
+}
+
+.farm-form-group textarea {
+    resize: vertical;
+}
+
+.farm-form-coordinates {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.farm-form-error {
+    color: #dc3545;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.farm-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 8px;
+}
+
+.farm-cancel-button,
+.farm-submit-button {
+    min-height: 44px;
+    padding: 11px 18px;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.farm-cancel-button {
+    border: 1px solid #d8e3da;
+    background: #ffffff;
+    color: #405146;
+}
+
+.farm-cancel-button:hover:not(:disabled) {
+    background: #f3f7f3;
+}
+
+.farm-submit-button {
+    border: none;
+    background: #2f8f5b;
+    color: #ffffff;
+}
+
+.farm-submit-button:hover:not(:disabled) {
+    background: #246f46;
+}
+
+.farm-cancel-button:disabled,
+.farm-submit-button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+@media (max-width: 576px) {
+    .farm-form {
+        padding: 20px 16px;
+        border-radius: 12px;
+    }
+
+    .farm-form-heading h3 {
+        font-size: 20px;
+    }
+
+    .farm-form-coordinates {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+    }
+
+    .farm-form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .farm-cancel-button,
+    .farm-submit-button {
+        width: 100%;
+    }
+}

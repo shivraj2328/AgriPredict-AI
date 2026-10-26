@@ -17,10 +17,11 @@ function About() {
                             </h1>
 
                             <p className="about-hero-text">
-                                AgriPredict AI is a smart farming assistant
-                                designed to help farmers make data-driven
-                                decisions using soil, weather and
-                                environmental information.
+                                AgriPredict AI is a smart farming platform
+                                that helps farmers make informed crop
+                                selection decisions using soil parameters,
+                                weather information and AI-powered
+                                recommendations.
                             </p>
                         </div>
 
@@ -33,9 +34,9 @@ function About() {
                                 <h3>Smart Agriculture</h3>
 
                                 <p>
-                                    Combining agricultural data and
-                                    intelligent recommendations to support
-                                    better farming decisions.
+                                    Connect farm-specific information,
+                                    intelligent crop predictions and
+                                    soil health insights in one place.
                                 </p>
                             </div>
                         </div>
@@ -57,22 +58,25 @@ function About() {
                             </h2>
 
                             <p>
-                                AgriPredict AI is an intelligent farming
-                                application designed to assist farmers in
-                                making better agricultural decisions.
+                                AgriPredict AI is a web-based smart farming
+                                application designed to support farmers
+                                in making data-driven agricultural
+                                decisions.
                             </p>
 
                             <p>
-                                The application combines soil parameters,
-                                environmental information and intelligent
-                                recommendations to provide useful insights
-                                for crop selection and farming activities.
+                                Farmers can register multiple farms,
+                                provide soil and environmental parameters,
+                                and receive AI-powered crop recommendations
+                                for their selected farm.
                             </p>
 
                             <p>
-                                The goal is to make agricultural decision
-                                support easier to understand, accessible
-                                and useful through a simple web interface.
+                                The platform also provides prediction
+                                history, farm-specific indicative soil
+                                health analysis and a dashboard that
+                                brings important farming insights
+                                together.
                             </p>
                         </div>
 
@@ -87,9 +91,10 @@ function About() {
                                 </h3>
 
                                 <p>
-                                    Use available agricultural and
-                                    environmental data to support informed
-                                    farming decisions.
+                                    Use recorded farm information,
+                                    soil measurements and weather data
+                                    to support informed crop selection
+                                    and agricultural planning.
                                 </p>
 
                                 <div className="about-highlight">
@@ -109,7 +114,7 @@ function About() {
                 <div className="container">
                     <div className="text-center mb-5">
                         <span className="section-label">
-                            SIMPLE WORKFLOW
+                            OUR WORKFLOW
                         </span>
 
                         <h2 className="about-section-title">
@@ -117,12 +122,14 @@ function About() {
                         </h2>
 
                         <p className="about-section-subtitle">
-                            A simple process designed to turn agricultural
-                            data into useful recommendations.
+                            From registering a farm to receiving crop
+                            recommendations and reviewing soil health,
+                            every step helps organize your farming data.
                         </p>
                     </div>
 
                     <div className="row g-4">
+                        {/* Step 1 */}
                         <div className="col-12 col-md-6 col-lg-3">
                             <div className="workflow-card">
                                 <div className="workflow-number">
@@ -130,18 +137,21 @@ function About() {
                                 </div>
 
                                 <div className="workflow-icon">
-                                    🧪
+                                    🚜
                                 </div>
 
-                                <h3>Enter Data</h3>
+                                <h3>Register Your Farm</h3>
 
                                 <p>
-                                    Provide soil parameters such as
-                                    nitrogen, phosphorus, potassium and pH.
+                                    Create a farm profile by providing
+                                    its name and location coordinates.
+                                    Manage multiple registered farms
+                                    from your account.
                                 </p>
                             </div>
                         </div>
 
+                        {/* Step 2 */}
                         <div className="col-12 col-md-6 col-lg-3">
                             <div className="workflow-card">
                                 <div className="workflow-number">
@@ -149,18 +159,21 @@ function About() {
                                 </div>
 
                                 <div className="workflow-icon">
-                                    📊
+                                    🧪
                                 </div>
 
-                                <h3>Analyze Conditions</h3>
+                                <h3>Enter Farm Conditions</h3>
 
                                 <p>
-                                    The system processes the available
-                                    agricultural and environmental data.
+                                    Select a registered farm and provide
+                                    nitrogen, phosphorus, potassium and
+                                    soil pH values. Review the available
+                                    weather information and farm location.
                                 </p>
                             </div>
                         </div>
 
+                        {/* Step 3 */}
                         <div className="col-12 col-md-6 col-lg-3">
                             <div className="workflow-card">
                                 <div className="workflow-number">
@@ -168,18 +181,21 @@ function About() {
                                 </div>
 
                                 <div className="workflow-icon">
-                                    🌾
+                                    🤖
                                 </div>
 
-                                <h3>Get Recommendation</h3>
+                                <h3>Predict a Suitable Crop</h3>
 
                                 <p>
-                                    Receive a suitable crop recommendation
-                                    along with confidence information.
+                                    AgriPredict processes the submitted
+                                    conditions through its crop prediction
+                                    system and returns a recommended crop
+                                    with a confidence score.
                                 </p>
                             </div>
                         </div>
 
+                        {/* Step 4 */}
                         <div className="col-12 col-md-6 col-lg-3">
                             <div className="workflow-card">
                                 <div className="workflow-number">
@@ -187,14 +203,17 @@ function About() {
                                 </div>
 
                                 <div className="workflow-icon">
-                                    ✅
+                                    📊
                                 </div>
 
-                                <h3>Make Decisions</h3>
+                                <h3>Review Your Insights</h3>
 
                                 <p>
-                                    Use the generated insights as support
-                                    when planning farming activities.
+                                    View predictions in your history,
+                                    review the soil health score for
+                                    individual predictions and check
+                                    your dashboard for recent farming
+                                    insights.
                                 </p>
                             </div>
                         </div>
@@ -213,25 +232,51 @@ function About() {
                         <h2 className="about-section-title">
                             What AgriPredict Offers
                         </h2>
+
+                        <p className="about-section-subtitle">
+                            Tools to organize farm information and
+                            support crop selection decisions.
+                        </p>
                     </div>
 
                     <div className="row g-4">
+                        {/* Crop Recommendation */}
                         <div className="col-12 col-md-6 col-lg-4">
                             <div className="feature-about-card">
                                 <div className="feature-about-icon">
                                     🌾
                                 </div>
 
-                                <h3>Crop Recommendation</h3>
+                                <h3>AI Crop Recommendation</h3>
 
                                 <p>
-                                    Get crop recommendations based on
-                                    available soil and environmental
-                                    parameters.
+                                    Receive a crop recommendation based
+                                    on submitted soil and environmental
+                                    parameters, together with the model's
+                                    confidence score.
                                 </p>
                             </div>
                         </div>
 
+                        {/* Farm Management */}
+                        <div className="col-12 col-md-6 col-lg-4">
+                            <div className="feature-about-card">
+                                <div className="feature-about-icon">
+                                    🚜
+                                </div>
+
+                                <h3>Multiple Farm Management</h3>
+
+                                <p>
+                                    Register and manage multiple farms
+                                    under your account, with farm
+                                    locations and prediction records
+                                    associated with the relevant farm.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Weather */}
                         <div className="col-12 col-md-6 col-lg-4">
                             <div className="feature-about-card">
                                 <div className="feature-about-icon">
@@ -241,42 +286,35 @@ function About() {
                                 <h3>Weather Information</h3>
 
                                 <p>
-                                    View weather-related information that
-                                    can support agricultural planning.
+                                    View weather information used to
+                                    support crop prediction and understand
+                                    environmental conditions relevant
+                                    to farming.
                                 </p>
                             </div>
                         </div>
 
+                        {/* Soil Health */}
                         <div className="col-12 col-md-6 col-lg-4">
                             <div className="feature-about-card">
                                 <div className="feature-about-icon">
                                     🧪
                                 </div>
 
-                                <h3>Soil Health Analysis</h3>
+                                <h3>Indicative Soil Health</h3>
 
                                 <p>
-                                    Analyze important soil parameters and
-                                    understand the overall soil condition.
+                                    Review a soil health score calculated
+                                    from nitrogen, phosphorus, potassium
+                                    and pH values, with individual
+                                    parameter scores and classifications.
+                                    This is an indicative assessment,
+                                    not a laboratory soil test.
                                 </p>
                             </div>
                         </div>
 
-                        <div className="col-12 col-md-6 col-lg-4">
-                            <div className="feature-about-card">
-                                <div className="feature-about-icon">
-                                    💧
-                                </div>
-
-                                <h3>Irrigation Suggestions</h3>
-
-                                <p>
-                                    Receive irrigation-related suggestions
-                                    using environmental conditions.
-                                </p>
-                            </div>
-                        </div>
-
+                        {/* History */}
                         <div className="col-12 col-md-6 col-lg-4">
                             <div className="feature-about-card">
                                 <div className="feature-about-icon">
@@ -286,24 +324,29 @@ function About() {
                                 <h3>Prediction History</h3>
 
                                 <p>
-                                    Review previous crop predictions and
-                                    their confidence information.
+                                    Browse previous crop predictions,
+                                    filter records by farm and confidence,
+                                    and open individual records to review
+                                    their crop results, input parameters
+                                    and available soil health information.
                                 </p>
                             </div>
                         </div>
 
+                        {/* Dashboard */}
                         <div className="col-12 col-md-6 col-lg-4">
                             <div className="feature-about-card">
                                 <div className="feature-about-icon">
-                                    👤
+                                    📈
                                 </div>
 
-                                <h3>User Dashboard</h3>
+                                <h3>Smart Dashboard</h3>
 
                                 <p>
-                                    Access predictions, statistics and
-                                    farming-related insights from one
-                                    dashboard.
+                                    Track total predictions, your latest
+                                    prediction and its associated farm,
+                                    indicative soil health and recent
+                                    crop prediction activity in one place.
                                 </p>
                             </div>
                         </div>
@@ -324,8 +367,8 @@ function About() {
                         </h2>
 
                         <p className="about-section-subtitle">
-                            Technologies planned for building the
-                            AgriPredict AI platform.
+                            Technologies powering the AgriPredict
+                            application and its crop prediction workflow.
                         </p>
                     </div>
 
@@ -334,7 +377,9 @@ function About() {
                             <div className="technology-card">
                                 <span>⚛️</span>
                                 <h3>React + Vite</h3>
-                                <p>Frontend application</p>
+                                <p>
+                                    Interactive frontend application
+                                </p>
                             </div>
                         </div>
 
@@ -342,7 +387,9 @@ function About() {
                             <div className="technology-card">
                                 <span>🟢</span>
                                 <h3>Node.js + Express</h3>
-                                <p>Backend API</p>
+                                <p>
+                                    Backend services and REST API
+                                </p>
                             </div>
                         </div>
 
@@ -350,7 +397,9 @@ function About() {
                             <div className="technology-card">
                                 <span>🍃</span>
                                 <h3>MongoDB</h3>
-                                <p>Database</p>
+                                <p>
+                                    User, farm and prediction data
+                                </p>
                             </div>
                         </div>
 
@@ -358,7 +407,9 @@ function About() {
                             <div className="technology-card">
                                 <span>🤖</span>
                                 <h3>Machine Learning</h3>
-                                <p>AI prediction layer</p>
+                                <p>
+                                    Crop prediction and confidence output
+                                </p>
                             </div>
                         </div>
                     </div>

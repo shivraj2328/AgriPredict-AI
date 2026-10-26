@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import "../styles/dashboard.css";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 import StatCard from "../components/Dashboard/StatCard/StatCard";
@@ -8,7 +8,6 @@ import RecentPredictions from "../components/Dashboard/RecentPredictions/RecentP
 import QuickPrediction from "../components/Dashboard/QuickPrediction/QuickPrediction";
 import PredictionActivity from "../components/Dashboard/PredictionActivity/PredictionActivity";
 import ConfidenceTrend from "../components/Dashboard/ConfidenceTrend/ConfidenceTrend";
-
 
 import { getCurrentUser } from "../services/authService";
 import api from "../services/api";
@@ -20,42 +19,96 @@ function Dashboard() {
     const [soilHealthLoading, setSoilHealthLoading] = useState(true);
 
     useEffect(() => {
+        let cancelled = false;
+
         const fetchDashboardData = async () => {
             try {
                 const [
                     userResponse,
-                    predictionsResponse,
-                    soilHealthResponse
-                ] = await Promise.all([
+                    predictionsResponse
+                ] = await Promise.allSettled([
                     getCurrentUser(),
-                    api.get("/predictions"),
-                    api.get("/soil-health")
+                    api.get("/predictions")
                 ]);
 
-                if (userResponse.success) {
-                    setUser(userResponse.user);
+                if (cancelled) return;
+
+                if (userResponse.status === "fulfilled") {
+                    if (userResponse.value.success) {
+                        setUser(userResponse.value.user);
+                    }
                 }
 
-                setPredictions(
-                    predictionsResponse.data.predictions || []
-                );
+                let predictionList = [];
 
-                if (soilHealthResponse.data.success) {
-                    setSoilHealth(
-                        soilHealthResponse.data.soilHealth
+                if (predictionsResponse.status === "fulfilled") {
+                    predictionList =
+                        predictionsResponse.value.data.predictions || [];
+
+                    setPredictions(predictionList);
+                } else {
+                    console.error(
+                        "Failed to fetch predictions:",
+                        predictionsResponse.reason
                     );
                 }
+
+                // Use the latest prediction's farm.
+                const latestPrediction = predictionList[0];
+                const farmId = latestPrediction?.farm?._id;
+
+                if (!farmId) {
+                    setSoilHealth(null);
+                    return;
+                }
+
+                setSoilHealthLoading(true);
+
+                try {
+                    const soilHealthResponse = await api.get(
+                        `/soil-health?farmId=${encodeURIComponent(farmId)}`
+                    );
+
+                    if (cancelled) return;
+
+                    const response = soilHealthResponse.data;
+
+                    if (response.success) {
+                        setSoilHealth(response.soilHealth);
+                    } else {
+                        setSoilHealth(null);
+                    }
+                } catch (error) {
+                    if (cancelled) return;
+
+                    if (error.response?.status !== 404) {
+                        console.error(
+                            "Failed to fetch farm soil health:",
+                            error
+                        );
+                    }
+
+                    setSoilHealth(null);
+                }
             } catch (error) {
-                console.error(
-                    "Failed to fetch dashboard data:",
-                    error
-                );
+                if (!cancelled) {
+                    console.error(
+                        "Failed to fetch dashboard data:",
+                        error
+                    );
+                }
             } finally {
-                setSoilHealthLoading(false);
+                if (!cancelled) {
+                    setSoilHealthLoading(false);
+                }
             }
         };
 
         fetchDashboardData();
+
+        return () => {
+            cancelled = true;
+        };
     }, []);
 
     const totalPredictions = predictions.length;
@@ -64,11 +117,18 @@ function Dashboard() {
     const latestLatitude = latestPrediction?.latitude;
     const latestLongitude = latestPrediction?.longitude;
 
-    const parameters = soilHealth?.parameters;
+    const latestFarmName =
+        latestPrediction?.farm?.name || "No farm associated";
+
+    const latestCrop =
+        latestPrediction?.recommendedCrop || "—";
+
+    // Prefer the farm-specific API response.
+    const latestSoilHealth = soilHealth;
+    const parameters = latestSoilHealth?.parameters;
 
     return (
         <DashboardLayout>
-
             <div className="mb-4">
                 <h2>
                     Welcome, {user?.name || "Farmer"}!
@@ -81,7 +141,6 @@ function Dashboard() {
 
             {/* Dashboard Cards */}
             <div className="row g-3 mb-4">
-
                 {/* Total Predictions */}
                 <div className="col-md-3">
                     <StatCard
@@ -92,13 +151,21 @@ function Dashboard() {
                     />
                 </div>
 
+                {/* Latest Farm */}
+                <div className="col-md-3">
+                    <StatCard
+                        title="Latest Prediction Farm"
+                        value={latestPrediction ? latestFarmName : "—"}
+                        icon="🚜"
+                        color="info"
+                    />
+                </div>
+
                 {/* Indicative Soil Health */}
                 <div className="col-md-3">
                     <div className="card shadow-sm h-100">
                         <div className="card-body">
-
                             <div className="d-flex justify-content-between align-items-start">
-
                                 <div>
                                     <p className="text-muted mb-1">
                                         Indicative Soil Health
@@ -107,33 +174,38 @@ function Dashboard() {
                                     <h3 className="mb-1">
                                         {soilHealthLoading
                                             ? "..."
-                                            : soilHealth
-                                                ? `${soilHealth.score}%`
+                                            : latestSoilHealth
+                                                ? `${latestSoilHealth.score}%`
                                                 : "—"}
                                     </h3>
 
                                     <p className="mb-2">
-                                        {soilHealth?.status || "No data"}
+                                        {soilHealthLoading
+                                            ? "Loading assessment..."
+                                            : latestSoilHealth?.status ||
+                                              "No soil data for this farm"}
                                     </p>
+
+                                    {latestPrediction?.farm?.name && (
+                                        <small className="text-muted">
+                                            Farm: {latestPrediction.farm.name}
+                                        </small>
+                                    )}
                                 </div>
 
-                                <div className="fs-2">
-                                    🧪
-                                </div>
-
+                                <div className="fs-2">🧪</div>
                             </div>
 
-                            {soilHealth && parameters && (
+                            {latestSoilHealth && parameters && (
                                 <button
                                     type="button"
-                                    className="btn btn-sm btn-outline-primary"
+                                    className="btn btn-sm btn-outline-primary mt-2"
                                     data-bs-toggle="modal"
                                     data-bs-target="#soilHealthModal"
                                 >
                                     View Details
                                 </button>
                             )}
-
                         </div>
                     </div>
                 </div>
@@ -142,30 +214,55 @@ function Dashboard() {
                 <div className="col-md-3">
                     <StatCard
                         title="Latest Crop"
-                        value={
-                            latestPrediction?.recommendedCrop ||
-                            "—"
-                        }
+                        value={latestCrop}
                         icon="🌾"
                         color="warning"
                     />
                 </div>
-
-                {/* Current Weather */}
-                <div className="col-md-3">
-                    <StatCard
-                        title="Current Weather"
-                        value="Live"
-                        icon="🌤️"
-                        color="info"
-                    />
-                </div>
-
             </div>
+
+            {/* Latest Prediction Summary */}
+            {latestPrediction && (
+                <div className="card shadow-sm mb-4">
+                    <div className="card-body">
+                        <h5 className="card-title">
+                            Latest Prediction Summary
+                        </h5>
+
+                        <div className="row g-3 mt-1">
+                            <div className="col-md-4">
+                                <p className="text-muted mb-1">
+                                    Farm
+                                </p>
+                                <strong>{latestFarmName}</strong>
+                            </div>
+
+                            <div className="col-md-4">
+                                <p className="text-muted mb-1">
+                                    Recommended Crop
+                                </p>
+                                <strong>{latestCrop}</strong>
+                            </div>
+
+                            <div className="col-md-4">
+                                <p className="text-muted mb-1">
+                                    Prediction Date
+                                </p>
+                                <strong>
+                                    {latestPrediction.createdAt
+                                        ? new Date(
+                                            latestPrediction.createdAt
+                                        ).toLocaleString()
+                                        : "—"}
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Dashboard Content */}
             <div className="row g-4">
-
                 <div className="col-lg-4">
                     <WeatherWidget
                         latitude={latestLatitude}
@@ -176,22 +273,17 @@ function Dashboard() {
                 <div className="col-lg-8">
                     <RecentPredictions />
                 </div>
-
             </div>
 
             {/* Prediction Activity */}
             <div className="mt-4">
-                <PredictionActivity
-                    predictions={predictions}
-                />
+                <PredictionActivity predictions={predictions} />
             </div>
 
             {/* Confidence Trend */}
-<div className="mt-4">
-    <ConfidenceTrend
-        predictions={predictions}
-    />
-</div>
+            <div className="mt-4">
+                <ConfidenceTrend predictions={predictions} />
+            </div>
 
             {/* Quick Prediction */}
             <div className="mt-4">
@@ -199,7 +291,7 @@ function Dashboard() {
             </div>
 
             {/* Soil Health Details Modal */}
-            {soilHealth && parameters && (
+            {latestSoilHealth && parameters && (
                 <div
                     className="modal fade"
                     id="soilHealthModal"
@@ -208,11 +300,8 @@ function Dashboard() {
                     aria-hidden="true"
                 >
                     <div className="modal-dialog modal-lg modal-dialog-centered">
-
                         <div className="modal-content">
-
                             <div className="modal-header">
-
                                 <div>
                                     <h5
                                         className="modal-title"
@@ -222,8 +311,8 @@ function Dashboard() {
                                     </h5>
 
                                     <p className="text-muted mb-0">
-                                        Detailed assessment based on
-                                        N, P, K and soil pH.
+                                        Assessment for {latestFarmName},
+                                        based on N, P, K and soil pH.
                                     </p>
                                 </div>
 
@@ -232,28 +321,20 @@ function Dashboard() {
                                     className="btn-close"
                                     data-bs-dismiss="modal"
                                     aria-label="Close"
-                                ></button>
-
+                                />
                             </div>
 
                             <div className="modal-body">
-
                                 <div className="text-center mb-4">
-
                                     <h2 className="text-success mb-1">
-                                        {soilHealth.score}%
+                                        {latestSoilHealth.score}%
                                     </h2>
 
-                                    <h5>
-                                        {soilHealth.status}
-                                    </h5>
-
+                                    <h5>{latestSoilHealth.status}</h5>
                                 </div>
 
                                 <div className="table-responsive">
-
                                     <table className="table align-middle">
-
                                         <thead>
                                             <tr>
                                                 <th>Parameter</th>
@@ -264,79 +345,40 @@ function Dashboard() {
                                         </thead>
 
                                         <tbody>
-
-                                            <tr>
-                                                <td>Nitrogen</td>
-                                                <td>
-                                                    {parameters.nitrogen.value}
-                                                </td>
-                                                <td>
-                                                    {parameters.nitrogen.score}%
-                                                </td>
-                                                <td>
-                                                    {parameters.nitrogen.status}
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>Phosphorus</td>
-                                                <td>
-                                                    {parameters.phosphorus.value}
-                                                </td>
-                                                <td>
-                                                    {parameters.phosphorus.score}%
-                                                </td>
-                                                <td>
-                                                    {parameters.phosphorus.status}
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>Potassium</td>
-                                                <td>
-                                                    {parameters.potassium.value}
-                                                </td>
-                                                <td>
-                                                    {parameters.potassium.score}%
-                                                </td>
-                                                <td>
-                                                    {parameters.potassium.status}
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>Soil pH</td>
-                                                <td>
-                                                    {parameters.ph.value}
-                                                </td>
-                                                <td>
-                                                    {parameters.ph.score}%
-                                                </td>
-                                                <td>
-                                                    {parameters.ph.status}
-                                                </td>
-                                            </tr>
-
+                                            {[
+                                                ["Nitrogen", parameters.nitrogen],
+                                                ["Phosphorus", parameters.phosphorus],
+                                                ["Potassium", parameters.potassium],
+                                                ["Soil pH", parameters.ph]
+                                            ].map(([name, parameter]) => (
+                                                <tr key={name}>
+                                                    <td>{name}</td>
+                                                    <td>
+                                                        {parameter?.value ?? "—"}
+                                                    </td>
+                                                    <td>
+                                                        {parameter?.score != null
+                                                            ? `${parameter.score}%`
+                                                            : "—"}
+                                                    </td>
+                                                    <td>
+                                                        {parameter?.status || "—"}
+                                                    </td>
+                                                </tr>
+                                            ))}
                                         </tbody>
-
                                     </table>
-
                                 </div>
 
                                 <div className="alert alert-light border mt-4 mb-0">
-
                                     <strong>Note:</strong>{" "}
-                                    This is an indicative soil health
-                                    assessment based on N, P, K and
-                                    soil pH. It is not a laboratory
-                                    Soil Health Card result.
-
+                                    This is an indicative soil-health
+                                    assessment based on N, P, K and soil pH.
+                                    It is not a laboratory Soil Health Card result.
                                 </div>
-
                             </div>
 
                             <div className="modal-footer">
-
                                 <button
                                     type="button"
                                     className="btn btn-secondary"
@@ -344,15 +386,11 @@ function Dashboard() {
                                 >
                                     Close
                                 </button>
-
                             </div>
-
                         </div>
-
                     </div>
                 </div>
             )}
-
         </DashboardLayout>
     );
 }

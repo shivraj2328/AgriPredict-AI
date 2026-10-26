@@ -13,6 +13,8 @@ const soilHealthRoutes =
     require("./routes/soilHealth.routes");
 const profileRoutes =
     require("./routes/profile.routes");
+const farmRoutes = require("./routes/farm.routes");
+
 
 
 
@@ -35,6 +37,7 @@ app.use(
     "/api/profile",
     profileRoutes
 );
+app.use("/api/farms", farmRoutes);
 
 
 app.get("/", (req, res) => {

@@ -1,28 +1,378 @@
-/* Prediction Page */
-.prediction-page-container {
-    position: relative;
-    padding: 16px 24px !important;
-    padding-bottom: 30px !important;
+
+/* =========================================
+   AgriPredict - Prediction Page
+========================================= */
+
+.prediction-page {
+    width: 100%;
+    max-width: 1250px;
+    min-width: 0;
+    margin: 0 auto;
+    padding: 24px;
+    padding-bottom: 40px;
+    box-sizing: border-box;
+    color: #1f2937;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.prediction-page-header {
-    margin-bottom: 12px;
+.prediction-page *,
+.prediction-page *::before,
+.prediction-page *::after {
+    box-sizing: border-box;
 }
 
-.prediction-page-header h2 {
-    margin: 0 0 5px;
+.prediction-page h1 {
+    margin: 0 0 24px;
     color: #205c35;
-    font-size: 1.8rem;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.prediction-page h2 {
+    margin: 28px 0 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #205c35;
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.prediction-page h3 {
+    color: #205c35;
+}
+
+/* =========================================
+   Registered Farm Selection
+========================================= */
+
+.prediction-page .farm-selection {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding: 18px 20px;
+    border: 1px solid #cfe8d5;
+    border-radius: 12px;
+    background: #f0f9f2;
+}
+
+.prediction-page .farm-selection label {
+    margin: 0;
+    color: #205c35;
+    font-size: 15px;
     font-weight: 700;
 }
 
-.prediction-page-header p {
-    margin: 0;
-    color: #5f6f64;
-    font-size: 0.95rem;
+.prediction-page .farm-selection select {
+    width: 100%;
+    max-width: 380px;
+    min-height: 44px;
+    padding: 10px 38px 10px 12px;
+    border: 1px solid #b8d8c0;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #1f2937;
+    font-family: inherit;
+    font-size: 15px;
+    cursor: pointer;
+    outline: none;
 }
 
-/* Prediction Result Popup */
+.prediction-page .farm-selection select:focus {
+    border-color: #27834a;
+    box-shadow: 0 0 0 3px rgba(39, 131, 74, 0.12);
+}
+
+.prediction-page .farm-selection select:disabled {
+    background: #f1f5f9;
+    color: #64748b;
+    cursor: not-allowed;
+}
+
+/* =========================================
+   Prediction Form
+========================================= */
+
+.prediction-page form {
+    width: 100%;
+    margin: 0;
+    padding: 26px;
+    border: 1px solid #e1e8e2;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 5px 22px rgba(24, 65, 36, 0.06);
+}
+
+.prediction-page form h2:first-child {
+    margin-top: 0;
+}
+
+/* Field labels */
+
+.prediction-page form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Input fields */
+
+.prediction-page form input:not([type="checkbox"]):not([type="radio"]),
+.prediction-page form select,
+.prediction-page form textarea {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    padding: 11px 13px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #1f2937;
+    font-family: inherit;
+    font-size: 15px;
+    outline: none;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.prediction-page form input:focus,
+.prediction-page form select:focus,
+.prediction-page form textarea:focus {
+    border-color: #27834a;
+    box-shadow: 0 0 0 3px rgba(39, 131, 74, 0.12);
+}
+
+/* Read-only weather and coordinates */
+
+.prediction-page form input[readonly] {
+    border-color: #d4e9d9;
+    background: #f2f9f3;
+    color: #205c35;
+    cursor: default;
+}
+
+/* Field spacing */
+
+.prediction-page form > div:not(.farm-location-picker) {
+    margin-bottom: 18px;
+}
+
+/* =========================================
+   Farm Location Picker
+========================================= */
+
+.prediction-page .farm-location-picker {
+    position: relative;
+    z-index: 0;
+    width: 100%;
+    min-width: 0;
+    margin: 0 0 28px;
+    padding: 20px;
+    border: 1px solid #e1e8e2;
+    border-radius: 12px;
+    background: #f8faf8;
+}
+
+.prediction-page .farm-location-picker h3 {
+    margin: 0 0 10px;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.prediction-page .farm-location-picker > p {
+    margin: 0 0 16px;
+    color: #647568;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Location search */
+
+.prediction-page .farm-location-search {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+    margin: 18px 0;
+}
+
+.prediction-page .farm-location-search input {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+    min-height: 44px;
+    padding: 10px 13px;
+    border: 1px solid #cbd5d1;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #1f2937;
+    font-size: 14px;
+}
+
+.prediction-page .farm-location-search input::placeholder {
+    color: #94a3a0;
+}
+
+.prediction-page .farm-location-search button {
+    flex-shrink: 0;
+    min-height: 44px;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 8px;
+    background: #27834a;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.prediction-page .farm-location-search button:hover:not(:disabled) {
+    background: #205c35;
+    transform: translateY(-1px);
+}
+
+.prediction-page .farm-location-search button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Map container */
+
+.prediction-page .farm-map-container {
+    position: relative;
+    z-index: 0;
+    width: 100%;
+    height: 380px;
+    overflow: hidden;
+    border: 1px solid #d8e2da;
+    border-radius: 10px;
+    background: #e5e7eb;
+}
+
+.prediction-page .farm-map-container .leaflet-container {
+    width: 100%;
+    height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    z-index: 0;
+}
+
+/* Leaflet controls */
+
+.prediction-page .farm-map-container .leaflet-control-zoom a {
+    color: #205c35;
+}
+
+.prediction-page .farm-map-container .leaflet-control-zoom a:hover {
+    background: #f0f9f2;
+}
+
+/* Selected coordinates */
+
+.prediction-page .farm-location-picker .selected-coordinates {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+    padding: 14px;
+    border: 1px solid #cfe8d5;
+    border-radius: 9px;
+    background: #f0f9f2;
+}
+
+.prediction-page .farm-location-picker .selected-coordinates p {
+    flex: 1;
+    min-width: 180px;
+    margin: 0;
+    color: #205c35;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+/* Location search errors */
+
+.prediction-page .farm-location-picker .location-error {
+    margin: 0 0 14px;
+    padding: 12px;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    background: #fef2f2;
+    color: #b91c1c;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* =========================================
+   Weather Loading Message
+========================================= */
+
+.prediction-page form > p {
+    color: #647568;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* =========================================
+   Prediction and Reset Buttons
+========================================= */
+
+.prediction-page form button {
+    min-height: 44px;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.prediction-page form button[type="submit"] {
+    margin: 12px 12px 0 0;
+    border: 1px solid #27834a;
+    background: #27834a;
+    color: #ffffff;
+}
+
+.prediction-page form button[type="submit"]:hover:not(:disabled) {
+    border-color: #205c35;
+    background: #205c35;
+    transform: translateY(-1px);
+}
+
+.prediction-page form button[type="button"] {
+    margin-top: 12px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #334155;
+}
+
+.prediction-page form button[type="button"]:hover:not(:disabled) {
+    background: #f1f5f9;
+}
+
+.prediction-page form button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* =========================================
+   Prediction Result Popup
+========================================= */
+
 .prediction-modal-backdrop {
     position: fixed;
     inset: 0;
@@ -40,6 +390,7 @@
     width: 100%;
     max-width: 520px;
     max-height: 85vh;
+    max-height: 85dvh;
     overflow-y: auto;
     padding: 24px;
     border-radius: 18px;
@@ -52,8 +403,12 @@
     top: 12px;
     right: 14px;
     z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 36px;
     height: 36px;
+    padding: 0;
     border: none;
     border-radius: 50%;
     background: #fee2e2;
@@ -74,33 +429,29 @@
     font-weight: 700;
 }
 
-/* Last Prediction Floating Card */
+/* =========================================
+   Last Prediction Floating Card
+========================================= */
+
 .last-prediction-card {
     position: fixed;
     right: 24px;
     bottom: 22px;
     z-index: 1500;
-
     display: flex;
     align-items: center;
     gap: 14px;
-
     width: 350px;
     max-width: calc(100vw - 32px);
     min-height: 100px;
     padding: 16px;
-
     border: 1px solid #c8e7d0;
     border-radius: 18px;
-
     background: linear-gradient(135deg, #ffffff, #f0fbf2);
     color: #234b30;
-
     text-align: left;
     cursor: pointer;
-
-    box-shadow: 0 8px 28px rgba(24, 92, 49, 0.20);
-
+    box-shadow: 0 8px 28px rgba(24, 92, 49, 0.2);
     transition:
         transform 0.2s ease,
         box-shadow 0.2s ease;
@@ -108,27 +459,22 @@
 
 .last-prediction-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(24, 92, 49, 0.28);
     border-color: #78c68e;
+    box-shadow: 0 12px 32px rgba(24, 92, 49, 0.28);
 }
 
-/* Icon */
 .last-prediction-icon {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-
     width: 54px;
     height: 54px;
-
     border-radius: 15px;
     background: #dff5e4;
-
     font-size: 28px;
 }
 
-/* Text */
 .last-prediction-content {
     display: flex;
     flex: 1;
@@ -164,21 +510,74 @@
     font-weight: 700;
 }
 
-/* Responsive */
+/* =========================================
+   Tablet Layout
+========================================= */
+
 @media (max-width: 768px) {
-    .prediction-page-container {
-        padding: 12px !important;
-        padding-bottom: 120px !important;
+    .prediction-page {
+        width: 100%;
+        max-width: 100%;
+        padding: 16px;
+        padding-bottom: 125px;
     }
 
-    .prediction-page-header h2 {
-        font-size: 1.5rem;
+    .prediction-page h1 {
+        font-size: 1.7rem;
+    }
+
+    .prediction-page h2 {
+        font-size: 1.25rem;
+    }
+
+    .prediction-page form {
+        padding: 18px;
+    }
+
+    .prediction-page .farm-selection {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px;
+    }
+
+    .prediction-page .farm-selection select {
+        max-width: none;
+    }
+
+    .prediction-page .farm-location-picker {
+        padding: 15px;
+    }
+
+    .prediction-page .farm-map-container {
+        height: 320px;
+    }
+
+    .prediction-page .farm-location-picker .selected-coordinates {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .prediction-page .farm-location-picker .selected-coordinates p {
+        min-width: 0;
+    }
+
+    .prediction-modal-backdrop {
+        padding: 12px;
+    }
+
+    .prediction-modal {
+        width: 100%;
+        max-width: 520px;
+        max-height: 85dvh;
+        padding: 20px 16px;
     }
 
     .last-prediction-card {
         right: 12px;
         bottom: 12px;
         width: calc(100vw - 24px);
+        max-width: 400px;
         min-height: 82px;
         padding: 12px;
     }
@@ -192,67 +591,70 @@
     .last-prediction-crop {
         font-size: 15px;
     }
-
-    .prediction-modal {
-        padding: 20px 16px;
-    }
 }
 
-@media (max-width: 768px) {
-    .prediction-page-container {
-        width: 100%;
-        max-width: 100%;
-        padding: 12px !important;
-        padding-bottom: 120px !important;
+/* =========================================
+   Mobile Layout
+========================================= */
+
+@media (max-width: 480px) {
+    .prediction-page {
+        padding: 12px;
+        padding-bottom: 120px;
     }
 
-    .prediction-page-header h2 {
-        font-size: 1.4rem;
+    .prediction-page h1 {
+        font-size: 1.5rem;
     }
 
-    .prediction-page-header p {
-        font-size: 0.9rem;
-        line-height: 1.5;
+    .prediction-page h2 {
+        font-size: 1.15rem;
     }
 
-    .prediction-modal-backdrop {
+    .prediction-page form {
+        padding: 14px;
+        border-radius: 12px;
+    }
+
+    .prediction-page .farm-location-picker {
         padding: 12px;
     }
 
-    .prediction-modal {
+    .prediction-page .farm-location-search {
+        flex-direction: column;
+    }
+
+    .prediction-page .farm-location-search input,
+    .prediction-page .farm-location-search button {
         width: 100%;
-        max-width: 100%;
-        max-height: 85dvh;
-        overflow-y: auto;
-        padding: 20px 16px;
+    }
+
+    .prediction-page .farm-map-container {
+        height: 280px;
+    }
+
+    .prediction-page form button[type="submit"],
+    .prediction-page form button[type="button"] {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .prediction-modal-heading {
+        font-size: 1.2rem;
     }
 
     .last-prediction-card {
         right: 12px;
         bottom: 12px;
-        width: calc(100% - 24px);
-        max-width: 400px;
-    }
-}
-
-@media (max-width: 360px) {
-    .prediction-page-container {
-        padding: 8px !important;
-        padding-bottom: 110px !important;
-    }
-
-    .last-prediction-card {
-        right: 8px;
-        bottom: 8px;
-        width: calc(100% - 16px);
+        width: calc(100vw - 24px);
+        gap: 8px;
         min-height: 76px;
         padding: 10px;
-        gap: 8px;
     }
 
     .last-prediction-icon {
-        width: 38px;
-        height: 38px;
+        width: 40px;
+        height: 40px;
         font-size: 21px;
     }
 
@@ -260,3 +662,454 @@
         font-size: 14px;
     }
 }
+
+@media (max-width: 360px) {
+    .prediction-page {
+        padding: 8px;
+        padding-bottom: 110px;
+    }
+
+    .prediction-page h1 {
+        font-size: 1.35rem;
+    }
+
+    .prediction-page form {
+        padding: 11px;
+    }
+
+    .prediction-page .farm-map-container {
+        height: 250px;
+    }
+
+    .last-prediction-card {
+        right: 8px;
+        bottom: 8px;
+        width: calc(100vw - 16px);
+        padding: 9px;
+    }
+}
+
+/* ========================================
+   Compact Crop Prediction Layout
+   ======================================== */
+
+.prediction-form-compact {
+    width: 100%;
+    min-width: 0;
+}
+
+.prediction-form-compact > .card {
+    margin-bottom: 0;
+}
+
+.prediction-form-compact > .card > .card-body {
+    padding: 0.75rem !important;
+}
+
+.prediction-form-compact .prediction-section {
+    min-width: 0;
+}
+
+.prediction-form-compact .section-heading {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+}
+
+.prediction-form-compact .form-label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+}
+
+.prediction-form-compact .form-control,
+.prediction-form-compact .form-select {
+    min-height: 35px;
+    padding: 0.35rem 0.55rem;
+    font-size: 0.9rem;
+}
+
+.prediction-form-compact .compact-alert {
+    padding: 0.4rem 0.6rem;
+    margin-bottom: 0.6rem;
+    font-size: 0.8rem;
+}
+
+.prediction-form-compact .farm-location-picker > p {
+    margin-bottom: 0.5rem;
+}
+
+.prediction-form-compact .farm-location-picker .farm-map-container {
+    height: 250px !important;
+    min-height: 200px;
+}
+
+.prediction-form-compact .farm-location-picker > .border {
+    margin-top: 0.5rem !important;
+    padding: 0.5rem !important;
+}
+
+.prediction-form-compact .farm-location-picker .btn {
+    padding: 0.3rem 0.55rem;
+    font-size: 0.8rem;
+}
+
+.prediction-form-compact .prediction-actions {
+    padding-bottom: 0;
+}
+
+.prediction-form-compact .prediction-actions .btn {
+    min-height: 36px;
+    padding: 0.4rem 0.8rem;
+}
+
+/* Compact desktop and laptop screens */
+@media (min-width: 992px) {
+    .prediction-page-container {
+        padding-top: 0.35rem;
+        padding-bottom: 0.35rem;
+    }
+
+    .prediction-form-compact .row {
+        --bs-gutter-x: 0.85rem;
+        --bs-gutter-y: 0.65rem;
+    }
+}
+
+/* Short desktop/laptop screens */
+@media (min-width: 992px) and (max-height: 850px) {
+    .prediction-form-compact > .card > .card-body {
+        padding: 0.5rem !important;
+    }
+
+    .prediction-form-compact .prediction-section {
+        padding: 0.65rem !important;
+    }
+
+    .prediction-form-compact .section-heading {
+        font-size: 0.98rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .prediction-form-compact .farm-location-picker .farm-map-container {
+        height: 190px !important;
+        min-height: 170px;
+    }
+
+    .prediction-form-compact .form-control {
+        min-height: 32px;
+        font-size: 0.85rem;
+    }
+
+    .prediction-form-compact .prediction-actions {
+        margin-top: 0.5rem !important;
+    }
+}
+
+/* Tablet and mobile: retain a readable stacked layout */
+@media (max-width: 991.98px) {
+    .prediction-form-compact .farm-location-picker .farm-map-container {
+        height: 280px !important;
+    }
+}
+
+/* ==========================================
+   AGRIPREDICT — PREDICTION PAGE FIT TO SCREEN
+   ========================================== */
+
+@media (min-width: 992px) {
+    /* Reduce space around the prediction page */
+    .prediction-page-container {
+        padding: 4px 10px !important;
+        margin: 0 !important;
+    }
+
+    /* Compact farm selector */
+    .prediction-farm-selector {
+        margin-bottom: 6px !important;
+    }
+
+    .prediction-farm-selector .card-body {
+        padding: 6px 10px !important;
+    }
+
+    .prediction-farm-selector .form-label {
+        font-size: 12px !important;
+    }
+
+    .prediction-farm-selector .form-select {
+        min-height: 30px !important;
+        padding: 3px 9px !important;
+        font-size: 12px !important;
+    }
+
+    /* Reduce prediction card spacing */
+    .prediction-form-compact > .card {
+        margin-bottom: 0 !important;
+    }
+
+    .prediction-form-compact > .card > .card-body {
+        padding: 6px !important;
+    }
+
+    .prediction-form-compact .row {
+        --bs-gutter-x: 10px;
+        --bs-gutter-y: 6px;
+    }
+
+    /* Compact soil and weather sections */
+    .prediction-form-compact .prediction-section {
+        padding: 8px !important;
+        margin-bottom: 6px !important;
+        border-radius: 8px !important;
+    }
+
+    .prediction-form-compact .section-heading {
+        font-size: 14px !important;
+        margin-bottom: 6px !important;
+    }
+
+    .prediction-form-compact .form-label {
+        font-size: 11px !important;
+        margin-bottom: 2px !important;
+    }
+
+    .prediction-form-compact .form-control {
+        min-height: 29px !important;
+        height: 29px !important;
+        padding: 3px 6px !important;
+        font-size: 12px !important;
+    }
+
+    /* Reduce weather status message height */
+    .prediction-form-compact .compact-alert {
+        padding: 4px 7px !important;
+        margin-bottom: 5px !important;
+        font-size: 11px !important;
+    }
+
+    /* Compact map controls and location details */
+    .prediction-form-compact .farm-location-picker > p {
+        font-size: 11px !important;
+        margin-bottom: 4px !important;
+    }
+
+    .prediction-form-compact .farm-location-picker .farm-map-container {
+        height: 190px !important;
+        min-height: 150px !important;
+    }
+
+    .prediction-form-compact .farm-location-picker .btn {
+        font-size: 11px !important;
+        padding: 3px 6px !important;
+    }
+
+    .prediction-form-compact .farm-location-picker > .border {
+        margin-top: 5px !important;
+        padding: 5px !important;
+        font-size: 11px !important;
+    }
+
+    .prediction-form-compact .prediction-actions {
+        margin-top: 5px !important;
+        gap: 6px !important;
+    }
+
+    .prediction-form-compact .prediction-actions .btn {
+        min-height: 30px !important;
+        padding: 4px 10px !important;
+        font-size: 12px !important;
+    }
+
+    /* Keep the Last Prediction card from covering the form */
+    .last-prediction-card {
+        max-width: 260px;
+        transform: scale(0.85);
+        transform-origin: bottom right;
+    }
+}
+
+/* Short laptop screens */
+@media (min-width: 992px) and (max-height: 800px) {
+    .prediction-form-compact .farm-location-picker .farm-map-container {
+        height: 150px !important;
+        min-height: 130px !important;
+    }
+
+    .prediction-form-compact .prediction-section {
+        padding: 6px !important;
+    }
+
+    .prediction-form-compact .section-heading {
+        margin-bottom: 4px !important;
+    }
+
+    .prediction-form-compact .row {
+        --bs-gutter-y: 4px;
+    }
+
+    .prediction-form-compact .prediction-actions {
+        margin-top: 3px !important;
+    }
+}
+
+/* Very short laptop screens */
+@media (min-width: 992px) and (max-height: 650px) {
+    .prediction-form-compact .farm-location-picker .farm-map-container {
+        height: 110px !important;
+        min-height: 100px !important;
+    }
+
+    .prediction-form-compact .form-control {
+        min-height: 26px !important;
+        height: 26px !important;
+    }
+}
+
+/* Keep mobile and tablet layouts readable */
+@media (max-width: 991.98px) {
+    .prediction-form-compact .farm-location-picker .farm-map-container {
+        height: 250px !important;
+    }
+
+    .prediction-farm-selector .card-body {
+        padding: 10px !important;
+    }
+}
+
+/* ==========================================
+   AGRIPREDICT — BALANCED PREDICTION FORM
+   Slightly larger and easier to read
+   ========================================== */
+
+@media (min-width: 992px) {
+    /* Use more available horizontal space */
+    .prediction-page {
+        max-width: 1500px;
+        padding: 16px 20px 24px;
+    }
+
+    .prediction-page-container {
+        padding: 8px 12px !important;
+    }
+
+    /* Slightly increase the farm selector */
+    .prediction-farm-selector {
+        margin-bottom: 10px !important;
+    }
+
+    .prediction-farm-selector .card-body {
+        padding: 10px 12px !important;
+    }
+
+    .prediction-farm-selector .form-label {
+        font-size: 13px !important;
+    }
+
+    .prediction-farm-selector .form-select {
+        min-height: 36px !important;
+        height: auto !important;
+        padding: 6px 10px !important;
+        font-size: 13px !important;
+    }
+
+    /* Increase form container spacing */
+    .prediction-form-compact > .card > .card-body {
+        padding: 10px !important;
+    }
+
+    .prediction-form-compact .row {
+        --bs-gutter-x: 12px;
+        --bs-gutter-y: 8px;
+    }
+
+    /* Make soil and weather sections more comfortable */
+    .prediction-form-compact .prediction-section {
+        padding: 12px !important;
+        margin-bottom: 8px !important;
+    }
+
+    .prediction-form-compact .section-heading {
+        font-size: 16px !important;
+        margin-bottom: 9px !important;
+    }
+
+    /* Improve label readability */
+    .prediction-form-compact .form-label {
+        font-size: 12px !important;
+        margin-bottom: 4px !important;
+    }
+
+    /* Increase input height */
+    .prediction-form-compact .form-control,
+    .prediction-form-compact .form-select {
+        min-height: 36px !important;
+        height: 36px !important;
+        padding: 6px 9px !important;
+        font-size: 13px !important;
+    }
+
+    /* Slightly increase information messages */
+    .prediction-form-compact .compact-alert {
+        padding: 6px 9px !important;
+        margin-bottom: 8px !important;
+        font-size: 12px !important;
+    }
+
+    /* Increase map height for better visibility */
+    .prediction-form-compact .farm-location-picker .farm-map-container {
+        height: 220px !important;
+        min-height: 190px !important;
+    }
+
+    /* Make action buttons easier to click */
+    .prediction-form-compact .prediction-actions {
+        margin-top: 8px !important;
+        gap: 8px !important;
+    }
+
+    .prediction-form-compact .prediction-actions .btn {
+        min-height: 36px !important;
+        padding: 6px 12px !important;
+        font-size: 13px !important;
+    }
+
+    /* Keep the floating card compact */
+    .last-prediction-card {
+        max-width: 300px;
+        transform: scale(0.9);
+        transform-origin: bottom right;
+    }
+}
+
+/* Avoid excessive height on shorter laptop screens */
+@media (min-width: 992px) and (max-height: 800px) {
+    .prediction-form-compact .farm-location-picker .farm-map-container {
+        height: 175px !important;
+        min-height: 150px !important;
+    }
+
+    .prediction-form-compact .prediction-section {
+        padding: 9px !important;
+    }
+
+    .prediction-form-compact .form-control,
+    .prediction-form-compact .form-select {
+        min-height: 33px !important;
+        height: 33px !important;
+    }
+}
+
+/* Keep the form comfortable on tablets and phones */
+@media (max-width: 991.98px) {
+    .prediction-form-compact .form-control,
+    .prediction-form-compact .form-select {
+        min-height: 40px;
+        font-size: 14px;
+    }
+
+    .prediction-form-compact .farm-location-picker .farm-map-container {
+        height: 260px !important;
+    }
+}
+

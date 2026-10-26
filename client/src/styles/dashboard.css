@@ -1,0 +1,417 @@
+/* ==========================================
+   AGRIPREDICT DASHBOARD
+   Modern Smart Farming Theme
+   ========================================== */
+
+.dashboard-page {
+    width: 100%;
+    padding: 22px 18px 30px;
+    color: #243329;
+    background: #f7faf7;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ==========================================
+   Welcome Section
+   ========================================== */
+
+.dashboard-welcome {
+    padding: 22px 24px;
+    margin-bottom: 24px;
+    border: 1px solid #dceee0;
+    border-radius: 16px;
+    background: linear-gradient(
+        120deg,
+        #eaf7ed 0%,
+        #ffffff 75%
+    );
+}
+
+.dashboard-welcome h1 {
+    margin: 0 0 8px;
+    color: #205c35;
+    font-size: 2rem;
+    font-weight: 750;
+}
+
+.dashboard-welcome p {
+    margin: 0;
+    color: #657568;
+    font-size: 1rem;
+}
+
+/* ==========================================
+   Summary Cards
+   ========================================== */
+
+.dashboard-summary-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    align-items: stretch;
+    margin-bottom: 26px;
+}
+
+.dashboard-summary-row > * {
+    min-width: 0;
+}
+
+.dashboard-stat-card {
+    position: relative;
+    display: flex;
+    height: 100%;
+    min-height: 158px;
+    overflow: hidden;
+    border: 1px solid #e0e9e2;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 3px 12px rgba(32, 92, 53, 0.055);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.dashboard-stat-card::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: #27834a;
+    content: "";
+}
+
+.dashboard-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 9px 22px rgba(32, 92, 53, 0.11);
+}
+
+.dashboard-stat-card .card-body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 18px;
+}
+
+.dashboard-stat-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.dashboard-stat-heading h5 {
+    margin: 0;
+    color: #647168;
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.dashboard-stat-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    min-height: 38px;
+    border-radius: 11px;
+    background: #edf7ef;
+    font-size: 1.35rem;
+}
+
+.dashboard-stat-value {
+    margin: 15px 0 0;
+    overflow-wrap: anywhere;
+    color: #243329;
+    font-size: clamp(1.5rem, 1.8vw, 2rem);
+    font-weight: 750;
+    line-height: 1.25;
+}
+
+/* Card accent variations */
+
+.dashboard-stat-success::before {
+    background: #27834a;
+}
+
+.dashboard-stat-info::before {
+    background: #2297b8;
+}
+
+.dashboard-stat-primary::before {
+    background: #4778d0;
+}
+
+.dashboard-stat-warning::before {
+    background: #e6a23c;
+}
+
+.dashboard-stat-success .dashboard-stat-icon {
+    background: #e9f7ed;
+}
+
+.dashboard-stat-info .dashboard-stat-icon {
+    background: #e8f7fb;
+}
+
+.dashboard-stat-primary .dashboard-stat-icon {
+    background: #edf2ff;
+}
+
+.dashboard-stat-warning .dashboard-stat-icon {
+    background: #fff6e5;
+}
+
+/* ==========================================
+   Soil Health Summary Card
+   ========================================== */
+
+.dashboard-soil-health-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 158px;
+    padding: 18px;
+    border: 1px solid #dce9df;
+    border-radius: 14px;
+    background: linear-gradient(
+        145deg,
+        #ffffff,
+        #f0faf2
+    );
+    box-shadow: 0 3px 12px rgba(32, 92, 53, 0.055);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.dashboard-soil-health-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 9px 22px rgba(32, 92, 53, 0.11);
+}
+
+.dashboard-soil-health-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.dashboard-soil-health-heading h5 {
+    margin: 0;
+    color: #647168;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.dashboard-soil-health-icon {
+    font-size: 1.6rem;
+}
+
+.dashboard-soil-health-score {
+    margin: 10px 0 0;
+    color: #205c35;
+    font-size: 2rem;
+    font-weight: 750;
+    line-height: 1.25;
+}
+
+.dashboard-soil-health-status {
+    margin-top: 3px;
+    color: #38764b;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.dashboard-soil-health-farm {
+    margin: 7px 0 10px;
+    color: #758078;
+    font-size: 0.82rem;
+}
+
+.dashboard-soil-health-button {
+    align-self: flex-start;
+    margin-top: auto;
+    padding: 6px 12px;
+    border: 1px solid #27834a;
+    border-radius: 7px;
+    background: #27834a;
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: background 0.2s ease;
+}
+
+.dashboard-soil-health-button:hover {
+    background: #205c35;
+}
+
+/* ==========================================
+   Main Dashboard Panels
+   ========================================== */
+
+.dashboard-panel {
+    height: 100%;
+    padding: 20px;
+    border: 1px solid #e0e9e2;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 3px 12px rgba(32, 92, 53, 0.045);
+}
+
+.dashboard-panel h2,
+.dashboard-panel h3,
+.dashboard-panel h4 {
+    color: #205c35;
+    font-weight: 700;
+}
+
+.dashboard-panel-heading {
+    margin: 0 0 18px;
+    font-size: 1.25rem;
+}
+
+/* Latest prediction details */
+
+.dashboard-prediction-detail {
+    padding: 10px 0;
+}
+
+.dashboard-prediction-label {
+    display: block;
+    margin-bottom: 7px;
+    color: #78847a;
+    font-size: 0.9rem;
+}
+
+.dashboard-prediction-value {
+    color: #26382c;
+    font-size: 1rem;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+/* ==========================================
+   Weather Panel
+   ========================================== */
+
+.dashboard-weather-temperature {
+    margin: 14px 0;
+    color: #205c35;
+    font-size: 2.5rem;
+    font-weight: 750;
+}
+
+.dashboard-weather-detail {
+    color: #657568;
+    font-size: 0.95rem;
+}
+
+/* ==========================================
+   Recent Predictions Table
+   ========================================== */
+
+.dashboard-page .table {
+    margin-bottom: 0;
+}
+
+.dashboard-page .table thead th {
+    padding: 12px;
+    border-bottom: 1px solid #dce9df;
+    background: #f0f8f2;
+    color: #205c35;
+    font-weight: 700;
+}
+
+.dashboard-page .table tbody td {
+    padding: 12px;
+    vertical-align: middle;
+}
+
+.dashboard-page .table tbody tr {
+    transition: background 0.15s ease;
+}
+
+.dashboard-page .table tbody tr:hover {
+    background: #f4faf5;
+}
+
+/* ==========================================
+   Buttons
+   ========================================== */
+
+.dashboard-page .btn-outline-primary {
+    border-color: #27834a;
+    color: #27834a;
+}
+
+.dashboard-page .btn-outline-primary:hover {
+    border-color: #205c35;
+    background: #27834a;
+    color: #ffffff;
+}
+
+/* ==========================================
+   Responsive Layout
+   ========================================== */
+
+@media (max-width: 1200px) {
+    .dashboard-summary-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-page {
+        padding: 16px 12px 24px;
+    }
+
+    .dashboard-welcome {
+        padding: 18px;
+        margin-bottom: 18px;
+    }
+
+    .dashboard-welcome h1 {
+        font-size: 1.65rem;
+    }
+
+    .dashboard-summary-row {
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .dashboard-stat-card,
+    .dashboard-soil-health-card {
+        min-height: 150px;
+    }
+
+    .dashboard-stat-card .card-body,
+    .dashboard-soil-health-card {
+        padding: 14px;
+    }
+
+    .dashboard-panel {
+        padding: 16px;
+    }
+
+    .dashboard-weather-temperature {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-summary-row {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .dashboard-stat-card,
+    .dashboard-soil-health-card {
+        min-height: 135px;
+    }
+
+    .dashboard-welcome h1 {
+        font-size: 1.45rem;
+    }
+}
+
