@@ -326,3 +326,273 @@
     }
 
 }
+
+/* =========================================
+   SOIL HEALTH ANALYSIS
+========================================= */
+
+.soil-health-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #dce9df;
+    border-radius: 12px;
+    background: #f5faf6;
+}
+
+.soil-health-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #526357;
+    font-size: 14px;
+}
+
+.soil-health-score {
+    color: #236b3b;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.soil-health-score span {
+    margin-left: 4px;
+    color: #6b7d70;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.soil-health-status {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.soil-health-good {
+    color: #176534;
+    background: #dff4e5;
+}
+
+.soil-health-moderate {
+    color: #805b08;
+    background: #fff0c2;
+}
+
+.soil-health-poor {
+    color: #a52b2b;
+    background: #fde3e3;
+}
+
+.soil-health-grid {
+    margin-top: 12px;
+}
+
+.soil-parameter-score {
+    display: block;
+    margin-top: 6px;
+    color: #526357;
+    font-size: 12px;
+}
+
+.soil-parameter-status {
+    display: block;
+    margin-top: 5px;
+    color: #52715a;
+    font-size: 12px;
+}
+
+.soil-health-note {
+    margin-top: 18px;
+    padding: 12px 14px;
+    border-left: 3px solid #78a985;
+    border-radius: 4px;
+    background: #f5f8f5;
+    color: #526357;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.soil-health-unavailable {
+    padding: 14px;
+    border-radius: 8px;
+    background: #fff8e6;
+    color: #775b1b;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* =========================================
+   PREDICTION DETAILS MODAL
+========================================= */
+
+.prediction-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+}
+
+.prediction-modal {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 900px;
+    max-height: 90vh;
+    overflow: hidden;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    animation: predictionModalEnter 0.2s ease-out;
+}
+
+/* Modal Header */
+
+.prediction-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-shrink: 0;
+    padding: 22px 26px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #ffffff;
+}
+
+.prediction-modal-header h4 {
+    margin: 0;
+    color: #1f2937;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.prediction-modal-header p {
+    margin: 6px 0 0;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.prediction-modal-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    background: #f3f4f6;
+    color: #374151;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.prediction-modal-close:hover {
+    background: #e5e7eb;
+}
+
+.prediction-modal-close:focus-visible {
+    outline: 2px solid #236b3b;
+    outline-offset: 3px;
+}
+
+/* Modal Body */
+
+.prediction-modal-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 24px 26px;
+}
+
+.prediction-modal-body .details-section {
+    margin-bottom: 24px;
+}
+
+.prediction-modal-body .details-section:last-child {
+    margin-bottom: 0;
+}
+
+/* Modal Footer */
+
+.prediction-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    padding: 16px 26px;
+    border-top: 1px solid #e5e7eb;
+    background: #ffffff;
+}
+
+/* Modal Animation */
+
+@keyframes predictionModalEnter {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* =========================================
+   RESPONSIVE MODAL
+========================================= */
+
+@media (max-width: 600px) {
+    .prediction-modal-overlay {
+        padding: 10px;
+    }
+
+    .prediction-modal {
+        max-height: 94vh;
+        border-radius: 12px;
+    }
+
+    .prediction-modal-header {
+        padding: 16px;
+    }
+
+    .prediction-modal-header h4 {
+        font-size: 18px;
+    }
+
+    .prediction-modal-body {
+        padding: 18px 16px;
+    }
+
+    .prediction-modal-footer {
+        padding: 12px 16px;
+    }
+
+    .soil-health-summary {
+        padding: 16px;
+    }
+
+    .soil-health-score {
+        font-size: 30px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .prediction-modal {
+        animation: none;
+    }
+}
+

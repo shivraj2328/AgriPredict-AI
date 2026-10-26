@@ -21,17 +21,25 @@ function PredictionHistory() {
     const [selectedPrediction, setSelectedPrediction] = useState(null);
 
     const [settings] = useState(() => {
-        const savedSettings = localStorage.getItem(
-            "agripredict_settings"
-        );
+        try {
+            const savedSettings = localStorage.getItem(
+                "agripredict_settings"
+            );
 
-        return savedSettings
-            ? JSON.parse(savedSettings)
-            : {
+            return savedSettings
+                ? JSON.parse(savedSettings)
+                : {
+                    temperatureUnit: "C",
+                    rainfallUnit: "mm",
+                    showConfidenceScore: true
+                };
+        } catch {
+            return {
                 temperatureUnit: "C",
                 rainfallUnit: "mm",
                 showConfidenceScore: true
             };
+        }
     });
 
     // Fetch prediction history
@@ -45,10 +53,7 @@ function PredictionHistory() {
 
                 setPredictions(response.data.predictions || []);
             } catch (error) {
-                console.error(
-                    "Prediction history error:",
-                    error
-                );
+                console.error("Prediction history error:", error);
 
                 setError(
                     error.response?.data?.message ||
@@ -71,7 +76,6 @@ function PredictionHistory() {
 
                 const response = await api.get("/farms");
 
-                // Supports either { farms: [...] } or a direct array.
                 const farmsData = Array.isArray(response.data)
                     ? response.data
                     : response.data.farms;
@@ -94,6 +98,29 @@ function PredictionHistory() {
         fetchFarms();
     }, []);
 
+    // Prevent background page scrolling while modal is open
+    useEffect(() => {
+        if (!selectedPrediction) {
+            return undefined;
+        }
+
+        const previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+
+        const handleEscape = (event) => {
+            if (event.key === "Escape") {
+                setSelectedPrediction(null);
+            }
+        };
+
+        document.addEventListener("keydown", handleEscape);
+
+        return () => {
+            document.body.style.overflow = previousOverflow;
+            document.removeEventListener("keydown", handleEscape);
+        };
+    }, [selectedPrediction]);
+
     // Apply crop search, confidence filter, and farm filter
     const filteredPredictions = predictions.filter((prediction) => {
         const cropName =
@@ -108,12 +135,13 @@ function PredictionHistory() {
         const matchesConfidence =
             confidenceFilter === "all" ||
             (confidenceFilter === "high" && confidence > 80) ||
-            (confidenceFilter === "medium" &&
+            (
+                confidenceFilter === "medium" &&
                 confidence >= 50 &&
-                confidence <= 80) ||
+                confidence <= 80
+            ) ||
             (confidenceFilter === "low" && confidence < 50);
 
-        // Populated farm objects and unpopulated farm IDs are supported.
         const predictionFarmId =
             typeof prediction.farm === "object"
                 ? prediction.farm?._id
@@ -136,7 +164,13 @@ function PredictionHistory() {
             return "N/A";
         }
 
-        return new Date(date).toLocaleDateString("en-IN", {
+        const parsedDate = new Date(date);
+
+        if (Number.isNaN(parsedDate.getTime())) {
+            return "N/A";
+        }
+
+        return parsedDate.toLocaleDateString("en-IN", {
             day: "2-digit",
             month: "short",
             year: "numeric"
@@ -156,12 +190,44 @@ function PredictionHistory() {
     };
 
     const handleViewDetails = (prediction) => {
-        if (selectedPrediction?._id === prediction._id) {
-            setSelectedPrediction(null);
-        } else {
-            setSelectedPrediction(prediction);
+        setSelectedPrediction(prediction);
+    };
+
+    const getSoilHealthStatusClass = (status) => {
+        switch (status) {
+            case "Good":
+                return "soil-health-good";
+
+            case "Moderate":
+                return "soil-health-moderate";
+
+            case "Needs Improvement":
+                return "soil-health-poor";
+
+            default:
+                return "";
         }
     };
+
+    const renderSoilParameter = (label, parameter) => (
+        <div className="detail-item" key={label}>
+            <span>{label}</span>
+
+            <strong>
+                {parameter?.value ?? "N/A"}
+            </strong>
+
+            <small className="soil-parameter-score">
+                Score: {parameter?.score != null
+                    ? `${parameter.score}/100`
+                    : "N/A"}
+            </small>
+
+            <span className="soil-parameter-status">
+                {parameter?.status ?? "Unavailable"}
+            </span>
+        </div>
+    );
 
     return (
         <div className="prediction-history">
@@ -177,7 +243,9 @@ function PredictionHistory() {
                         type="text"
                         placeholder="Search crop..."
                         value={search}
-                        onChange={(e) => setSearch(e.target.value)}
+                        onChange={(event) =>
+                            setSearch(event.target.value)
+                        }
                     />
                 </div>
 
@@ -185,33 +253,22 @@ function PredictionHistory() {
                 <select
                     className="confidence-filter"
                     value={confidenceFilter}
-                    onChange={(e) =>
-                        setConfidenceFilter(e.target.value)
+                    onChange={(event) =>
+                        setConfidenceFilter(event.target.value)
                     }
                 >
-                    <option value="all">
-                        All Confidence
-                    </option>
-
-                    <option value="high">
-                        High (&gt;80%)
-                    </option>
-
-                    <option value="medium">
-                        Medium (50–80%)
-                    </option>
-
-                    <option value="low">
-                        Low (&lt;50%)
-                    </option>
+                    <option value="all">All Confidence</option>
+                    <option value="high">High (&gt;80%)</option>
+                    <option value="medium">Medium (50–80%)</option>
+                    <option value="low">Low (&lt;50%)</option>
                 </select>
 
                 {/* Farm Filter */}
                 <select
                     className="confidence-filter"
                     value={selectedFarm}
-                    onChange={(e) =>
-                        setSelectedFarm(e.target.value)
+                    onChange={(event) =>
+                        setSelectedFarm(event.target.value)
                     }
                     disabled={farmsLoading}
                     aria-label="Filter predictions by farm"
@@ -251,9 +308,7 @@ function PredictionHistory() {
             {/* Prediction History Table */}
             <div className="history-card">
                 <div className="table-responsive">
-
                     <table className="history-table">
-
                         <thead>
                             <tr>
                                 <th>Date</th>
@@ -276,89 +331,77 @@ function PredictionHistory() {
                                     </td>
                                 </tr>
                             ) : filteredPredictions.length > 0 ? (
-                                filteredPredictions.map(
-                                    (prediction) => {
-                                        const confidence =
-                                            Number(
-                                                prediction.confidence
-                                            );
+                                filteredPredictions.map((prediction) => {
+                                    const confidence =
+                                        Number(prediction.confidence);
 
-                                        const isSelected =
-                                            selectedPrediction?._id ===
-                                            prediction._id;
+                                    return (
+                                        <tr key={prediction._id}>
+                                            <td>
+                                                {formatDate(
+                                                    prediction.createdAt
+                                                )}
+                                            </td>
 
-                                        return (
-                                            <tr
-                                                key={prediction._id}
-                                            >
-                                                <td>
-                                                    {formatDate(
-                                                        prediction.createdAt
-                                                    )}
-                                                </td>
+                                            <td>
+                                                {getFarmName(prediction)}
+                                            </td>
 
-                                                <td>
-                                                    {getFarmName(
-                                                        prediction
-                                                    )}
-                                                </td>
+                                            <td>
+                                                <span className="crop-name">
+                                                    {prediction.recommendedCrop}
+                                                </span>
+                                            </td>
 
-                                                <td>
-                                                    <span className="crop-name">
-                                                        {
-                                                            prediction.recommendedCrop
-                                                        }
+                                            <td>
+                                                <div className="confidence-cell">
+                                                    <span>
+                                                        {confidence}%
                                                     </span>
-                                                </td>
 
-                                                <td>
-                                                    <div className="confidence-cell">
-                                                        <span>
-                                                            {confidence}%
-                                                        </span>
-
-                                                        <div className="confidence-bar">
-                                                            <div
-                                                                className="confidence-progress"
-                                                                style={{
-                                                                    width: `${Math.min(
-                                                                        Math.max(
-                                                                            confidence,
-                                                                            0
-                                                                        ),
-                                                                        100
-                                                                    )}%`
-                                                                }}
-                                                            />
-                                                        </div>
+                                                    <div className="confidence-bar">
+                                                        <div
+                                                            className="confidence-progress"
+                                                            style={{
+                                                                width: `${Math.min(
+                                                                    Math.max(
+                                                                        Number.isFinite(
+                                                                            confidence
+                                                                        )
+                                                                            ? confidence
+                                                                            : 0,
+                                                                        0
+                                                                    ),
+                                                                    100
+                                                                )}%`
+                                                            }}
+                                                        />
                                                     </div>
-                                                </td>
+                                                </div>
+                                            </td>
 
-                                                <td>
-                                                    <span className="status-badge">
-                                                        ✓ Successful
-                                                    </span>
-                                                </td>
+                                            <td>
+                                                <span className="status-badge">
+                                                    ✓ Successful
+                                                </span>
+                                            </td>
 
-                                                <td>
-                                                    <button
-                                                        type="button"
-                                                        className="details-button"
-                                                        onClick={() =>
-                                                            handleViewDetails(
-                                                                prediction
-                                                            )
-                                                        }
-                                                    >
-                                                        {isSelected
-                                                            ? "Hide"
-                                                            : "View"}
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        );
-                                    }
-                                )
+                                            <td>
+                                                <button
+                                                    type="button"
+                                                    className="details-button"
+                                                    onClick={() =>
+                                                        handleViewDetails(
+                                                            prediction
+                                                        )
+                                                    }
+                                                >
+                                                    View
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })
                             ) : (
                                 <tr>
                                     <td
@@ -370,166 +413,245 @@ function PredictionHistory() {
                                 </tr>
                             )}
                         </tbody>
-
                     </table>
                 </div>
             </div>
 
-            {/* Prediction Details */}
+            {/* Prediction Details Modal */}
             {selectedPrediction && (
-                <div className="prediction-details">
+                <div
+                    className="prediction-modal-overlay"
+                    onClick={() => setSelectedPrediction(null)}
+                >
+                    <div
+                        className="prediction-modal"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="prediction-modal-title"
+                        onClick={(event) => event.stopPropagation()}
+                    >
+                        {/* Modal Header */}
+                        <div className="prediction-modal-header">
+                            <div>
+                                <h4 id="prediction-modal-title">
+                                    Prediction Details
+                                </h4>
 
-                    <div className="prediction-details-header">
-                        <div>
-                            <h4>Prediction Details</h4>
-
-                            <p>
-                                {formatDate(
-                                    selectedPrediction.createdAt
-                                )}
-                            </p>
-                        </div>
-
-                        <button
-                            type="button"
-                            className="details-close"
-                            onClick={() =>
-                                setSelectedPrediction(null)
-                            }
-                        >
-                            ×
-                        </button>
-                    </div>
-
-                    {/* Prediction Result */}
-                    <div className="details-section">
-                        <h5>🌱 Prediction Result</h5>
-
-                        <div className="details-grid">
-
-                            <div className="detail-item">
-                                <span>Farm</span>
-
-                                <strong>
-                                    {getFarmName(
-                                        selectedPrediction
+                                <p>
+                                    {formatDate(
+                                        selectedPrediction.createdAt
                                     )}
-                                </strong>
+                                </p>
                             </div>
 
-                            <div className="detail-item">
-                                <span>Crop</span>
+                            <button
+                                type="button"
+                                className="prediction-modal-close"
+                                onClick={() =>
+                                    setSelectedPrediction(null)
+                                }
+                                aria-label="Close prediction details"
+                            >
+                                &times;
+                            </button>
+                        </div>
 
-                                <strong>
-                                    {
-                                        selectedPrediction.recommendedCrop
-                                    }
-                                </strong>
-                            </div>
+                        {/* Modal Content */}
+                        <div className="prediction-modal-body">
 
-                            {settings.showConfidenceScore && (
-                                <div className="detail-item">
-                                    <span>Confidence</span>
+                            {/* Prediction Result */}
+                            <div className="details-section">
+                                <h5>🌱 Prediction Result</h5>
 
-                                    <strong>
-                                        {Number(
-                                            selectedPrediction.confidence
-                                        ).toFixed(2)}
-                                        %
-                                    </strong>
+                                <div className="details-grid">
+                                    <div className="detail-item">
+                                        <span>Farm</span>
+                                        <strong>
+                                            {getFarmName(
+                                                selectedPrediction
+                                            )}
+                                        </strong>
+                                    </div>
+
+                                    <div className="detail-item">
+                                        <span>Crop</span>
+                                        <strong>
+                                            {selectedPrediction.recommendedCrop ||
+                                                "N/A"}
+                                        </strong>
+                                    </div>
+
+                                    {settings.showConfidenceScore && (
+                                        <div className="detail-item">
+                                            <span>Confidence</span>
+                                            <strong>
+                                                {Number(
+                                                    selectedPrediction.confidence
+                                                ).toFixed(2)}%
+                                            </strong>
+                                        </div>
+                                    )}
                                 </div>
-                            )}
+                            </div>
+
+                            {/* Soil Health Analysis */}
+                            <div className="details-section">
+                                <h5>🌿 Soil Health Analysis</h5>
+
+                                {selectedPrediction.soilHealth?.parameters ? (
+                                    <>
+                                        <div className="soil-health-summary">
+                                            <div>
+                                                <span className="soil-health-label">
+                                                    Overall Soil Health
+                                                </span>
+
+                                                <div className="soil-health-score">
+                                                    {selectedPrediction.soilHealth.score}
+                                                    <span>/100</span>
+                                                </div>
+                                            </div>
+
+                                            <span
+                                                className={`soil-health-status ${getSoilHealthStatusClass(
+                                                    selectedPrediction.soilHealth.status
+                                                )}`}
+                                            >
+                                                {selectedPrediction.soilHealth.status}
+                                            </span>
+                                        </div>
+
+                                        <div className="details-grid soil-health-grid">
+                                            {renderSoilParameter(
+                                                "Nitrogen (N)",
+                                                selectedPrediction.soilHealth.parameters.nitrogen
+                                            )}
+
+                                            {renderSoilParameter(
+                                                "Phosphorus (P)",
+                                                selectedPrediction.soilHealth.parameters.phosphorus
+                                            )}
+
+                                            {renderSoilParameter(
+                                                "Potassium (K)",
+                                                selectedPrediction.soilHealth.parameters.potassium
+                                            )}
+
+                                            {renderSoilParameter(
+                                                "Soil pH",
+                                                selectedPrediction.soilHealth.parameters.ph
+                                            )}
+                                        </div>
+
+                                        <p className="soil-health-note">
+                                            This is an indicative soil health
+                                            assessment calculated from the
+                                            recorded soil parameters. It is not
+                                            a substitute for a laboratory soil
+                                            test.
+                                        </p>
+                                    </>
+                                ) : (
+                                    <p className="soil-health-unavailable">
+                                        Soil health analysis is unavailable
+                                        for this prediction. The record may
+                                        have been created before soil health
+                                        analysis was added.
+                                    </p>
+                                )}
+                            </div>
+
+                            {/* Recorded Soil Parameters */}
+                            <div className="details-section">
+                                <h5>🧪 Recorded Soil Parameters</h5>
+
+                                <div className="details-grid">
+                                    <div className="detail-item">
+                                        <span>Nitrogen (N)</span>
+                                        <strong>
+                                            {selectedPrediction.nitrogen ?? "N/A"}
+                                        </strong>
+                                    </div>
+
+                                    <div className="detail-item">
+                                        <span>Phosphorus (P)</span>
+                                        <strong>
+                                            {selectedPrediction.phosphorus ?? "N/A"}
+                                        </strong>
+                                    </div>
+
+                                    <div className="detail-item">
+                                        <span>Potassium (K)</span>
+                                        <strong>
+                                            {selectedPrediction.potassium ?? "N/A"}
+                                        </strong>
+                                    </div>
+
+                                    <div className="detail-item">
+                                        <span>Soil pH</span>
+                                        <strong>
+                                            {selectedPrediction.ph ?? "N/A"}
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Weather Parameters */}
+                            <div className="details-section">
+                                <h5>🌦️ Weather Parameters</h5>
+
+                                <div className="details-grid">
+                                    <div className="detail-item">
+                                        <span>Temperature</span>
+                                        <strong>
+                                            {selectedPrediction.temperature != null
+                                                ? formatTemperature(
+                                                    selectedPrediction.temperature,
+                                                    settings.temperatureUnit
+                                                )
+                                                : "N/A"}
+                                        </strong>
+                                    </div>
+
+                                    <div className="detail-item">
+                                        <span>Humidity</span>
+                                        <strong>
+                                            {selectedPrediction.humidity ?? "N/A"}
+                                            {selectedPrediction.humidity != null
+                                                ? " %"
+                                                : ""}
+                                        </strong>
+                                    </div>
+
+                                    <div className="detail-item">
+                                        <span>Rainfall</span>
+                                        <strong>
+                                            {selectedPrediction.rainfall != null
+                                                ? formatRainfall(
+                                                    selectedPrediction.rainfall,
+                                                    settings.rainfallUnit
+                                                )
+                                                : "N/A"}
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
-                    </div>
 
-                    {/* Soil Parameters */}
-                    <div className="details-section">
-                        <h5>🧪 Soil Parameters</h5>
-
-                        <div className="details-grid">
-
-                            <div className="detail-item">
-                                <span>Nitrogen (N)</span>
-
-                                <strong>
-                                    {selectedPrediction.nitrogen ?? "N/A"}
-                                </strong>
-                            </div>
-
-                            <div className="detail-item">
-                                <span>Phosphorus (P)</span>
-
-                                <strong>
-                                    {selectedPrediction.phosphorus ?? "N/A"}
-                                </strong>
-                            </div>
-
-                            <div className="detail-item">
-                                <span>Potassium (K)</span>
-
-                                <strong>
-                                    {selectedPrediction.potassium ?? "N/A"}
-                                </strong>
-                            </div>
-
-                            <div className="detail-item">
-                                <span>Soil pH</span>
-
-                                <strong>
-                                    {selectedPrediction.ph ?? "N/A"}
-                                </strong>
-                            </div>
-
+                        {/* Modal Footer */}
+                        <div className="prediction-modal-footer">
+                            <button
+                                type="button"
+                                className="details-button"
+                                onClick={() =>
+                                    setSelectedPrediction(null)
+                                }
+                            >
+                                Close
+                            </button>
                         </div>
                     </div>
-
-                    {/* Weather Parameters */}
-                    <div className="details-section">
-                        <h5>🌦️ Weather Parameters</h5>
-
-                        <div className="details-grid">
-
-                            <div className="detail-item">
-                                <span>Temperature</span>
-
-                                <strong>
-                                    {selectedPrediction.temperature != null
-                                        ? formatTemperature(
-                                            selectedPrediction.temperature,
-                                            settings.temperatureUnit
-                                        )
-                                        : "N/A"}
-                                </strong>
-                            </div>
-
-                            <div className="detail-item">
-                                <span>Humidity</span>
-
-                                <strong>
-                                    {selectedPrediction.humidity ?? "N/A"}
-                                    {selectedPrediction.humidity != null
-                                        ? " %"
-                                        : ""}
-                                </strong>
-                            </div>
-
-                            <div className="detail-item">
-                                <span>Rainfall</span>
-
-                                <strong>
-                                    {selectedPrediction.rainfall != null
-                                        ? formatRainfall(
-                                            selectedPrediction.rainfall,
-                                            settings.rainfallUnit
-                                        )
-                                        : "N/A"}
-                                </strong>
-                            </div>
-
-                        </div>
-                    </div>
-
                 </div>
             )}
 
