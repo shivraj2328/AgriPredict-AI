@@ -8,10 +8,16 @@ import {
 
 function PredictionHistory() {
     const [predictions, setPredictions] = useState([]);
+    const [farms, setFarms] = useState([]);
+
     const [search, setSearch] = useState("");
     const [confidenceFilter, setConfidenceFilter] = useState("all");
+    const [selectedFarm, setSelectedFarm] = useState("all");
+
     const [loading, setLoading] = useState(true);
+    const [farmsLoading, setFarmsLoading] = useState(true);
     const [error, setError] = useState("");
+    const [farmsError, setFarmsError] = useState("");
     const [selectedPrediction, setSelectedPrediction] = useState(null);
 
     const [settings] = useState(() => {
@@ -28,6 +34,7 @@ function PredictionHistory() {
             };
     });
 
+    // Fetch prediction history
     useEffect(() => {
         const fetchPredictionHistory = async () => {
             try {
@@ -55,12 +62,45 @@ function PredictionHistory() {
         fetchPredictionHistory();
     }, []);
 
+    // Fetch farms belonging to the logged-in user
+    useEffect(() => {
+        const fetchFarms = async () => {
+            try {
+                setFarmsLoading(true);
+                setFarmsError("");
+
+                const response = await api.get("/farms");
+
+                // Supports either { farms: [...] } or a direct array.
+                const farmsData = Array.isArray(response.data)
+                    ? response.data
+                    : response.data.farms;
+
+                setFarms(
+                    Array.isArray(farmsData) ? farmsData : []
+                );
+            } catch (error) {
+                console.error("Failed to load farms:", error);
+
+                setFarmsError(
+                    error.response?.data?.message ||
+                    "Unable to load your farms."
+                );
+            } finally {
+                setFarmsLoading(false);
+            }
+        };
+
+        fetchFarms();
+    }, []);
+
+    // Apply crop search, confidence filter, and farm filter
     const filteredPredictions = predictions.filter((prediction) => {
         const cropName =
             prediction.recommendedCrop?.toLowerCase() || "";
 
         const matchesSearch = cropName.includes(
-            search.toLowerCase()
+            search.toLowerCase().trim()
         );
 
         const confidence = Number(prediction.confidence);
@@ -73,7 +113,22 @@ function PredictionHistory() {
                 confidence <= 80) ||
             (confidenceFilter === "low" && confidence < 50);
 
-        return matchesSearch && matchesConfidence;
+        // Populated farm objects and unpopulated farm IDs are supported.
+        const predictionFarmId =
+            typeof prediction.farm === "object"
+                ? prediction.farm?._id
+                : prediction.farm;
+
+        const matchesFarm =
+            selectedFarm === "all" ||
+            String(predictionFarmId || "") ===
+                String(selectedFarm);
+
+        return (
+            matchesSearch &&
+            matchesConfidence &&
+            matchesFarm
+        );
     });
 
     const formatDate = (date) => {
@@ -88,6 +143,18 @@ function PredictionHistory() {
         });
     };
 
+    const getFarmName = (prediction) => {
+        if (
+            prediction.farm &&
+            typeof prediction.farm === "object" &&
+            prediction.farm.name
+        ) {
+            return prediction.farm.name;
+        }
+
+        return "Farm not associated";
+    };
+
     const handleViewDetails = (prediction) => {
         if (selectedPrediction?._id === prediction._id) {
             setSelectedPrediction(null);
@@ -99,20 +166,10 @@ function PredictionHistory() {
     return (
         <div className="prediction-history">
 
-            {/* Header */}
-            {/* <div className="prediction-history-header">
-                <div>
-                    <h2>Prediction History</h2>
-
-                    <p>
-                        View and search your previous crop predictions.
-                    </p>
-                </div>
-            </div> */}
-
             {/* Filters */}
             <div className="history-filters">
 
+                {/* Crop Search */}
                 <div className="search-box">
                     <span className="search-icon">🔍</span>
 
@@ -124,6 +181,7 @@ function PredictionHistory() {
                     />
                 </div>
 
+                {/* Confidence Filter */}
                 <select
                     className="confidence-filter"
                     value={confidenceFilter}
@@ -148,18 +206,50 @@ function PredictionHistory() {
                     </option>
                 </select>
 
+                {/* Farm Filter */}
+                <select
+                    className="confidence-filter"
+                    value={selectedFarm}
+                    onChange={(e) =>
+                        setSelectedFarm(e.target.value)
+                    }
+                    disabled={farmsLoading}
+                    aria-label="Filter predictions by farm"
+                >
+                    <option value="all">
+                        {farmsLoading
+                            ? "Loading farms..."
+                            : "All Farms"}
+                    </option>
+
+                    {farms.map((farm) => (
+                        <option
+                            key={farm._id}
+                            value={farm._id}
+                        >
+                            {farm.name}
+                        </option>
+                    ))}
+                </select>
+
             </div>
 
-            {/* Error */}
+            {/* Farm Loading Error */}
+            {farmsError && (
+                <div className="alert alert-danger">
+                    {farmsError}
+                </div>
+            )}
+
+            {/* Prediction Error */}
             {error && (
                 <div className="alert alert-danger">
                     {error}
                 </div>
             )}
 
-            {/* Table */}
+            {/* Prediction History Table */}
             <div className="history-card">
-
                 <div className="table-responsive">
 
                     <table className="history-table">
@@ -167,6 +257,7 @@ function PredictionHistory() {
                         <thead>
                             <tr>
                                 <th>Date</th>
+                                <th>Farm</th>
                                 <th>Crop</th>
                                 <th>Confidence</th>
                                 <th>Status</th>
@@ -175,21 +266,18 @@ function PredictionHistory() {
                         </thead>
 
                         <tbody>
-
                             {loading ? (
                                 <tr>
                                     <td
-                                        colSpan="5"
+                                        colSpan="6"
                                         className="no-results"
                                     >
                                         Loading predictions...
                                     </td>
                                 </tr>
                             ) : filteredPredictions.length > 0 ? (
-
                                 filteredPredictions.map(
                                     (prediction) => {
-
                                         const confidence =
                                             Number(
                                                 prediction.confidence
@@ -201,14 +289,17 @@ function PredictionHistory() {
 
                                         return (
                                             <tr
-                                                key={
-                                                    prediction._id
-                                                }
+                                                key={prediction._id}
                                             >
-
                                                 <td>
                                                     {formatDate(
                                                         prediction.createdAt
+                                                    )}
+                                                </td>
+
+                                                <td>
+                                                    {getFarmName(
+                                                        prediction
                                                     )}
                                                 </td>
 
@@ -221,17 +312,12 @@ function PredictionHistory() {
                                                 </td>
 
                                                 <td>
-
                                                     <div className="confidence-cell">
-
                                                         <span>
-                                                            {
-                                                                confidence
-                                                            }%
+                                                            {confidence}%
                                                         </span>
 
                                                         <div className="confidence-bar">
-
                                                             <div
                                                                 className="confidence-progress"
                                                                 style={{
@@ -243,24 +329,18 @@ function PredictionHistory() {
                                                                         100
                                                                     )}%`
                                                                 }}
-                                                            ></div>
-
+                                                            />
                                                         </div>
-
                                                     </div>
-
                                                 </td>
 
                                                 <td>
-
                                                     <span className="status-badge">
                                                         ✓ Successful
                                                     </span>
-
                                                 </td>
 
                                                 <td>
-
                                                     <button
                                                         type="button"
                                                         className="details-button"
@@ -274,33 +354,25 @@ function PredictionHistory() {
                                                             ? "Hide"
                                                             : "View"}
                                                     </button>
-
                                                 </td>
-
                                             </tr>
                                         );
                                     }
                                 )
-
                             ) : (
-
                                 <tr>
                                     <td
-                                        colSpan="5"
+                                        colSpan="6"
                                         className="no-results"
                                     >
                                         No predictions found.
                                     </td>
                                 </tr>
-
                             )}
-
                         </tbody>
 
                     </table>
-
                 </div>
-
             </div>
 
             {/* Prediction Details */}
@@ -331,10 +403,19 @@ function PredictionHistory() {
 
                     {/* Prediction Result */}
                     <div className="details-section">
-
                         <h5>🌱 Prediction Result</h5>
 
                         <div className="details-grid">
+
+                            <div className="detail-item">
+                                <span>Farm</span>
+
+                                <strong>
+                                    {getFarmName(
+                                        selectedPrediction
+                                    )}
+                                </strong>
+                            </div>
 
                             <div className="detail-item">
                                 <span>Crop</span>
@@ -360,12 +441,10 @@ function PredictionHistory() {
                             )}
 
                         </div>
-
                     </div>
 
                     {/* Soil Parameters */}
                     <div className="details-section">
-
                         <h5>🧪 Soil Parameters</h5>
 
                         <div className="details-grid">
@@ -403,12 +482,10 @@ function PredictionHistory() {
                             </div>
 
                         </div>
-
                     </div>
 
                     {/* Weather Parameters */}
                     <div className="details-section">
-
                         <h5>🌦️ Weather Parameters</h5>
 
                         <div className="details-grid">
@@ -451,13 +528,12 @@ function PredictionHistory() {
                             </div>
 
                         </div>
-
                     </div>
 
                 </div>
             )}
 
-            {/* Result count */}
+            {/* Result Count */}
             {!loading && (
                 <p className="result-count">
                     Showing {filteredPredictions.length} of{" "}
