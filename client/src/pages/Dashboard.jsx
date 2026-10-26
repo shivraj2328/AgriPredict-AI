@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import "../styles/dashboard.css";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 import StatCard from "../components/Dashboard/StatCard/StatCard";
@@ -19,17 +19,19 @@ function Dashboard() {
     const [soilHealthLoading, setSoilHealthLoading] = useState(true);
 
     useEffect(() => {
+        let cancelled = false;
+
         const fetchDashboardData = async () => {
             try {
                 const [
                     userResponse,
-                    predictionsResponse,
-                    soilHealthResponse
+                    predictionsResponse
                 ] = await Promise.allSettled([
                     getCurrentUser(),
-                    api.get("/predictions"),
-                    api.get("/soil-health")
+                    api.get("/predictions")
                 ]);
+
+                if (cancelled) return;
 
                 if (userResponse.status === "fulfilled") {
                     if (userResponse.value.success) {
@@ -37,27 +39,76 @@ function Dashboard() {
                     }
                 }
 
+                let predictionList = [];
+
                 if (predictionsResponse.status === "fulfilled") {
-                    setPredictions(
-                        predictionsResponse.value.data.predictions || []
+                    predictionList =
+                        predictionsResponse.value.data.predictions || [];
+
+                    setPredictions(predictionList);
+                } else {
+                    console.error(
+                        "Failed to fetch predictions:",
+                        predictionsResponse.reason
                     );
                 }
 
-                if (soilHealthResponse.status === "fulfilled") {
-                    const response = soilHealthResponse.value.data;
+                // Use the latest prediction's farm.
+                const latestPrediction = predictionList[0];
+                const farmId = latestPrediction?.farm?._id;
+
+                if (!farmId) {
+                    setSoilHealth(null);
+                    return;
+                }
+
+                setSoilHealthLoading(true);
+
+                try {
+                    const soilHealthResponse = await api.get(
+                        `/soil-health?farmId=${encodeURIComponent(farmId)}`
+                    );
+
+                    if (cancelled) return;
+
+                    const response = soilHealthResponse.data;
 
                     if (response.success) {
                         setSoilHealth(response.soilHealth);
+                    } else {
+                        setSoilHealth(null);
                     }
+                } catch (error) {
+                    if (cancelled) return;
+
+                    if (error.response?.status !== 404) {
+                        console.error(
+                            "Failed to fetch farm soil health:",
+                            error
+                        );
+                    }
+
+                    setSoilHealth(null);
                 }
             } catch (error) {
-                console.error("Failed to fetch dashboard data:", error);
+                if (!cancelled) {
+                    console.error(
+                        "Failed to fetch dashboard data:",
+                        error
+                    );
+                }
             } finally {
-                setSoilHealthLoading(false);
+                if (!cancelled) {
+                    setSoilHealthLoading(false);
+                }
             }
         };
 
         fetchDashboardData();
+
+        return () => {
+            cancelled = true;
+        };
     }, []);
 
     const totalPredictions = predictions.length;
@@ -72,9 +123,8 @@ function Dashboard() {
     const latestCrop =
         latestPrediction?.recommendedCrop || "—";
 
-    const latestSoilHealth =
-        latestPrediction?.soilHealth || soilHealth;
-
+    // Prefer the farm-specific API response.
+    const latestSoilHealth = soilHealth;
     const parameters = latestSoilHealth?.parameters;
 
     return (
@@ -130,8 +180,17 @@ function Dashboard() {
                                     </h3>
 
                                     <p className="mb-2">
-                                        {latestSoilHealth?.status || "No data"}
+                                        {soilHealthLoading
+                                            ? "Loading assessment..."
+                                            : latestSoilHealth?.status ||
+                                              "No soil data for this farm"}
                                     </p>
+
+                                    {latestPrediction?.farm?.name && (
+                                        <small className="text-muted">
+                                            Farm: {latestPrediction.farm.name}
+                                        </small>
+                                    )}
                                 </div>
 
                                 <div className="fs-2">🧪</div>
@@ -140,7 +199,7 @@ function Dashboard() {
                             {latestSoilHealth && parameters && (
                                 <button
                                     type="button"
-                                    className="btn btn-sm btn-outline-primary"
+                                    className="btn btn-sm btn-outline-primary mt-2"
                                     data-bs-toggle="modal"
                                     data-bs-target="#soilHealthModal"
                                 >
@@ -252,8 +311,8 @@ function Dashboard() {
                                     </h5>
 
                                     <p className="text-muted mb-0">
-                                        Detailed assessment based on
-                                        N, P, K and soil pH.
+                                        Assessment for {latestFarmName},
+                                        based on N, P, K and soil pH.
                                     </p>
                                 </div>
 
@@ -294,7 +353,9 @@ function Dashboard() {
                                             ].map(([name, parameter]) => (
                                                 <tr key={name}>
                                                     <td>{name}</td>
-                                                    <td>{parameter?.value ?? "—"}</td>
+                                                    <td>
+                                                        {parameter?.value ?? "—"}
+                                                    </td>
                                                     <td>
                                                         {parameter?.score != null
                                                             ? `${parameter.score}%`
