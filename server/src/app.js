@@ -27,6 +27,7 @@ app.use(express.json());
 
 app.use("/api/health", healthRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/farms", farmRoutes);
 app.use("/api/predictions", predictionRoutes);
 app.use("/api/weather", weatherRoutes);
 app.use(
@@ -37,7 +38,6 @@ app.use(
     "/api/profile",
     profileRoutes
 );
-app.use("/api/farms", farmRoutes);
 
 
 app.get("/", (req, res) => {
