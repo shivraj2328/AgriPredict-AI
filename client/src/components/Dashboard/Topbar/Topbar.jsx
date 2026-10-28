@@ -6,7 +6,6 @@ function Topbar({ title = "AgriPredict" }) {
 const [open, setOpen] = useState(false);
 const navigate = useNavigate();
 
-```
 const user = JSON.parse(localStorage.getItem("user") || "{}");
 const name = user.name || user.username || "User";
 
@@ -58,7 +57,6 @@ return (
         </div>
     </header>
 );
-```
 
 }
 
