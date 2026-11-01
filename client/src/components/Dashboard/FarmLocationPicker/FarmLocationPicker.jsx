@@ -119,10 +119,9 @@ const FarmLocation = ({
         });
     };
 
-    const handleSearch = async (event) => {
-        event.preventDefault();
-
-        if (readOnly) return;
+    // Search for a village or city without submitting the parent form.
+    const handleSearch = async () => {
+        if (readOnly || searchLoading) return;
 
         const query = searchQuery.trim();
 
@@ -166,6 +165,7 @@ const FarmLocation = ({
             }
 
             handleLocationChange([latitude, longitude]);
+
         } catch (error) {
             console.error("Location search error:", error);
 
@@ -187,23 +187,28 @@ const FarmLocation = ({
                         farm on the map.
                     </p>
 
-                    <form
-                        onSubmit={handleSearch}
-                        className="d-flex gap-2 mb-2"
-                    >
+                    {/* Search controls - not a nested form */}
+                    <div className="d-flex gap-2 mb-2">
                         <input
                             type="text"
                             value={searchQuery}
                             onChange={(event) =>
                                 setSearchQuery(event.target.value)
                             }
+                            onKeyDown={(event) => {
+                                if (event.key === "Enter") {
+                                    event.preventDefault();
+                                    handleSearch();
+                                }
+                            }}
                             placeholder="e.g. Baramati, Pune, Maharashtra"
                             aria-label="Search farm location"
                             className="form-control"
                         />
 
                         <button
-                            type="submit"
+                            type="button"
+                            onClick={handleSearch}
                             disabled={searchLoading}
                             className="btn btn-primary"
                         >
@@ -211,7 +216,7 @@ const FarmLocation = ({
                                 ? "Searching..."
                                 : "Search"}
                         </button>
-                    </form>
+                    </div>
 
                     <small className="text-secondary d-block mb-2">
                         For better results, enter village, district and state.
