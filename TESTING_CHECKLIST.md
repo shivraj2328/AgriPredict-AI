@@ -135,7 +135,8 @@
 
 
 
-## 10. | #  | Test Case                              | Result         |
+## 10. Weather API Testing
+| #  | Test Case                              | Result         |
 | -- | -------------------------------------- | -------------- |
 | 86 | Weather API successful response        | ✅ PASS         |
 | 87 | Weather API failure message            | ✅ PASS         |
