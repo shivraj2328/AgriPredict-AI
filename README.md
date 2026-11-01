@@ -445,8 +445,6 @@ Developed as an MCA mini project at **G. H. Raisoni College of Engineering and M
 
 | Name | Roll No. | GitHub |
 | ---- | -------- | ------ |
-| Rutuja Bhagwan Gadhe | 25MCA80 | |
-| Sanika Ravindra Jambhale | 25MCA82 | |
 | Shivraj Ramesh Jagtap | 25MCA89 | [@shivraj2328](https://github.com/shivraj2328) |
 
 **Project guide:** Ms. Vaishnavi Giri

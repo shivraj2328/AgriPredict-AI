@@ -1,653 +1,123 @@
 # AgriPredict AI — System Design
 
-## 1. System Overview
+## 1. Overview
 
-AgriPredict AI is a full-stack web application designed to recommend suitable crops from soil and environmental inputs while maintaining prediction history for authenticated users.
-
-The system consists of:
-
-- React frontend
-- Node.js + Express backend
-- REST APIs
-- JWT authentication
-- MongoDB Atlas database
-- Mongoose ODM
-- AI/ML prediction module
-- Weather integration
-- Dashboard and profile modules
-
----
+AgriPredict AI is a client-server web application. The React/Vite client communicates with a Node.js/Express REST API. The backend coordinates authentication, database operations, weather retrieval and TensorFlow.js inference.
 
 ## 2. High-Level Architecture
 
 ```text
-                         User
-                           |
-                           v
-                React + Vite Frontend
-                           |
-                    React Router
-                           |
-                    Axios API Client
-                           |
-                           v
-                 Node.js + Express API
-                           |
-              +------------+------------+
-              |            |            |
-              v            v            v
-          Auth API    Prediction API  Weather API
-              |            |
-              v            v
-        JWT Middleware   Prediction
-              |          Controller
-              |            |
-              v            v
-          User Model   AI/ML Module
-              |            |
-              +------v-----+
-                     |
-                  Mongoose
-                     |
-                     v
-                MongoDB Atlas
++--------------------------+
+| Farmer / Web Browser     |
+| React + Vite             |
+| Dashboard, Prediction,   |
+| History, Profile, Farms  |
++------------+-------------+
+             |
+             | HTTPS / REST (Axios)
+             v
++--------------------------+
+| Node.js + Express API    |
+| Routes / Controllers     |
+| JWT Middleware           |
+| Validators / Services    |
++-----+---------------+----+
+      |               |
+      |               +--------------------+
+      |                                    |
+      v                                    v
++------------------+              +--------------------+
+| MongoDB Atlas    |              | Open-Meteo API     |
+| Mongoose Models  |              | Weather by         |
+| Users, Farms,    |              | latitude/longitude |
+| Predictions      |              +--------------------+
++------------------+
+      ^
+      |
++--------------------------+
+| TensorFlow.js            |
+| Model + preprocessing    |
+| Crop class + confidence  |
++--------------------------+
 ```
 
----
+The diagram is a logical architecture; actual runtime placement and exact service boundaries should be checked against the deployed source.
 
-## 3. Frontend Architecture
+## 3. Main Components
 
-The frontend uses React with Vite.
+### 3.1 Frontend
 
-Current structure:
+React and Vite provide the browser interface. Main areas include authentication, dashboard, crop prediction, prediction history, profile/settings and farm management.
+
+### 3.2 Backend
+
+Node.js and Express expose REST endpoints. Routes delegate to controllers and services. JWT middleware protects authenticated operations. Validators check user input before business logic executes.
+
+### 3.3 Database
+
+MongoDB Atlas stores user, farm and prediction documents. Mongoose provides schema definitions and database interaction.
+
+### 3.4 AI Inference
+
+TensorFlow.js loads the crop classification model. The inference workflow must use the feature ordering and preprocessing expected by the saved model.
+
+### 3.5 Weather Service
+
+Open-Meteo is queried using the selected farm's latitude and longitude. The returned weather values provide temperature, humidity and rainfall/precipitation inputs.
+
+## 4. Main User Workflows
+
+### 4.1 Authentication
 
 ```text
-client/
-└── src/
-    ├── assets/
-    ├── components/
-    ├── context/
-    ├── hooks/
-    ├── layouts/
-    ├── pages/
-    ├── routes/
-    ├── services/
-    ├── styles/
-    ├── utils/
-    ├── App.jsx
-    └── main.jsx
+User -> React UI -> Auth API -> JWT verification/session
+                           -> MongoDB user record
 ```
 
-### Main responsibilities
-
-#### Pages
-
-Application screens such as:
-
-- Home
-- Login
-- Register
-- Dashboard
-- Prediction
-- History
-- Profile
-- About
-- Contact
-- NotFound
-
-#### Components
-
-Reusable UI elements such as:
-
-- Navbar
-- Hero
-- Footer
-- FeatureCard
-- Authentication components
-- Dashboard components
-
-#### Layouts
-
-Shared page structures:
-
-- `MainLayout`
-- `AuthLayout`
-- `DashboardLayout`
-
-#### Routes
-
-`AppRoutes.jsx` defines public and protected navigation.
-
-#### Services
-
-API communication is centralized through Axios services.
-
-#### Utils
-
-Shared frontend utility logic such as authentication state handling.
-
----
-
-## 4. Backend Architecture
-
-The backend follows a layered Express architecture:
-
-```text
-Request
-  ↓
-Route
-  ↓
-Middleware
-  ↓
-Controller
-  ↓
-Service / Model / AI Module
-  ↓
-MongoDB / External API
-  ↓
-Controller
-  ↓
-JSON Response
-```
-
-### Backend folders
-
-```text
-server/src/
-├── ai/
-├── config/
-├── controllers/
-├── middleware/
-├── models/
-├── routes/
-├── services/
-├── utils/
-├── validators/
-└── app.js
-```
-
----
-
-## 5. Authentication Flow
-
-### Registration
+### 4.2 Crop Prediction
 
 ```text
 User
- ↓
-Register Form
- ↓
-POST /api/auth/register
- ↓
-Validate input
- ↓
-Check duplicate email
- ↓
-Hash password with bcryptjs
- ↓
-Create User
- ↓
-MongoDB
- ↓
-Safe response
+ -> Enter N, P, K, pH and select farm/location
+ -> Frontend sends authenticated request
+ -> Backend validates request and farm ownership
+ -> Backend obtains weather values from Open-Meteo
+ -> Backend prepares seven model features
+ -> TensorFlow.js inference
+ -> Backend stores prediction in MongoDB
+ -> Frontend displays crop and confidence
 ```
 
-### Login
+### 4.3 Prediction History
 
-```text
-User
- ↓
-Login Form
- ↓
-POST /api/auth/login
- ↓
-Find user
- ↓
-Compare password
- ↓
-Generate JWT
- ↓
-Return token + safe user data
-```
+The backend retrieves prediction documents scoped to the authenticated user. Farm-specific filtering and farm-name display are part of the multi-farm workflow.
 
-### Protected Request
+### 4.4 Indicative Soil Health
 
-```text
-Frontend
- ↓
-Axios
- ↓
-Authorization: Bearer <JWT>
- ↓
-JWT Middleware
- ↓
-Verify token
- ↓
-req.user.userId
- ↓
-Controller
- ↓
-Authorized operation
-```
+The assessment uses N, P, K and pH recorded for a prediction. Each prediction can have its own assessment. A new prediction is a new measurement/input record; it does not automatically mean the physical soil condition has changed.
 
-The backend is authoritative for authentication and ownership.
+## 5. Deployment Architecture
 
----
+The documented hosting setup is:
 
-## 6. Profile Flow
+- Frontend: Vercel
+- Backend: Render
+- Database: MongoDB Atlas
 
-```text
-Authenticated User
-        ↓
-GET /api/auth/me
-        ↓
-JWT Middleware
-        ↓
-req.user.userId
-        ↓
-User.findById(...)
-        ↓
-Safe User Response
-```
+The stable core version was reported deployed. Multi-farm changes were developed separately while Render Auto-Deploy was disabled. Confirm the final branch and deployed version before claiming that later changes are live.
 
-Profile updates follow the same authenticated flow:
+## 6. Reliability and Security
 
-```text
-PUT /api/auth/me
-        ↓
-JWT Middleware
-        ↓
-Validate name/email
-        ↓
-Check duplicate email
-        ↓
-Update User
-        ↓
-Return safe user data
-```
+- JWT authentication for protected API operations.
+- Server-side ownership checks for user and farm data.
+- Environment-based configuration for secrets and service URLs.
+- Explicit handling of weather API and model failures.
+- Persistent storage of prediction inputs and outputs.
+- Regression testing before production deployment.
 
-Password changes are separate from normal profile updates.
+## 7. Design Constraints
 
----
-
-## 7. Prediction Flow
-
-### Current implemented foundation
-
-```text
-Prediction Form
-      ↓
-POST /api/predictions
-      ↓
-JWT Middleware
-      ↓
-Authenticated user ID
-      ↓
-Validate prediction inputs
-      ↓
-Prediction Controller
-      ↓
-Prediction Model
-      ↓
-MongoDB Atlas
-      ↓
-Prediction Response
-```
-
-### Target AI-enabled flow
-
-```text
-Prediction Form
-      ↓
-POST /api/predictions
-      ↓
-JWT Middleware
-      ↓
-Validate inputs
-      ↓
-AI/ML Prediction Module
-      ↓
-Recommended Crop
-      ↓
-Confidence Score
-      ↓
-Prediction Model
-      ↓
-MongoDB Atlas
-      ↓
-JSON Response
-      ↓
-Frontend Result Card
-```
-
----
-
-## 8. Prediction Inputs
-
-The prediction workflow accepts:
-
-```text
-N  = Nitrogen
-P  = Phosphorus
-K  = Potassium
-Temperature
-Humidity
-Rainfall
-pH
-```
-
-The AI model will use the approved dataset/model feature representation when the ML layer is integrated.
-
----
-
-## 9. Prediction History Flow
-
-Target flow:
-
-```text
-History Page
-    ↓
-GET /api/predictions
-    ↓
-JWT Middleware
-    ↓
-Authenticated User ID
-    ↓
-Query only that user's predictions
-    ↓
-MongoDB
-    ↓
-Prediction List
-    ↓
-Frontend Table
-```
-
-Individual prediction:
-
-```text
-GET /api/predictions/:id
-        ↓
-JWT Middleware
-        ↓
-Verify authenticated ownership
-        ↓
-MongoDB
-        ↓
-Prediction Detail
-```
-
-A user must never be able to retrieve another user's prediction through a manipulated ID.
-
----
-
-## 10. AI/ML Architecture
-
-The AI module is organized under:
-
-```text
-server/src/ai/
-```
-
-Target flow:
-
-```text
-Dataset
-   ↓
-Data Cleaning
-   ↓
-Data Preprocessing
-   ↓
-Feature Preparation
-   ↓
-TensorFlow.js
-   ↓
-Model Training
-   ↓
-Model Evaluation
-   ↓
-Saved Model
-   ↓
-Prediction Service
-   ↓
-Prediction API
-```
-
-Danfo.js may be used for JavaScript-based data processing where appropriate.
-
-The AI layer should remain separated from HTTP route/controller concerns.
-
----
-
-## 11. Weather Integration
-
-Target architecture:
-
-```text
-Frontend
-   ↓
-Weather Request
-   ↓
-Express Weather API
-   ↓
-Weather Service
-   ↓
-External Weather API
-   ↓
-Normalize Response
-   ↓
-Frontend
-```
-
-Weather data may include:
-
-- Temperature
-- Humidity
-- Rainfall/precipitation
-
-The external weather provider has not been fixed in the current system design and should be selected during implementation.
-
----
-
-## 12. Dashboard Architecture
-
-The dashboard will combine data from multiple application modules.
-
-```text
-Dashboard
-   |
-   +--> User Information
-   |
-   +--> Prediction Statistics
-   |
-   +--> Recent Predictions
-   |
-   +--> Weather
-   |
-   +--> Soil Information
-   |
-   +--> Charts
-```
-
-Chart.js is planned for visualization.
-
----
-
-## 13. Data Ownership and Security
-
-Prediction ownership is determined by the authenticated JWT identity.
-
-Correct:
-
-```text
-JWT
- ↓
-req.user.userId
- ↓
-Prediction.user
-```
-
-Incorrect:
-
-```text
-Client sends arbitrary userId
- ↓
-Backend trusts userId
-```
-
-The second pattern must never be used for protected data ownership.
-
----
-
-## 14. Error Handling Flow
-
-```text
-Request
-  ↓
-Validation
-  ↓
-Authentication
-  ↓
-Business Logic
-  ↓
-Database / External Service
-  ↓
-Success Response
-```
-
-If an operation fails:
-
-```text
-Error
- ↓
-Appropriate HTTP status
- ↓
-Safe JSON message
- ↓
-Frontend error handling
-```
-
-Internal secrets, stack traces, passwords, and database details must not be exposed to users.
-
----
-
-## 15. Environment Configuration
-
-Sensitive values are stored outside source code.
-
-Example:
-
-```text
-Backend .env
-├── PORT
-├── MONGO_URI
-└── JWT_SECRET
-```
-
-Frontend configuration uses Vite environment variables such as:
-
-```text
-VITE_API_URL
-```
-
-Actual secret values must never be committed to GitHub.
-
----
-
-## 16. Deployment Architecture
-
-Target production architecture:
-
-```text
-User
- ↓
-Frontend — Vercel
- ↓
-Backend API — Render
- ↓
-MongoDB Atlas
-```
-
-The AI model and weather service will operate through the backend application.
-
-Production configuration and deployment security will be finalized during the deployment phase.
-
----
-
-## 17. Non-Functional Design Goals
-
-### Security
-
-- JWT authentication
-- Password hashing
-- Environment-based secrets
-- Protected APIs
-- User-level data ownership
-
-### Performance
-
-- Lightweight REST APIs
-- Efficient database queries
-- Avoid unnecessary frontend requests
-- Use indexes where justified
-
-### Maintainability
-
-- Layered backend architecture
-- Reusable React components
-- Centralized API client
-- Separate AI module
-- Numbered project documentation
-
-### Scalability
-
-The architecture should allow future additions such as:
-
-- More prediction models
-- More weather services
-- Additional dashboards
-- Additional agricultural analytics
-
-without replacing the core architecture.
-
----
-
-## 18. Current Implementation State
-
-### Implemented
-
-- React + Vite frontend
-- React Router
-- Responsive UI
-- Authentication UI
-- Express backend
-- REST API foundation
-- MongoDB Atlas
-- Mongoose
-- User model
-- Registration API
-- Login API
-- JWT middleware
-- Protected frontend routes
-- Logout
-- Current user API
-- Profile update API
-- Prediction model
-- Prediction creation API
-- Prediction validation
-- Prediction storage
-
-### Pending
-
-- Prediction list API
-- Prediction detail API
-- AI/ML model
-- Dataset preprocessing
-- TensorFlow.js integration
-- Weather API integration
-- Soil health analysis
-- Irrigation suggestions
-- Dynamic dashboard data
-- Charts integration
-- Full frontend-backend prediction integration
-- Automated testing
-- Production deployment
+- Crop predictions depend on model training data and preprocessing.
+- Weather service availability and aggregation affect prediction inputs.
+- The soil-health assessment is indicative and limited to four inputs.
+- The application does not guarantee crop yield or replace professional agronomic advice.
