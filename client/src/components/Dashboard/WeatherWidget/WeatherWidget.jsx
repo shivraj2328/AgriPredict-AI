@@ -50,10 +50,7 @@ function WeatherWidget({ latitude, longitude }) {
                     rainfall: response.data.rainfall
                 });
             } catch (error) {
-                console.error(
-                    "Dashboard weather error:",
-                    error
-                );
+                console.error("Dashboard weather error:", error);
 
                 setError(
                     error.response?.data?.message ||
@@ -68,53 +65,87 @@ function WeatherWidget({ latitude, longitude }) {
     }, [latitude, longitude]);
 
     return (
-        <div className="card shadow-sm h-100">
+        <div className="card dashboard-weather-card h-100">
             <div className="card-body">
-                <h4>Current Weather</h4>
+                <div className="dashboard-weather-header">
+                    <div>
+                        <span className="dashboard-weather-eyebrow">
+                            LIVE CONDITIONS
+                        </span>
+                        <h4>Current Weather</h4>
+                    </div>
+
+                    <span className="dashboard-weather-icon">
+                        🌤️
+                    </span>
+                </div>
 
                 {loading && (
-                    <p className="text-muted mt-3">
-                        Loading weather...
-                    </p>
+                    <div className="dashboard-weather-state">
+                        <div className="dashboard-weather-spinner" />
+                        <p>Fetching latest weather...</p>
+                    </div>
                 )}
 
                 {!loading && error && (
-                    <div className="alert alert-danger mt-3 mb-0">
+                    <div className="dashboard-weather-error">
                         {error}
                     </div>
                 )}
 
                 {!loading && !error && weather && (
-                    <div className="mt-3">
-                        <h1>
-                            {formatTemperature(
-                                weather.temperature,
-                                settings.temperatureUnit
-                            )}
-                        </h1>
+                    <div className="dashboard-weather-content">
+                        <div className="dashboard-weather-main">
+                            <h1>
+                                {formatTemperature(
+                                    weather.temperature,
+                                    settings.temperatureUnit
+                                )}
+                            </h1>
 
-                        <p>
-                            Humidity: {weather.humidity}%
-                        </p>
+                            <span>Current temperature</span>
+                        </div>
 
-                        <p>
-                            Rainfall:{" "}
-                            {formatRainfall(
-                                weather.rainfall,
-                                settings.rainfallUnit
-                            )}
-                        </p>
+                        <div className="dashboard-weather-metrics">
+                            <div className="dashboard-weather-metric">
+                                <span className="weather-metric-icon">
+                                    💧
+                                </span>
+                                <div>
+                                    <span>Humidity</span>
+                                    <strong>{weather.humidity}%</strong>
+                                </div>
+                            </div>
 
-                        <p className="mb-0">
-                            🌤️ Current conditions
-                        </p>
+                            <div className="dashboard-weather-metric">
+                                <span className="weather-metric-icon">
+                                    🌧️
+                                </span>
+                                <div>
+                                    <span>Rainfall</span>
+                                    <strong>
+                                        {formatRainfall(
+                                            weather.rainfall,
+                                            settings.rainfallUnit
+                                        )}
+                                    </strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="dashboard-weather-footer">
+                            <span className="weather-live-dot" />
+                            Live weather data
+                        </div>
                     </div>
                 )}
 
                 {!loading && !error && !weather && (
-                    <p className="text-muted mt-3 mb-0">
-                        No farm location available.
-                    </p>
+                    <div className="dashboard-weather-empty">
+                        <span>📍</span>
+                        <p>No farm location available.</p>
+                        <small>Add a farm location to view weather.</small>
+                    </div>
                 )}
             </div>
         </div>
