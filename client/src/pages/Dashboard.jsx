@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "../styles/dashboard.css";
+
 import DashboardLayout from "../layouts/DashboardLayout";
 
 import StatCard from "../components/Dashboard/StatCard/StatCard";
@@ -8,6 +9,7 @@ import RecentPredictions from "../components/Dashboard/RecentPredictions/RecentP
 import QuickPrediction from "../components/Dashboard/QuickPrediction/QuickPrediction";
 import PredictionActivity from "../components/Dashboard/PredictionActivity/PredictionActivity";
 import ConfidenceTrend from "../components/Dashboard/ConfidenceTrend/ConfidenceTrend";
+import CropDistribution from "../components/Profile/CropDistribution/CropDistribution";
 
 import { getCurrentUser } from "../services/authService";
 import api from "../services/api";
@@ -53,7 +55,7 @@ function Dashboard() {
                     );
                 }
 
-                // Use the latest prediction's farm.
+                // Get the latest prediction's farm.
                 const latestPrediction = predictionList[0];
                 const farmId = latestPrediction?.farm?._id;
 
@@ -123,12 +125,13 @@ function Dashboard() {
     const latestCrop =
         latestPrediction?.recommendedCrop || "—";
 
-    // Prefer the farm-specific API response.
     const latestSoilHealth = soilHealth;
     const parameters = latestSoilHealth?.parameters;
 
     return (
         <DashboardLayout>
+
+            {/* Dashboard Header */}
             <div className="mb-4">
                 <h2>
                     Welcome, {user?.name || "Farmer"}!
@@ -139,8 +142,9 @@ function Dashboard() {
                 </p>
             </div>
 
-            {/* Dashboard Cards */}
+            {/* Dashboard Statistics Cards */}
             <div className="row g-3 mb-4">
+
                 {/* Total Predictions */}
                 <div className="col-md-3">
                     <StatCard
@@ -193,7 +197,9 @@ function Dashboard() {
                                     )}
                                 </div>
 
-                                <div className="fs-2">🧪</div>
+                                <div className="fs-2">
+                                    🧪
+                                </div>
                             </div>
 
                             {latestSoilHealth && parameters && (
@@ -222,47 +228,75 @@ function Dashboard() {
             </div>
 
             {/* Latest Prediction Summary */}
-            {latestPrediction && (
-                <div className="card shadow-sm mb-4">
-                    <div className="card-body">
-                        <h5 className="card-title">
-                            Latest Prediction Summary
-                        </h5>
+{latestPrediction && (
+    <div className="card dashboard-prediction-card mb-4">
+        <div className="card-body">
 
-                        <div className="row g-3 mt-1">
-                            <div className="col-md-4">
-                                <p className="text-muted mb-1">
-                                    Farm
-                                </p>
-                                <strong>{latestFarmName}</strong>
-                            </div>
+            {/* Card Header */}
+            <div className="dashboard-prediction-header">
+                <div>
+                    <span className="dashboard-prediction-eyebrow">
+                        LATEST RESULT
+                    </span>
 
-                            <div className="col-md-4">
-                                <p className="text-muted mb-1">
-                                    Recommended Crop
-                                </p>
-                                <strong>{latestCrop}</strong>
-                            </div>
+                    <h4>Latest Prediction Summary</h4>
+                </div>
 
-                            <div className="col-md-4">
-                                <p className="text-muted mb-1">
-                                    Prediction Date
-                                </p>
-                                <strong>
-                                    {latestPrediction.createdAt
-                                        ? new Date(
-                                            latestPrediction.createdAt
-                                        ).toLocaleString()
-                                        : "—"}
-                                </strong>
-                            </div>
-                        </div>
+                <span className="dashboard-prediction-icon">
+                    🌾
+                </span>
+            </div>
+
+            {/* Main Crop */}
+            <div className="dashboard-prediction-main">
+                <h1>{latestCrop}</h1>
+                <span>Recommended Crop</span>
+            </div>
+
+            {/* Prediction Details */}
+            <div className="dashboard-prediction-metrics">
+
+                <div className="dashboard-prediction-metric">
+                    <span className="prediction-metric-icon">
+                        🚜
+                    </span>
+
+                    <div>
+                        <span>Farm</span>
+                        <strong>{latestFarmName}</strong>
                     </div>
                 </div>
-            )}
 
-            {/* Dashboard Content */}
-            <div className="row g-4">
+                <div className="dashboard-prediction-metric">
+                    <span className="prediction-metric-icon">
+                        📅
+                    </span>
+
+                    <div>
+                        <span>Prediction Date</span>
+                        <strong>
+                            {latestPrediction.createdAt
+                                ? new Date(
+                                    latestPrediction.createdAt
+                                ).toLocaleDateString()
+                                : "—"}
+                        </strong>
+                    </div>
+                </div>
+
+            </div>
+
+            {/* Footer */}
+            <div className="dashboard-prediction-footer">
+                <span className="prediction-success-dot" />
+                Latest prediction generated successfully
+            </div>
+
+        </div>
+    </div>
+)}
+            {/* Current Weather and Recent Predictions */}
+            <div className="row g-4 mb-4">
                 <div className="col-lg-4">
                     <WeatherWidget
                         latitude={latestLatitude}
@@ -275,14 +309,31 @@ function Dashboard() {
                 </div>
             </div>
 
+            {/* Crop Distribution */}
+            <div className="card shadow-sm mb-4">
+                <div className="card-body">
+                    <h5 className="card-title mb-3">
+                        Crop Distribution
+                    </h5>
+
+                    <CropDistribution
+                        predictions={predictions}
+                    />
+                </div>
+            </div>
+
             {/* Prediction Activity */}
             <div className="mt-4">
-                <PredictionActivity predictions={predictions} />
+                <PredictionActivity
+                    predictions={predictions}
+                />
             </div>
 
             {/* Confidence Trend */}
             <div className="mt-4">
-                <ConfidenceTrend predictions={predictions} />
+                <ConfidenceTrend
+                    predictions={predictions}
+                />
             </div>
 
             {/* Quick Prediction */}
@@ -301,6 +352,7 @@ function Dashboard() {
                 >
                     <div className="modal-dialog modal-lg modal-dialog-centered">
                         <div className="modal-content">
+
                             <div className="modal-header">
                                 <div>
                                     <h5
@@ -330,7 +382,9 @@ function Dashboard() {
                                         {latestSoilHealth.score}%
                                     </h2>
 
-                                    <h5>{latestSoilHealth.status}</h5>
+                                    <h5>
+                                        {latestSoilHealth.status}
+                                    </h5>
                                 </div>
 
                                 <div className="table-responsive">
@@ -353,14 +407,17 @@ function Dashboard() {
                                             ].map(([name, parameter]) => (
                                                 <tr key={name}>
                                                     <td>{name}</td>
+
                                                     <td>
                                                         {parameter?.value ?? "—"}
                                                     </td>
+
                                                     <td>
                                                         {parameter?.score != null
                                                             ? `${parameter.score}%`
                                                             : "—"}
                                                     </td>
+
                                                     <td>
                                                         {parameter?.status || "—"}
                                                     </td>
@@ -387,10 +444,12 @@ function Dashboard() {
                                     Close
                                 </button>
                             </div>
+
                         </div>
                     </div>
                 </div>
             )}
+
         </DashboardLayout>
     );
 }
